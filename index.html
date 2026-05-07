@@ -340,6 +340,12 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   .hero{padding:2rem 1.5rem 1.4rem;}
   .ovgrid{padding:1.5rem;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));}
   .sec,.hw,.cw,.shop-section,.cc-panel,.cc-hero{padding-left:1.5rem;padding-right:1.5rem;}
+  .panel-desktop-main>.stitle{padding-left:1.5rem;padding-right:1.5rem;}
+  .panel-desktop-main>#silver-grid,
+  .panel-desktop-main>#copper-grid,
+  .panel-desktop-main>#platinum-grid{padding:0 1.5rem;}
+  .panel-desktop-main>.hw{padding-left:1.5rem;padding-right:1.5rem;}
+  .panel-desktop-side{padding:.75rem 1.5rem 1rem;}
   .strip{grid-template-columns:repeat(3,minmax(0,1fr))!important;padding:1rem 1.5rem;gap:9px;}
   .cgrid,.shop-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
   .errbar{margin:.6rem 1.5rem;}
@@ -370,6 +376,14 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   .cgrid,.shop-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px;}
   .sec,.hw,.cw{padding-left:1.25rem;padding-right:1.25rem;}
   .shop-section{padding:1.2rem 1.25rem 0;}
+  /* Silver/copper/platinum stitle + grid padding on mobile */
+  .panel-desktop-main>.stitle{padding-left:1.25rem;padding-right:1.25rem;}
+  .panel-desktop-main>#silver-grid,
+  .panel-desktop-main>#copper-grid,
+  .panel-desktop-main>#platinum-grid{padding:0 1.25rem;}
+  .panel-desktop-main>.hw{padding-left:1.25rem;padding-right:1.25rem;}
+  /* Sidebar on mobile: full width, 2-col grid */
+  .panel-desktop-side{padding:.75rem 1.25rem 1rem;}
   .hw table{font-size:.74rem;}
   .cc-hero,.cc-panel{padding-left:1.25rem;padding-right:1.25rem;}
   .conv-grid{grid-template-columns:1fr auto 1fr;}
@@ -455,7 +469,8 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:8px;
-    padding:.75rem 1rem 1rem;
+    padding:.75rem 1.25rem 1rem;
+    margin-top:.5rem;
   }
   .panel-desktop-side .cbox{margin:0;padding:.8rem;}
   .panel-desktop-side .ctitle{font-size:.82rem;margin-bottom:.65rem;}
