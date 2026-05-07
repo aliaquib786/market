@@ -2677,7 +2677,16 @@ function fmtMktCap(n){
 
 // ── Core: fetch Yahoo Finance through multiple CORS proxies ──
 // ── Stock Data via Netlify Function (server-side Yahoo Finance) ──
-const FN = '/.netlify/functions/stock';
+// ── Stock API routing ──────────────────────────────────────────
+// On Netlify: use serverless function (handles CORS + crumb auth)
+// On GitHub Pages / other: use allorigins CORS proxy → Yahoo Finance directly
+const ON_NETLIFY = location.hostname.includes('netlify.app') ||
+                   location.hostname.includes('netlify.com');
+const FN = ON_NETLIFY ? '/.netlify/functions/stock' : null; // null = use CORS proxy
+
+// Yahoo Finance base URLs (used when not on Netlify)
+const YF_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+const CORS_PROXY = 'https://corsproxy.io/?';
 
 if(!AbortSignal.timeout){
   AbortSignal.timeout = ms => {
@@ -2689,10 +2698,56 @@ if(!AbortSignal.timeout){
 
 // ── Call Netlify function ──────────────────────────────────────
 async function fnFetch(params, ms=10000) {
-  const qs   = new URLSearchParams(params).toString();
-  const resp = await fetch(`${FN}?${qs}`, { signal: AbortSignal.timeout(ms) });
-  if(!resp.ok) throw new Error('HTTP ' + resp.status);
-  return resp.json();
+  // On Netlify: route through serverless function
+  if(ON_NETLIFY) {
+    const qs   = new URLSearchParams(params).toString();
+    const resp = await fetch(`${FN}?${qs}`, { signal: AbortSignal.timeout(ms) });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    return resp.json();
+  }
+
+  // On GitHub Pages: call Yahoo Finance directly via CORS proxy
+  const { sym, q, type, range, interval } = params;
+  const iv  = interval || '1d';
+  const rng = range    || '5d';
+
+  // ── SEARCH ──
+  if(type === 'search' && q) {
+    const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=15&newsCount=0&enableFuzzyQuery=true`;
+    const r = await fetch(CORS_PROXY + encodeURIComponent(url), { signal: AbortSignal.timeout(ms) });
+    if(!r.ok) throw new Error('Search failed');
+    const text = await r.text();
+    // corsproxy.io wraps in {contents:"..."} 
+    try { const j=JSON.parse(text); if(j.contents) return JSON.parse(j.contents); return j; } catch(e) { return {quotes:[]}; }
+  }
+
+  // ── QUOTE / CHART ──
+  if(!sym) throw new Error('Missing sym');
+
+  // Build symbol list with .NS/.BO fallback
+  const symList = [sym];
+  if(sym.endsWith('.NS')) symList.push(sym.replace('.NS','.BO'));
+  else if(sym.endsWith('.BO')) symList.push(sym.replace('.BO','.NS'));
+  else if(!sym.includes('.')) { symList.push(sym+'.NS'); symList.push(sym+'.BO'); }
+
+  for(const s of symList) {
+    for(const host of YF_HOSTS) {
+      try {
+        const yfUrl = `https://${host}/v8/finance/chart/${encodeURIComponent(s)}?interval=${iv}&range=${rng}`;
+        const r = await fetch(CORS_PROXY + encodeURIComponent(yfUrl), { signal: AbortSignal.timeout(ms) });
+        if(!r.ok) continue;
+        const text = await r.text();
+        // Unwrap corsproxy.io envelope if present
+        let data;
+        try {
+          const j = JSON.parse(text);
+          data = j.contents ? JSON.parse(j.contents) : j;
+        } catch(e) { continue; }
+        if(data?.chart?.result?.[0]?.meta?.regularMarketPrice) return data;
+      } catch(e) {}
+    }
+  }
+  throw new Error('No data for: ' + sym);
 }
 
 // ── Quote fetch ────────────────────────────────────────────────
