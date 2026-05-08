@@ -340,6 +340,12 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   .hero{padding:2rem 1.5rem 1.4rem;}
   .ovgrid{padding:1.5rem;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));}
   .sec,.hw,.cw,.shop-section,.cc-panel,.cc-hero{padding-left:1.5rem;padding-right:1.5rem;}
+  .panel-desktop-main>.stitle{padding-left:1.5rem;padding-right:1.5rem;}
+  .panel-desktop-main>#silver-grid,
+  .panel-desktop-main>#copper-grid,
+  .panel-desktop-main>#platinum-grid{padding:0 1.5rem;}
+  .panel-desktop-main>.hw{padding-left:1.5rem;padding-right:1.5rem;}
+  .panel-desktop-side{padding:.75rem 1.5rem 1rem;}
   .strip{grid-template-columns:repeat(3,minmax(0,1fr))!important;padding:1rem 1.5rem;gap:9px;}
   .cgrid,.shop-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
   .errbar{margin:.6rem 1.5rem;}
@@ -370,6 +376,14 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   .cgrid,.shop-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px;}
   .sec,.hw,.cw{padding-left:1.25rem;padding-right:1.25rem;}
   .shop-section{padding:1.2rem 1.25rem 0;}
+  /* Silver/copper/platinum stitle + grid padding on mobile */
+  .panel-desktop-main>.stitle{padding-left:1.25rem;padding-right:1.25rem;}
+  .panel-desktop-main>#silver-grid,
+  .panel-desktop-main>#copper-grid,
+  .panel-desktop-main>#platinum-grid{padding:0 1.25rem;}
+  .panel-desktop-main>.hw{padding-left:1.25rem;padding-right:1.25rem;}
+  /* Sidebar on mobile: full width, 2-col grid */
+  .panel-desktop-side{padding:.75rem 1.25rem 1rem;}
   .hw table{font-size:.74rem;}
   .cc-hero,.cc-panel{padding-left:1.25rem;padding-right:1.25rem;}
   .conv-grid{grid-template-columns:1fr auto 1fr;}
@@ -455,7 +469,8 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:8px;
-    padding:.75rem 1rem 1rem;
+    padding:.75rem 1.25rem 1rem;
+    margin-top:.5rem;
   }
   .panel-desktop-side .cbox{margin:0;padding:.8rem;}
   .panel-desktop-side .ctitle{font-size:.82rem;margin-bottom:.65rem;}
@@ -632,15 +647,10 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
 #stock-search-btn{padding:.85rem 1.4rem;background:var(--gold2);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;white-space:nowrap;}
 #stock-search-btn:hover{background:var(--gold);}
 
-.stock-suggestions{position:absolute;left:0;right:0;background:#14120A;border:1px solid rgba(201,168,76,.25);border-top:none;border-radius:0 0 12px 12px;z-index:300;box-shadow:0 12px 40px rgba(0,0,0,.6);display:none;max-height:400px;overflow-y:auto;}
-.stock-sug-item{padding:.6rem 1rem;cursor:pointer;font-size:.82rem;display:flex;align-items:center;gap:.65rem;border-bottom:.5px solid rgba(201,168,76,.07);transition:background .1s;}
+.stock-suggestions{position:absolute;left:2rem;right:2rem;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;max-height:220px;overflow-y:auto;}
+.stock-sug-item{padding:.7rem 1rem;cursor:pointer;font-size:.84rem;display:flex;justify-content:space-between;align-items:center;border-bottom:.5px solid var(--border);}
 .stock-sug-item:last-child{border-bottom:none;}
-.stock-sug-item:hover,.stock-sug-item:focus{background:rgba(201,168,76,.08);outline:none;}
-.sug-section{padding:.35rem 1rem .2rem;font-size:.6rem;color:rgba(201,168,76,.45);text-transform:uppercase;letter-spacing:.08em;background:rgba(0,0,0,.25);position:sticky;top:0;z-index:1;}
-.sug-badge{font-size:.56rem;padding:1px 6px;border-radius:4px;font-weight:600;letter-spacing:.03em;flex-shrink:0;}
-.sug-badge-local{background:rgba(201,168,76,.15);color:#C9A84C;}
-.sug-badge-live{background:rgba(34,197,94,.12);color:#22C55E;}
-.sug-no-results{padding:.9rem 1rem;font-size:.76rem;color:rgba(138,128,112,.45);text-align:center;}
+.stock-sug-item:hover{background:var(--bg2);}
 .stock-sug-ticker{font-weight:600;color:var(--text);}
 .stock-sug-name{color:var(--muted);font-size:.76rem;}
 
@@ -740,14 +750,6 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   .qc-price{font-size:1.5rem;}
   .qc-cur{font-size:1rem;}
 }
-
-.stock-sug-ticker{font-weight:700;color:#C9A84C;font-size:.8rem;min-width:85px;flex-shrink:0;letter-spacing:.02em;font-family:'Cormorant Garamond','Playfair Display',serif;}
-.stock-sug-name{flex:1;color:rgba(240,234,214,.85);font-size:.79rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stock-search-wrap{position:relative;}
-#stock-input:focus{border-color:rgba(201,168,76,.5);box-shadow:0 0 0 3px rgba(201,168,76,.06);}
-.idx-rng{background:transparent;border:1px solid rgba(201,168,76,.2);color:rgba(201,168,76,.5);border-radius:6px;padding:3px 10px;font-size:.67rem;cursor:pointer;transition:all .18s;letter-spacing:.04em;}
-.idx-rng:hover{border-color:rgba(201,168,76,.5);color:#C9A84C;}
-.idx-rng.active{background:rgba(201,168,76,.12);border-color:#C9A84C;color:#C9A84C;font-weight:600;}
 </style>
 <script>
 // ── Inline PWA Manifest (no external file needed) ──
@@ -1248,85 +1250,40 @@ document.head.appendChild(_link);
     <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
       <div style="min-width:0;">
         <h1 style="color:var(--text);font-size:1.35rem;font-weight:600;margin:0 0 1px;white-space:nowrap;">Stock Search</h1>
-        <p style="color:var(--muted);font-size:.72rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Live stocks from 30+ countries — auto by location</p>
+        <p style="color:var(--muted);font-size:.72rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">NSE India &amp; US markets — live prices &amp; chart</p>
       </div>
-      <div style="flex-shrink:0;">
-        <select id="smkt-select" onchange="setStockMarket(this.value)"
-          style="background:#0D0C09;border:1px solid rgba(201,168,76,.35);color:#C9A84C;
-                 border-radius:8px;padding:.45rem .8rem;font-size:.8rem;cursor:pointer;
-                 outline:none;min-width:190px;appearance:none;-webkit-appearance:none;
-                 background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%23C9A84C%22/></svg>');
-                 background-repeat:no-repeat;background-position:right .7rem center;padding-right:2rem;">
-          <optgroup label="🌍 Middle East">
-            <option value="QA">🇶🇦 Qatar (QSE)</option>
-            <option value="SR">🇸🇦 Saudi Arabia (Tadawul)</option>
-            <option value="AE">🇦🇪 UAE (DFM / ADX)</option>
-            <option value="EG">🇪🇬 Egypt (EGX)</option>
-          </optgroup>
-          <optgroup label="🌎 Americas">
-            <option value="US">🇺🇸 USA (NYSE / NASDAQ)</option>
-            <option value="TO">🇨🇦 Canada (TSX)</option>
-            <option value="MX">🇲🇽 Mexico (BMV)</option>
-            <option value="SA">🇧🇷 Brazil (B3)</option>
-          </optgroup>
-          <optgroup label="🌏 Asia Pacific">
-            <option value="NSE">🇮🇳 India (NSE / BSE)</option>
-            <option value="HK">🇭🇰 Hong Kong (HKEX)</option>
-            <option value="T">🇯🇵 Japan (TSE)</option>
-            <option value="KS">🇰🇷 South Korea (KRX)</option>
-            <option value="TW">🇹🇼 Taiwan (TWSE)</option>
-            <option value="SN">🇸🇬 Singapore (SGX)</option>
-            <option value="AX">🇦🇺 Australia (ASX)</option>
-            <option value="MY">🇲🇾 Malaysia (Bursa)</option>
-            <option value="TH">🇹🇭 Thailand (SET)</option>
-            <option value="PK">🇵🇰 Pakistan (PSX)</option>
-            <option value="BD">🇧🇩 Bangladesh (DSE)</option>
-          </optgroup>
-          <optgroup label="🌍 Europe">
-            <option value="L">🇬🇧 United Kingdom (LSE)</option>
-            <option value="DE">🇩🇪 Germany (XETRA)</option>
-            <option value="FR">🇫🇷 France (Euronext)</option>
-            <option value="CH">🇨🇭 Switzerland (SIX)</option>
-            <option value="NS">🇳🇱 Netherlands (AEX)</option>
-            <option value="SE">🇸🇪 Sweden (Nasdaq OMX)</option>
-            <option value="NO">🇳🇴 Norway (Oslo Bors)</option>
-            <option value="ES">🇪🇸 Spain (IBEX)</option>
-            <option value="IT">🇮🇹 Italy (Borsa)</option>
-            <option value="TR">🇹🇷 Turkey (BIST)</option>
-          </optgroup>
-          <optgroup label="🌍 Africa">
-            <option value="ZA">🇿🇦 South Africa (JSE)</option>
-          </optgroup>
-        </select>
+      <div style="display:flex;gap:5px;flex-shrink:0;">
+        <button class="smkt-btn active" id="smkt-us"  onclick="setStockMarket('US')">🇺🇸 US</button>
+        <button class="smkt-btn" id="smkt-nse" onclick="setStockMarket('NSE')">🇮🇳 NSE</button>
       </div>
     </div>
   </div>
 
   <!-- Market Index Strip: S&P500, NASDAQ, NIFTY, SENSEX -->
-  <div id="index-card-wrap" style="background:var(--bg);border-bottom:1px solid rgba(201,168,76,.12);padding:.75rem 1rem;">
-    <div style="display:flex;align-items:flex-start;gap:.75rem;flex-wrap:wrap;">
-      <div id="country-idx-card" style="flex:1;min-width:160px;background:linear-gradient(145deg,rgba(28,24,10,.8),rgba(14,12,6,.9));border:1px solid rgba(201,168,76,.22);border-radius:12px;padding:.85rem 1rem .75rem;cursor:pointer;" onclick="loadIdxChart(window._idxRange||'1d')">
-        <div style="font-size:.62rem;color:rgba(201,168,76,.6);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.2rem;" id="country-idx-name">Loading...</div>
-        <div style="display:flex;align-items:baseline;gap:.4rem;">
-          <span id="country-idx-price" style="font-size:1.5rem;font-weight:600;font-family:'Cormorant Garamond',serif;background:linear-gradient(135deg,#C9A84C,#F0D080,#C9A84C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">—</span>
-          <span id="country-idx-chg" style="font-size:.72rem;font-weight:600;color:var(--muted);">—</span>
-        </div>
-      </div>
-      <div style="flex:3;min-width:240px;display:flex;flex-direction:column;gap:.35rem;">
-        <div style="display:flex;gap:4px;flex-wrap:wrap;">
-          <button class="idx-rng active" data-r="1d"  onclick="loadIdxChart('1d')">1D</button>
-          <button class="idx-rng"        data-r="5d"  onclick="loadIdxChart('5d')">5D</button>
-          <button class="idx-rng"        data-r="1mo" onclick="loadIdxChart('1mo')">1M</button>
-          <button class="idx-rng"        data-r="6mo" onclick="loadIdxChart('6mo')">6M</button>
-          <button class="idx-rng"        data-r="1y"  onclick="loadIdxChart('1y')">1Y</button>
-          <button class="idx-rng"        data-r="5y"  onclick="loadIdxChart('5y')">5Y</button>
-          <button class="idx-rng"        data-r="max" onclick="loadIdxChart('max')">ALL</button>
-        </div>
-        <div style="position:relative;min-height:70px;">
-          <canvas id="country-idx-chart" style="width:100%;height:70px;display:block;border-radius:8px;"></canvas>
-          <div id="country-idx-msg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(138,128,112,.4);"></div>
-        </div>
-      </div>
+  <div class="qatar-grid" id="index-card-grid" style="padding:10px 1rem;background:var(--bg);border-bottom:.5px solid var(--border);">
+    <div class="qatar-card" style="border-color:#1a56a0;padding:.8rem .7rem .7rem;">
+      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">S&amp;P 500</span></div>
+      <div class="qc-price" id="idx-spx-price" style="font-size:1.1rem;">—</div>
+      <div class="qc-chg" id="idx-spx-chg" style="font-size:.7rem;font-weight:600;">—</div>
+      <canvas id="idx-spx-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
+    </div>
+    <div class="qatar-card" style="border-color:#1a56a0;padding:.8rem .7rem .7rem;">
+      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">NASDAQ</span></div>
+      <div class="qc-price" id="idx-ndx-price" style="font-size:1.1rem;">—</div>
+      <div class="qc-chg" id="idx-ndx-chg" style="font-size:.7rem;font-weight:600;">—</div>
+      <canvas id="idx-ndx-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
+    </div>
+    <div class="qatar-card" style="border-color:#f5a623;padding:.8rem .7rem .7rem;">
+      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">NIFTY 50</span></div>
+      <div class="qc-price" id="idx-nse-price" style="font-size:1.1rem;">—</div>
+      <div class="qc-chg" id="idx-nse-chg" style="font-size:.7rem;font-weight:600;">—</div>
+      <canvas id="idx-nse-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
+    </div>
+    <div class="qatar-card" style="border-color:#f5a623;padding:.8rem .7rem .7rem;">
+      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">SENSEX</span></div>
+      <div class="qc-price" id="idx-bse-price" style="font-size:1.1rem;">—</div>
+      <div class="qc-chg" id="idx-bse-chg" style="font-size:.7rem;font-weight:600;">—</div>
+      <canvas id="idx-bse-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
     </div>
   </div>
 
@@ -1335,9 +1292,8 @@ document.head.appendChild(_link);
     <div class="stock-search-wrap">
       <span class="stock-search-icon">🔍</span>
       <input type="text" id="stock-input"
-        placeholder="Click to browse all stocks or type to search..."
+        placeholder="Search any stock — type name or symbol (e.g. Jindal, TCS, AAPL, Tata Steel...)"
         oninput="stockInputHandler(this.value)"
-        onfocus="showAllStocksDropdown()"
         onkeydown="if(event.key==='Enter'){document.getElementById('stock-suggestions').style.display='none';searchStock();}"
         autocomplete="off" spellcheck="false"/>
       <button id="stock-search-btn" onclick="document.getElementById('stock-suggestions').style.display='none';searchStock()">Search</button>
@@ -1391,12 +1347,9 @@ document.head.appendChild(_link);
         <div class="chart-range-btns">
           <button class="crng-btn active" onclick="loadStockChart('1d')">1D</button>
           <button class="crng-btn" onclick="loadStockChart('5d')">5D</button>
-          <button class="crng-btn" onclick="loadStockChart('1wk')">1W</button>
           <button class="crng-btn" onclick="loadStockChart('1mo')">1M</button>
           <button class="crng-btn" onclick="loadStockChart('6mo')">6M</button>
           <button class="crng-btn" onclick="loadStockChart('1y')">1Y</button>
-          <button class="crng-btn" onclick="loadStockChart('5y')">5Y</button>
-          <button class="crng-btn" onclick="loadStockChart('max')">ALL</button>
         </div>
       </div>
       <canvas id="stock-chart" style="display:none;width:100%;"></canvas>
@@ -1538,42 +1491,6 @@ document.head.appendChild(_link);
 
 
 <script>
-// Yahoo Finance screener exchange codes per market
-const SCREENER_EXCHANGES={
-  US:  [{exch:'NMS',region:'US'},{exch:'NYQ',region:'US'},{exch:'NGM',region:'US'},{exch:'PCX',region:'US'}],
-  NSE: [{exch:'NSI',region:'IN'},{exch:'BSE',region:'IN'}],
-  QA:  [{exch:'QSE',region:'QA'}],
-  SR:  [{exch:'SAU',region:'SA'}],
-  AE:  [{exch:'ADX',region:'AE'},{exch:'DFM',region:'AE'}],
-  L:   [{exch:'LSE',region:'GB'}],
-  DE:  [{exch:'GER',region:'DE'},{exch:'FRA',region:'DE'}],
-  HK:  [{exch:'HKG',region:'HK'}],
-  T:   [{exch:'JPX',region:'JP'}],
-  KS:  [{exch:'KSC',region:'KR'},{exch:'KOE',region:'KR'}],
-  TW:  [{exch:'TAI',region:'TW'},{exch:'TWO',region:'TW'}],
-  SN:  [{exch:'SES',region:'SG'}],
-  AX:  [{exch:'ASX',region:'AU'}],
-  TO:  [{exch:'TOR',region:'CA'},{exch:'VAN',region:'CA'}],
-  SA:  [{exch:'SAO',region:'BR'}],
-  FR:  [{exch:'PAR',region:'FR'}],
-  CH:  [{exch:'VTX',region:'CH'}],
-  NS:  [{exch:'AMS',region:'NL'}],
-  ZA:  [{exch:'JNB',region:'ZA'}],
-  EG:  [{exch:'CAI',region:'EG'}],
-  MY:  [{exch:'KLS',region:'MY'}],
-  TH:  [{exch:'SET',region:'TH'}],
-  TR:  [{exch:'IST',region:'TR'}],
-  SE:  [{exch:'STO',region:'SE'}],
-  NO:  [{exch:'OSL',region:'NO'}],
-  ES:  [{exch:'MCE',region:'ES'}],
-  IT:  [{exch:'MIL',region:'IT'}],
-  MX:  [{exch:'MEX',region:'MX'}],
-  PK:  [{exch:'KAR',region:'PK'}],
-  BD:  [{exch:'DHA',region:'BD'}],
-};
-
-// Cache of fetched stocks per market to avoid re-fetching
-const _stockCache={};
 function calcSilver(){
   const wt=parseFloat($('cv-wt-sv')?.value||10), unit=$('cv-unit-sv')?.value||'g';
   let g=wt; if(unit==='oz') g=wt*TROY; if(unit==='kg') g=wt*1000;
@@ -1839,13 +1756,12 @@ async function detectLocation(){
     selectCur(cur);
     const tag=$('auto-tag');
     if(tag){tag.style.display='';tag.textContent='📍 '+d.city+', '+d.country_name+' → '+cur;}
+    // Set country gold premium
     activeCountryCode=d.country_code||'QA';
     activeShopPremium=COUNTRY_GOLD_PREMIUM[activeCountryCode]||COUNTRY_GOLD_PREMIUM['DEFAULT'];
     updateShopBadge(d.city, d.country_name);
-    const mkt=COUNTRY_TO_MARKET[d.country_code]||'US';
-    setStockMarket(mkt);
     if(ready) render();
-  }catch(e){console.log('Location failed');setStockMarket('QA');}
+  }catch(e){console.log('Location detect failed');}
 }
 
 function updateShopBadge(city, country){
@@ -2579,326 +2495,70 @@ const NSE_POPULAR = [
   {t:'NYKAA',n:'Nykaa Beauty FSN'},{t:'ZOMATO',n:'Zomato Food Delivery'},
   {t:'PAYTM',n:'Paytm One97 Communications'},{t:'IRCTC',n:'IRCTC Railway Tourism'},
 ];
+let activeStockMarket = 'NSE';
+let currentStockSymbol = '';
+let currentChartRange = '1d';
 
-const COUNTRY_TO_MARKET={QA:'QA',SA:'SR',AE:'AE',KW:'SR',BH:'SR',OM:'SR',EG:'EG',IN:'NSE',PK:'PK',BD:'BD',US:'US',CA:'TO',MX:'MX',BR:'SA',GB:'L',DE:'DE',FR:'FR',CH:'CH',NL:'NS',SE:'SE',NO:'NO',ES:'ES',IT:'IT',TR:'TR',HK:'HK',JP:'T',KR:'KS',TW:'TW',SG:'SN',AU:'AX',MY:'MY',TH:'TH',CN:'HK',ID:'MY',ZA:'ZA',NG:'ZA'};
-const MARKET_INDEX={QA:{sym:'^DSMDX',name:'QSE Index'},SR:{sym:'^TASI',name:'Tadawul TASI'},AE:{sym:'^DFMGI',name:'DFM Index'},NSE:{sym:'^NSEI',name:'NIFTY 50'},PK:{sym:'^KSE100',name:'KSE-100'},US:{sym:'^GSPC',name:'S&P 500'},TO:{sym:'^GSPTSE',name:'TSX Comp'},MX:{sym:'^MXX',name:'IPC Mexico'},SA:{sym:'^BVSP',name:'Bovespa'},L:{sym:'^FTSE',name:'FTSE 100'},DE:{sym:'^GDAXI',name:'DAX 40'},FR:{sym:'^FCHI',name:'CAC 40'},CH:{sym:'^SSMI',name:'SMI'},NS:{sym:'^AEX',name:'AEX'},SE:{sym:'^OMX',name:'OMX Stockholm'},NO:{sym:'^OSEAX',name:'Oslo All Share'},ES:{sym:'^IBEX',name:'IBEX 35'},IT:{sym:'^FTSEMIB',name:'FTSE MIB'},TR:{sym:'^XU100',name:'BIST 100'},HK:{sym:'^HSI',name:'Hang Seng'},T:{sym:'^N225',name:'Nikkei 225'},KS:{sym:'^KS11',name:'KOSPI'},TW:{sym:'^TWII',name:'TAIEX'},SN:{sym:'^STI',name:'Straits Times'},AX:{sym:'^AXJO',name:'ASX 200'},MY:{sym:'^KLSE',name:'KLCI'},TH:{sym:'^SET',name:'SET Thailand'},ZA:{sym:'^J203',name:'JSE All Share'},EG:{sym:'^EGX30',name:'EGX 30'},BD:{sym:'^DSEX',name:'DSEX'}};
-const EXCHANGE_SUFFIX={US:[],NSE:['.NS','.BO'],QA:['.QA'],SR:['.SR'],AE:['.AD','.DU'],L:['.L'],DE:['.DE'],HK:['.HK'],T:['.T'],AX:['.AX'],TO:['.TO'],SA:['.SA'],SN:['.SI'],KS:['.KS'],TW:['.TW'],NS:['.AS'],FR:['.PA'],ES:['.MC'],IT:['.MI'],MX:['.MX'],ZA:['.JO'],EG:['.CA'],MY:['.KL'],TH:['.BK'],TR:['.IS'],CH:['.SW'],SE:['.ST'],NO:['.OL'],PK:['.KA'],BD:['.DSE']};
-const COUNTRY_STOCKS={
-US:[
-  {t:'AAPL',n:'Apple Inc'},{t:'ABBV',n:'AbbVie Pharma'},{t:'AMD',n:'AMD Chips'},
-  {t:'AMZN',n:'Amazon'},{t:'AVGO',n:'Broadcom Chips'},{t:'BA',n:'Boeing Aerospace'},
-  {t:'BAC',n:'Bank of America'},{t:'BRK-B',n:'Berkshire Hathaway'},{t:'C',n:'Citigroup'},
-  {t:'CAT',n:'Caterpillar'},  {t:'COIN',n:'Coinbase Crypto'},{t:'CRM',n:'Salesforce'},
-  {t:'CVX',n:'Chevron Oil'},{t:'DIS',n:'Walt Disney'},{t:'F',n:'Ford Motors'},
-  {t:'GM',n:'General Motors'},{t:'GOOGL',n:'Alphabet Google'},{t:'GS',n:'Goldman Sachs'},
-  {t:'HD',n:'Home Depot'},{t:'INTC',n:'Intel'},{t:'JNJ',n:'Johnson & Johnson'},
-  {t:'JPM',n:'JPMorgan Chase'},{t:'KO',n:'Coca-Cola'},{t:'LLY',n:'Eli Lilly Pharma'},
-  {t:'MA',n:'Mastercard'},{t:'META',n:'Meta Platforms'},{t:'MRK',n:'Merck Pharma'},
-  {t:'MSFT',n:'Microsoft'},{t:'NFLX',n:'Netflix'},{t:'NVDA',n:'NVIDIA GPU AI'},
-  {t:'ORCL',n:'Oracle Software'},{t:'PEP',n:'PepsiCo'},{t:'PFE',n:'Pfizer Pharma'},
-  {t:'PG',n:'Procter & Gamble'},{t:'PLTR',n:'Palantir Data'},{t:'PYPL',n:'PayPal'},
-  {t:'QCOM',n:'Qualcomm Chips'},{t:'SBUX',n:'Starbucks'},{t:'SHOP',n:'Shopify'},
-  {t:'TSLA',n:'Tesla EV'},{t:'UBER',n:'Uber Transport'},{t:'UNH',n:'UnitedHealth'},
-  {t:'V',n:'Visa Payments'},{t:'WMT',n:'Walmart'},{t:'XOM',n:'ExxonMobil Oil'},
-],
-NSE:[
-  {t:'ADANIENT',n:'Adani Enterprises'},{t:'ASIANPAINT',n:'Asian Paints'},
-  {t:'AXISBANK',n:'Axis Bank'},{t:'BAJFINANCE',n:'Bajaj Finance'},
-  {t:'BAJAJFINSV',n:'Bajaj Finserv'},{t:'BHARTIARTL',n:'Bharti Airtel'},
-  {t:'BPCL',n:'BPCL Oil'},{t:'BRITANNIA',n:'Britannia Industries'},
-  {t:'CIPLA',n:'Cipla Pharma'},{t:'COALINDIA',n:'Coal India'},
-  {t:'DRREDDY',n:'Dr Reddys Pharma'},{t:'EICHERMOT',n:'Eicher Royal Enfield'},
-  {t:'GRASIM',n:'Grasim Industries'},{t:'HCLTECH',n:'HCL Technologies'},
-  {t:'HDFCBANK',n:'HDFC Bank'},{t:'HEROMOTOCO',n:'Hero MotoCorp'},
-  {t:'HINDUNILVR',n:'Hindustan Unilever'},{t:'ICICIBANK',n:'ICICI Bank'},
-  {t:'INDUSINDBK',n:'IndusInd Bank'},{t:'INFY',n:'Infosys'},
-  {t:'ITC',n:'ITC Limited'},{t:'JSWSTEEL',n:'JSW Steel'},
-  {t:'KOTAKBANK',n:'Kotak Mahindra Bank'},{t:'LT',n:'Larsen & Toubro'},
-  {t:'MARUTI',n:'Maruti Suzuki'},{t:'NESTLEIND',n:'Nestle India'},
-  {t:'NTPC',n:'NTPC Power'},{t:'ONGC',n:'ONGC Oil'},
-  {t:'POWERGRID',n:'Power Grid'},{t:'RELIANCE',n:'Reliance Industries'},
-  {t:'SBIN',n:'State Bank of India'},{t:'SUNPHARMA',n:'Sun Pharma'},
-  {t:'TATAMOTORS',n:'Tata Motors'},{t:'TATASTEEL',n:'Tata Steel'},
-  {t:'TCS',n:'Tata Consultancy'},{t:'TECHM',n:'Tech Mahindra'},
-  {t:'TITAN',n:'Titan Company'},{t:'ULTRACEMCO',n:'UltraTech Cement'},
-  {t:'WIPRO',n:'Wipro IT'},{t:'ZOMATO',n:'Zomato Food'},
-],
-QA:[
-  {t:'ABQK.QA',n:'Ahlibank Qatar'},{t:'AKHI.QA',n:'Al Khalij Commercial Bank'},
-  {t:'BRES.QA',n:'Barwa Real Estate'},{t:'CBQK.QA',n:'Commercial Bank Qatar'},
-  {t:'DHBK.QA',n:'Doha Bank'},{t:'GWCS.QA',n:'Gulf Warehousing Co'},
-  {t:'IQCD.QA',n:'Industries Qatar'},{t:'MARK.QA',n:'Masraf Al Rayan Bank'},
-  {t:'ORDS.QA',n:'Ooredoo Telecom'},{t:'QATI.QA',n:'Qatar Insurance Co'},
-  {t:'QEWS.QA',n:'Qatar Electricity & Water'},{t:'QFLS.QA',n:'Qatar Fuel Woqod'},
-  {t:'QIIK.QA',n:'Qatar Intl Islamic Bank'},{t:'QNBK.QA',n:'QNB Group'},
-],
-SR:[
-  {t:'1010.SR',n:'Riyad Bank'},{t:'1020.SR',n:'Saudi Fransi Bank'},
-  {t:'1050.SR',n:'Saudi British Bank SABB'},{t:'1120.SR',n:'Al Rajhi Bank'},
-  {t:'1180.SR',n:'Al Jazira Bank'},{t:'1211.SR',n:'Maaden Mining'},
-  {t:'2010.SR',n:'SABIC Chemicals'},{t:'2222.SR',n:'Saudi Aramco'},
-  {t:'2270.SR',n:'Saudi Ceramics'},{t:'2380.SR',n:'Petro Rabigh'},
-  {t:'4008.SR',n:'Nahdi Medical'},{t:'4030.SR',n:'Alinma REIT'},
-  {t:'4261.SR',n:'Jarir Bookstore'},{t:'7010.SR',n:'STC Saudi Telecom'},
-  {t:'9200.SR',n:'SNB Capital'},
-],
-AE:[
-  {t:'ADIB.AD',n:'Abu Dhabi Islamic Bank'},{t:'ADNOCDIST.AD',n:'ADNOC Distribution'},
-  {t:'ADPORTS.AD',n:'AD Ports Group'},{t:'ALDAR.AD',n:'Aldar Properties'},
-  {t:'ALPHADHABI.AD',n:'Alpha Dhabi Holding'},{t:'ETISALAT.AD',n:'e& Etisalat'},
-  {t:'FAB.AD',n:'First Abu Dhabi Bank'},{t:'IHC.AD',n:'Intl Holding Co'},
-  {t:'DAMAC.DU',n:'Damac Properties'},{t:'DEWA.DU',n:'Dubai Electricity & Water'},
-  {t:'DFM.DU',n:'Dubai Financial Market'},{t:'DIB.DU',n:'Dubai Islamic Bank'},
-  {t:'DU.DU',n:'du Telecom'},{t:'EMAAR.DU',n:'Emaar Properties'},
-  {t:'ENBD.DU',n:'Emirates NBD Bank'},{t:'SALIK.DU',n:'Salik Toll Road'},
-],
-L:[
-  {t:'AAL.L',n:'Anglo American Mining'},{t:'AZN.L',n:'AstraZeneca Pharma'},
-  {t:'BA.L',n:'BAE Systems Defence'},{t:'BARC.L',n:'Barclays Bank'},
-  {t:'BP.L',n:'BP Energy'},{t:'BT-A.L',n:'BT Group Telecom'},
-  {t:'DGE.L',n:'Diageo Beverages'},{t:'EXPN.L',n:'Experian Data'},
-  {t:'GLEN.L',n:'Glencore Mining'},{t:'GSK.L',n:'GSK Pharma'},
-  {t:'HSBA.L',n:'HSBC Holdings'},{t:'LGEN.L',n:'Legal & General'},
-  {t:'LLOY.L',n:'Lloyds Banking'},{t:'NG.L',n:'National Grid Energy'},
-  {t:'REL.L',n:'RELX Group'},{t:'RIO.L',n:'Rio Tinto Mining'},
-  {t:'RKT.L',n:'Reckitt Consumer'},{t:'SHEL.L',n:'Shell Oil & Gas'},
-  {t:'ULVR.L',n:'Unilever'},{t:'VOD.L',n:'Vodafone Telecom'},
-],
-DE:[
-  {t:'ADS.DE',n:'Adidas Sportswear'},{t:'AIXA.DE',n:'Aixtron Semiconductor'},
-  {t:'ALV.DE',n:'Allianz Insurance'},{t:'BAS.DE',n:'BASF Chemicals'},
-  {t:'BAYN.DE',n:'Bayer Pharma'},{t:'BMW.DE',n:'BMW Automobiles'},
-  {t:'CON.DE',n:'Continental Tyres'},{t:'DAI.DE',n:'Daimler Truck'},
-  {t:'DBK.DE',n:'Deutsche Bank'},{t:'DHL.DE',n:'DHL Logistics'},
-  {t:'DTE.DE',n:'Deutsche Telekom'},{t:'EOAN.DE',n:'E.ON Energy'},
-  {t:'HEN3.DE',n:'Henkel Consumer'},{t:'IFX.DE',n:'Infineon Chips'},
-  {t:'LIN.DE',n:'Linde Industrial Gas'},{t:'MBG.DE',n:'Mercedes-Benz'},
-  {t:'MRK.DE',n:'Merck KGaA Pharma'},{t:'RWE.DE',n:'RWE Power'},
-  {t:'SAP.DE',n:'SAP Software'},{t:'SIE.DE',n:'Siemens Industrial'},
-  {t:'VOW3.DE',n:'Volkswagen'},{t:'ZAL.DE',n:'Zalando Fashion'},
-],
-HK:[
-  {t:'0001.HK',n:'CK Hutchison Holdings'},{t:'0002.HK',n:'CLP Power HK'},
-  {t:'0003.HK',n:'HK & China Gas'},{t:'0005.HK',n:'HSBC Asia Holdings'},
-  {t:'0011.HK',n:'Hang Seng Bank'},{t:'0012.HK',n:'Henderson Land Dev'},
-  {t:'0016.HK',n:'Sun Hung Kai Properties'},{t:'0027.HK',n:'Galaxy Entertainment'},
-  {t:'0066.HK',n:'MTR Corporation'},{t:'0388.HK',n:'HKEX Exchange'},
-  {t:'0700.HK',n:'Tencent Holdings'},{t:'0762.HK',n:'China Unicom'},
-  {t:'0883.HK',n:'CNOOC Oil'},{t:'0941.HK',n:'China Mobile Telecom'},
-  {t:'1113.HK',n:'CK Asset Holdings'},{t:'1299.HK',n:'AIA Insurance Group'},
-  {t:'1810.HK',n:'Xiaomi Smartphones'},{t:'2020.HK',n:'ANTA Sports'},
-  {t:'2318.HK',n:'Ping An Insurance'},{t:'2382.HK',n:'Sunny Optical'},
-  {t:'3690.HK',n:'Meituan Food Delivery'},{t:'9618.HK',n:'JD.com China'},
-  {t:'9988.HK',n:'Alibaba Group'},
-],
-T:[
-  {t:'4063.T',n:'Shin-Etsu Chemical'},{t:'4519.T',n:'Chugai Pharma'},
-  {t:'4661.T',n:'Oriental Land Disney'},{t:'6098.T',n:'Recruit Holdings'},
-  {t:'6501.T',n:'Hitachi Industrial'},{t:'6758.T',n:'Sony Group'},
-  {t:'6861.T',n:'Keyence Automation'},{t:'6902.T',n:'Denso Auto Parts'},
-  {t:'6954.T',n:'Fanuc Robotics'},{t:'7203.T',n:'Toyota Motor'},
-  {t:'7267.T',n:'Honda Motor'},{t:'7751.T',n:'Canon Cameras'},
-  {t:'7974.T',n:'Nintendo Gaming'},{t:'8035.T',n:'Tokyo Electron Chips'},
-  {t:'8306.T',n:'Mitsubishi UFJ Bank'},{t:'8316.T',n:'Sumitomo Mitsui Bank'},
-  {t:'9022.T',n:'Central Japan Railway'},{t:'9432.T',n:'NTT Japan Telecom'},
-  {t:'9433.T',n:'KDDI Telecom'},{t:'9984.T',n:'SoftBank Group'},
-],
-KS:[
-  {t:'000270.KS',n:'Kia Motors'},{t:'000660.KS',n:'SK Hynix Chips'},
-  {t:'003550.KS',n:'LG Corp'},{t:'005380.KS',n:'Hyundai Motor'},
-  {t:'005930.KS',n:'Samsung Electronics'},{t:'012330.KS',n:'Hyundai Mobis'},
-  {t:'028260.KS',n:'Samsung C&T'},{t:'030200.KS',n:'KT Corporation'},
-  {t:'032830.KS',n:'Samsung Life Ins'},{t:'035420.KS',n:'NAVER Corp'},
-  {t:'035720.KS',n:'Kakao Corp'},{t:'051910.KS',n:'LG Chem'},
-  {t:'066570.KS',n:'LG Electronics'},{t:'068270.KS',n:'Celltrion Biotech'},
-  {t:'096770.KS',n:'SK Innovation'},
-],
-TW:[
-  {t:'1301.TW',n:'Formosa Plastics'},{t:'2002.TW',n:'China Steel'},
-  {t:'2303.TW',n:'United Microelectronics'},{t:'2308.TW',n:'Delta Electronics'},
-  {t:'2317.TW',n:'Foxconn Manufacturing'},{t:'2330.TW',n:'TSMC Chips'},
-  {t:'2357.TW',n:'ASUS Technology'},{t:'2382.TW',n:'Quanta Computer'},
-  {t:'2412.TW',n:'Chunghwa Telecom'},{t:'2454.TW',n:'MediaTek Chips'},
-  {t:'2474.TW',n:'Catcher Technology'},{t:'2881.TW',n:'Fubon Financial'},
-  {t:'2882.TW',n:'Cathay Financial'},{t:'2886.TW',n:'Mega Financial'},
-  {t:'3711.TW',n:'ASMedia Technology'},{t:'6505.TW',n:'Formosa Petro'},
-],
-SN:[
-  {t:'9CI.SI',n:'CapitaLand Invest'},{t:'A17U.SI',n:'Ascendas REIT'},
-  {t:'BS6.SI',n:'Yangzijiang Ship'},{t:'BN4.SI',n:'Keppel Corporation'},
-  {t:'C38U.SI',n:'CapitaLand Mall REIT'},{t:'C6L.SI',n:'Singapore Airlines'},
-  {t:'D05.SI',n:'DBS Bank'},{t:'O39.SI',n:'OCBC Bank'},
-  {t:'S63.SI',n:'ST Engineering'},{t:'S68.SI',n:'SGX Exchange'},
-  {t:'U11.SI',n:'UOB Bank'},{t:'U96.SI',n:'Sembcorp Industries'},
-  {t:'V03.SI',n:'Venture Corporation'},{t:'Z74.SI',n:'Singapore Telecom'},
-],
-AX:[
-  {t:'ALL.AX',n:'Aristocrat Gaming'},{t:'ANZ.AX',n:'ANZ Banking Group'},
-  {t:'BHP.AX',n:'BHP Mining Group'},{t:'CBA.AX',n:'Commonwealth Bank'},
-  {t:'COL.AX',n:'Coles Group Retail'},{t:'CSL.AX',n:'CSL Biotherapies'},
-  {t:'FMG.AX',n:'Fortescue Metals'},{t:'GMG.AX',n:'Goodman Group REIT'},
-  {t:'MQG.AX',n:'Macquarie Group'},{t:'NAB.AX',n:'National Australia Bank'},
-  {t:'ORG.AX',n:'Origin Energy'},{t:'QBE.AX',n:'QBE Insurance'},
-  {t:'REA.AX',n:'REA Group Property'},{t:'RIO.AX',n:'Rio Tinto Mining'},
-  {t:'SHL.AX',n:'Sonic Healthcare'},{t:'TCL.AX',n:'Transurban Toll Roads'},
-  {t:'TLS.AX',n:'Telstra Telecom'},{t:'WBC.AX',n:'Westpac Banking'},
-  {t:'WES.AX',n:'Wesfarmers Retail'},{t:'WOW.AX',n:'Woolworths Supermarket'},
-],
-TO:[
-  {t:'ABX.TO',n:'Barrick Gold Mining'},{t:'AEM.TO',n:'Agnico Eagle Gold'},
-  {t:'BCE.TO',n:'BCE Bell Telecom'},{t:'BMO.TO',n:'Bank of Montreal'},
-  {t:'BNS.TO',n:'Scotiabank'},{t:'CCO.TO',n:'Cameco Uranium'},
-  {t:'CNQ.TO',n:'Canadian Natural Resources'},{t:'CNR.TO',n:'Canadian National Rail'},
-  {t:'CP.TO',n:'Canadian Pacific Railway'},{t:'ENB.TO',n:'Enbridge Pipeline'},
-  {t:'MFC.TO',n:'Manulife Financial'},{t:'NTR.TO',n:'Nutrien Fertilizer'},
-  {t:'POW.TO',n:'Power Corporation'},{t:'RY.TO',n:'Royal Bank of Canada'},
-  {t:'SHOP.TO',n:'Shopify Ecommerce'},{t:'SU.TO',n:'Suncor Energy'},
-  {t:'TD.TO',n:'TD Bank'},{t:'TECK-B.TO',n:'Teck Resources Mining'},
-  {t:'TRI.TO',n:'Thomson Reuters'},{t:'WFG.TO',n:'West Fraser Timber'},
-],
-SA:[
-  {t:'ABEV3.SA',n:'Ambev Beverages'},{t:'BBAS3.SA',n:'Banco do Brasil'},
-  {t:'BBDC4.SA',n:'Bradesco Bank'},{t:'BRFS3.SA',n:'BRF Foods'},
-  {t:'CSAN3.SA',n:'Cosan Energy'},{t:'EMBR3.SA',n:'Embraer Aircraft'},
-  {t:'GGBR4.SA',n:'Gerdau Steel'},{t:'HAPV3.SA',n:'Hapvida Health'},
-  {t:'ITUB4.SA',n:'Itau Unibanco'},{t:'JBSS3.SA',n:'JBS Meat'},
-  {t:'LREN3.SA',n:'Lojas Renner Fashion'},{t:'MGLU3.SA',n:'Magazine Luiza'},
-  {t:'PETR4.SA',n:'Petrobras Oil'},{t:'PRIO3.SA',n:'PetroRio Oil'},
-  {t:'RAIL3.SA',n:'Rumo Logistics'},{t:'RDOR3.SA',n:'Rede DOr Health'},
-  {t:'RENT3.SA',n:'Localiza Car Rental'},{t:'SUZB3.SA',n:'Suzano Paper'},
-  {t:'VALE3.SA',n:'Vale Mining'},{t:'WEGE3.SA',n:'WEG Motors'},
-],
-FR:[
-  {t:'ACA.PA',n:'Credit Agricole Bank'},{t:'AIR.PA',n:'Airbus Aircraft'},
-  {t:'BNP.PA',n:'BNP Paribas Bank'},{t:'CAP.PA',n:'Capgemini IT'},
-  {t:'DSY.PA',n:'Dassault Systemes'},{t:'EN.PA',n:'Bouygues Group'},
-  {t:'GLE.PA',n:'Societe Generale Bank'},{t:'HER.PA',n:'Hermes Luxury'},
-  {t:'KER.PA',n:'Kering Gucci Fashion'},{t:'MC.PA',n:'LVMH Luxury'},
-  {t:'OR.PA',n:"L'Oreal Beauty"},{t:'PUB.PA',n:'Publicis Advertising'},
-  {t:'SAN.PA',n:'Sanofi Pharma'},{t:'SGO.PA',n:'Saint-Gobain Materials'},
-  {t:'SU.PA',n:'Schneider Electric'},{t:'TTE.PA',n:'TotalEnergies Oil'},
-  {t:'VIE.PA',n:'Veolia Environment'},{t:'WLN.PA',n:'Worldline Payments'},
-],
-CH:[
-  {t:'ABBN.SW',n:'ABB Automation'},{t:'AGN.SW',n:'Aegon Insurance'},
-  {t:'CFR.SW',n:'Richemont Luxury'},{t:'CSGN.SW',n:'Credit Suisse'},
-  {t:'GIVN.SW',n:'Givaudan Flavors'},{t:'HOLN.SW',n:'Holcim Cement'},
-  {t:'KNIN.SW',n:'Kuehne Nagel Logistics'},{t:'LONN.SW',n:'Lonza Biotech'},
-  {t:'NESN.SW',n:'Nestle Food'},{t:'NOVN.SW',n:'Novartis Pharma'},
-  {t:'PGHN.SW',n:'Partners Group'},{t:'ROG.SW',n:'Roche Pharma'},
-  {t:'SCMN.SW',n:'Swisscom Telecom'},{t:'SLHN.SW',n:'Swiss Life Insurance'},
-  {t:'SREN.SW',n:'Swiss Re Insurance'},{t:'UBSG.SW',n:'UBS Bank'},
-  {t:'ZURN.SW',n:'Zurich Insurance'},
-],
-NS:[
-  {t:'ABN.AS',n:'ABN AMRO Bank'},{t:'AD.AS',n:'Ahold Delhaize Retail'},
-  {t:'AGN.AS',n:'Aegon Insurance'},{t:'AKZA.AS',n:'Akzo Nobel Paints'},
-  {t:'ASML.AS',n:'ASML Semiconductor'},{t:'GTO.AS',n:'Getlink Transport'},
-  {t:'HEIA.AS',n:'Heineken Beer'},{t:'INGA.AS',n:'ING Bank'},
-  {t:'MT.AS',n:'ArcelorMittal Steel'},{t:'NN.AS',n:'NN Group Insurance'},
-  {t:'PHIA.AS',n:'Philips Healthcare'},{t:'RAND.AS',n:'Randstad Staffing'},
-  {t:'RDSA.AS',n:'Shell Netherlands'},{t:'UNA.AS',n:'Unilever NL'},
-  {t:'WKL.AS',n:'Wolters Kluwer'},
-],
-ZA:[
-  {t:'ABG.JO',n:'Absa Group Bank'},{t:'AGL.JO',n:'Anglo American'},
-  {t:'BHG.JO',n:'BHP Group SA'},{t:'FSR.JO',n:'FirstRand Bank'},
-  {t:'GFI.JO',n:'Gold Fields Mining'},{t:'IMP.JO',n:'Impala Platinum'},
-  {t:'MTN.JO',n:'MTN Telecom Africa'},{t:'NPN.JO',n:'Naspers Media'},
-  {t:'PRX.JO',n:'Prosus Technology'},{t:'SBK.JO',n:'Standard Bank'},
-  {t:'SHP.JO',n:'Shoprite Retail'},{t:'SOL.JO',n:'Sasol Energy'},
-  {t:'TBS.JO',n:'Tiger Brands Food'},{t:'WHL.JO',n:'Woolworths SA'},
-],
-EG:[
-  {t:'ABUK.CA',n:'Abu Kir Fertilizers'},{t:'AMOC.CA',n:'Alexandria Mineral Oils'},
-  {t:'CLHO.CA',n:'Cleopatra Hospital'},{t:'COMI.CA',n:'Commercial Intl Bank'},
-  {t:'ETEL.CA',n:'Telecom Egypt'},{t:'HRHO.CA',n:'EFG Hermes'},
-  {t:'ISPH.CA',n:'Integrated Diagnostics'},{t:'MNHD.CA',n:'Madinat Nasr Housing'},
-  {t:'MOIL.CA',n:'Mena Oil'},{t:'PHAR.CA',n:'Pharos Holding'},
-  {t:'SPMD.CA',n:'Speed Medical'},
-],
-MY:[
-  {t:'1023.KL',n:'CIMB Group'},{t:'1066.KL',n:'RHB Bank'},
-  {t:'1082.KL',n:'Hong Leong Bank'},{t:'1155.KL',n:'Maybank'},
-  {t:'1295.KL',n:'Public Bank'},{t:'4863.KL',n:'Tenaga Nasional'},
-  {t:'5099.KL',n:'CIMB Group Holdings'},{t:'5168.KL',n:'Hartalega Rubber'},
-  {t:'5347.KL',n:'Petronas Chemicals'},{t:'6012.KL',n:'Maxis Telecom'},
-  {t:'6888.KL',n:'Axiata Telecom'},{t:'7084.KL',n:'Top Glove'},
-],
-TH:[
-  {t:'ADVANC.BK',n:'Advanced Info Service AIS'},{t:'AOT.BK',n:'Airports of Thailand'},
-  {t:'BBL.BK',n:'Bangkok Bank'},{t:'BCP.BK',n:'Bangchak Petroleum'},
-  {t:'CPALL.BK',n:'CP All 7-Eleven'},{t:'GULF.BK',n:'Gulf Energy Dev'},
-  {t:'KBANK.BK',n:'Kasikorn Bank'},{t:'PTT.BK',n:'PTT Oil & Gas'},
-  {t:'PTTEP.BK',n:'PTT Exploration'},{t:'SCB.BK',n:'SCB Bank Thailand'},
-  {t:'SCC.BK',n:'Siam Cement Group'},{t:'TRUE.BK',n:'True Corp Telecom'},
-],
-TR:[
-  {t:'AKBNK.IS',n:'Akbank'},{t:'ARCLK.IS',n:'Arcelik Appliances'},
-  {t:'BIMAS.IS',n:'BIM Retail Stores'},{t:'ENKAI.IS',n:'Enka Insaat'},
-  {t:'EREGL.IS',n:'Eregli Steel'},{t:'GARAN.IS',n:'Garanti Bank'},
-  {t:'KCHOL.IS',n:'Koc Holding'},{t:'PETKM.IS',n:'Petkim Chemicals'},
-  {t:'SAHOL.IS',n:'Sabanci Holding'},{t:'SISE.IS',n:'Sise Cam Glass'},
-  {t:'THYAO.IS',n:'Turkish Airlines'},{t:'TOASO.IS',n:'Tofas Fiat Turkey'},
-],
-SE:[
-  {t:'ALFA.ST',n:'Alfa Laval'},{t:'ATCO-A.ST',n:'Atlas Copco'},
-  {t:'CAST.ST',n:'Castellum REIT'},{t:'ERIC-B.ST',n:'Ericsson Telecom'},
-  {t:'ESSITY-B.ST',n:'Essity Hygiene'},{t:'HM-B.ST',n:'H&M Fashion'},
-  {t:'INVE-B.ST',n:'Investor AB'},{t:'LUPE.ST',n:'Lundin Petroleum'},
-  {t:'SAND.ST',n:'Sandvik Engineering'},{t:'SEB-A.ST',n:'SEB Bank'},
-  {t:'SWED-A.ST',n:'Swedbank'},{t:'SWMA.ST',n:'Swedish Match'},
-  {t:'TELE2-B.ST',n:'Tele2 Telecom'},{t:'VOLV-B.ST',n:'Volvo Trucks'},
-],
-NO:[
-  {t:'AFG.OL',n:'AF Gruppen Construction'},{t:'AKSO.OL',n:'Aker Solutions'},
-  {t:'DNB.OL',n:'DNB Bank'},{t:'EQNR.OL',n:'Equinor Oil'},
-  {t:'MOWI.OL',n:'Mowi Salmon Farming'},{t:'NHY.OL',n:'Norsk Hydro Aluminium'},
-  {t:'ORK.OL',n:'Orkla Consumer Goods'},{t:'SALM.OL',n:'SalMar Salmon'},
-  {t:'SRBANK.OL',n:'SR Bank'},{t:'STB.OL',n:'Storebrand Insurance'},
-  {t:'SUBC.OL',n:'Subsea 7'},{t:'TEL.OL',n:'Telenor Telecom'},
-],
-ES:[
-  {t:'AC.MC',n:'Arca Continental'},{t:'ACX.MC',n:'Acerinox Steel'},
-  {t:'AENA.MC',n:'AENA Airports'},{t:'AMS.MC',n:'Amadeus IT Travel'},
-  {t:'BBVA.MC',n:'BBVA Bank'},{t:'ENG.MC',n:'Enagas Gas'},
-  {t:'FER.MC',n:'Ferrovial Infrastructure'},{t:'GRF.MC',n:'Grifols Plasma'},
-  {t:'IAG.MC',n:'Iberia Airlines'},{t:'IBE.MC',n:'Iberdrola Energy'},
-  {t:'ITX.MC',n:'Inditex Zara'},{t:'MEL.MC',n:'Melia Hotels'},
-  {t:'REE.MC',n:'Red Electrica'},{t:'SAN.MC',n:'Santander Bank'},
-  {t:'TEF.MC',n:'Telefonica Telecom'},
-],
-IT:[
-  {t:'BMED.MI',n:'Mediobanca Bank'},{t:'ENEL.MI',n:'Enel Energy'},
-  {t:'ENI.MI',n:'ENI Oil Gas'},{t:'FCA.MI',n:'Stellantis Fiat'},
-  {t:'G.MI',n:'Assicurazioni Generali'},{t:'ISP.MI',n:'Intesa Sanpaolo'},
-  {t:'LDO.MI',n:'Leonardo Aerospace'},{t:'MONC.MI',n:'Moncler Fashion'},
-  {t:'PRY.MI',n:'Prysmian Cables'},{t:'RACE.MI',n:'Ferrari Automobiles'},
-  {t:'STM.MI',n:'STMicroelectronics'},{t:'UCG.MI',n:'UniCredit Bank'},
-],
-MX:[
-  {t:'AC.MX',n:'Arca Continental'},{t:'ALPEKA.MX',n:'Alpek Petrochemicals'},
-  {t:'AMXL.MX',n:'America Movil Telecom'},{t:'BIMBOA.MX',n:'Grupo Bimbo Bread'},
-  {t:'CEMEXCPO.MX',n:'CEMEX Cement'},{t:'FEMSA.MX',n:'Femsa Coca-Cola'},
-  {t:'GFINBURO.MX',n:'Citigroup Mexico'},{t:'GMEXICOB.MX',n:'Grupo Mexico Mining'},
-  {t:'GRUMAB.MX',n:'Gruma Tortillas'},{t:'IENOVA.MX',n:'IEnova Energy'},
-  {t:'KOFUBL.MX',n:'Coca-Cola FEMSA'},{t:'WALMEX.MX',n:'Walmart Mexico'},
-],
-PK:[
-  {t:'ENGRO.KA',n:'Engro Corporation'},{t:'HBL.KA',n:'Habib Bank'},
-  {t:'HUBC.KA',n:'Hub Power'},{t:'LUCK.KA',n:'Lucky Cement'},
-  {t:'LOTCHEM.KA',n:'Lotte Chemical'},{t:'MCB.KA',n:'MCB Bank'},
-  {t:'NBP.KA',n:'National Bank Pakistan'},{t:'OGDC.KA',n:'OGDC Oil Gas'},
-  {t:'PPL.KA',n:'Pakistan Petroleum'},{t:'PSO.KA',n:'Pakistan State Oil'},
-  {t:'TRG.KA',n:'TRG Pakistan IT'},{t:'UBL.KA',n:'United Bank'},
-],
-BD:[
-  {t:'BGDCL.DSE',n:'Bangladesh Gas'},{t:'BRAC.DSE',n:'BRAC Bank'},
-  {t:'DESCO.DSE',n:'Dhaka Electric Supply'},{t:'DUTCHBANGL.DSE',n:'Dutch Bangla Bank'},
-  {t:'GRAMEEN.DSE',n:'Grameen Phone'},{t:'OLYMPIC.DSE',n:'Olympic Industries'},
-  {t:'RENATA.DSE',n:'Renata Pharma'},{t:'SQPHARMA.DSE',n:'Square Pharma'},
-],
-};function quickStock(sym){
+// Polyfill AbortSignal.timeout for older browsers
+if(!AbortSignal.timeout){
+  AbortSignal.timeout = ms => {
+    const ctrl = new AbortController();
+    setTimeout(()=>ctrl.abort(), ms);
+    return ctrl.signal;
+  };
+}
+// Polyfill AbortSignal.timeout
+if(!AbortSignal.timeout){AbortSignal.timeout=ms=>{const c=new AbortController();setTimeout(()=>c.abort(),ms);return c.signal;};}
+buildDropdown();
+buildConvDropdowns();
+setStockMarket('US');
+selectCur('QAR');
+loadWithFallback();
+fetchLiveFX();
+detectLocation();
+
+setInterval(fetchAll, 60000);
+setInterval(fetchLiveFX, 60000);
+
+// ═══════════════════════════════════════
+// STOCKS MODULE — multi-proxy approach
+// ═══════════════════════════════════════
+
+function setStockMarket(mkt){
+  activeStockMarket = mkt;
+  const u=document.getElementById('smkt-us');
+  const n=document.getElementById('smkt-nse');
+  if(u) u.classList.toggle('active', mkt==='US');
+  if(n) n.classList.toggle('active', mkt==='NSE');
+  const inp=document.getElementById('stock-input');
+  if(inp) inp.placeholder = mkt==='NSE'
+    ? 'Search any NSE stock by name or symbol...'
+    : 'Search any US stock by name or symbol...';
+  renderPopularChips();
+  const r=document.getElementById('stock-result');
+  const e=document.getElementById('stock-empty');
+  if(r) r.style.display='none';
+  if(e) e.style.display='block';
+}
+
+function renderPopularChips(){
+  const list = activeStockMarket==='NSE' ? NSE_POPULAR : US_POPULAR;
+  const el = document.getElementById('pop-chips');
+  if(!el) return;
+  el.innerHTML = list.slice(0,15).map(s=>
+    `<span class="stock-pop-chip" onclick="quickStock('${s.t}')">${s.t}</span>`
+  ).join('');
+}
+
+// Common NSE symbol corrections
+const NSE_CORRECTIONS = {
+  'JINDALSTEEL':'JINDALSTEL','JINDALSAW':'JSHL','HINDUNILEVER':'HINDUNILVR',
+  'BAJAJFINANCE':'BAJFINANCE','BAJAJFINSERV':'BAJAJFINSV','TATACONSUMER':'TATACONSUM',
+  'TATAELEXSI':'TATAELXSI','TATACOMMUNICATIONS':'TATACOMM','INFOSYS':'INFY',
+  'HDFCBANK':'HDFCBANK','KOTAKMAHINDRA':'KOTAKBANK','DRREDDY':'DRREDDY',
+  'ASIANPAINT':'ASIANPAINT','NESTLEINDIA':'NESTLEIND','ULTRATECHCEMENT':'ULTRACEMCO',
+};
+function quickStock(sym){
   const inp=document.getElementById('stock-input');
   if(inp) inp.value=sym.replace(/\.(NS|BO)$/,'');
   const box=document.getElementById('stock-suggestions');
@@ -2979,215 +2639,22 @@ async function _doSearch(exactSym){
 }
 
 let _sugTimer = null;
-function renderPopularChips(){
-  const mkt  = activeStockMarket;
-  const list = COUNTRY_STOCKS[mkt] || US_POPULAR;
-  const sfx  = EXCHANGE_SUFFIX[mkt] || [];
-  const el   = document.getElementById('pop-chips');
-  if(!el) return;
-  const sorted = [...list].sort((a,b)=>a.t.replace(/\.[A-Z]+$/,'').localeCompare(b.t.replace(/\.[A-Z]+$/,'')));
-  el.innerHTML = sorted.slice(0,20).map(s=>{
-    const sym  = s.t.includes('.') ? s.t : (sfx.length ? s.t+sfx[0] : s.t);
-    const disp = s.t.replace(/\.[A-Z]+$/,'');
-    return `<span class="stock-pop-chip" onclick="quickStockExact('${sym.replace(/'/g,"\'")}','${disp.replace(/'/g,"\'")}'">${disp}</span>`;
-  }).join('');
-}
-
-// Show ALL stocks of selected country when input is focused (empty)
-function showAllStocksDropdown(){
-  const box = document.getElementById('stock-suggestions');
-  const inp = document.getElementById('stock-input');
-  if(!box) return;
-  if(inp && inp.value.trim()) return;
-
-  const mkt  = activeStockMarket;
-  const info = MARKET_INDEX[mkt];
-  const LABELS={US:'NYSE / NASDAQ',NSE:'NSE / BSE India',QA:'Qatar QSE',SR:'Saudi Tadawul',AE:'UAE DFM / ADX',L:'UK LSE',DE:'Germany XETRA',HK:'Hong Kong HKEX',T:'Japan TSE',AX:'Australia ASX',TO:'Canada TSX',SA:'Brazil B3',SN:'Singapore SGX',KS:'Korea KRX',TW:'Taiwan TWSE',NS:'Netherlands AEX',FR:'France Euronext',ES:'Spain IBEX',IT:'Italy Borsa',MX:'Mexico BMV',ZA:'South Africa JSE',EG:'Egypt EGX',MY:'Malaysia Bursa',TH:'Thailand SET',TR:'Turkey BIST',CH:'Switzerland SIX',SE:'Sweden Nasdaq',NO:'Norway Oslo',PK:'Pakistan PSX',BD:'Bangladesh DSE'};
-
-  // Show loading state immediately
-  let html = `<div class="sug-section">🏛 ${LABELS[mkt]||mkt} — Loading all stocks...</div>
-    <div class="stock-sug-item">
-      <span class="stock-sug-ticker" style="color:var(--muted)">⏳</span>
-      <span class="stock-sug-name" style="color:rgba(138,128,112,.45)">Fetching complete stock list...</span>
-    </div>`;
-  if(info){
-    html += `<div class="sug-section">📊 Market Index</div>
-    <div class="stock-sug-item" onclick="quickStockExact('${info.sym}','${info.name}')">
-      <span class="stock-sug-ticker">INDEX</span>
-      <span class="stock-sug-name">${info.name}</span>
-      <span class="sug-badge sug-badge-live">IDX</span>
-    </div>`;
-  }
-  box.innerHTML = html;
-  box.style.display = 'block';
-
-  // Fetch all stocks for this market
-  fetchAllStocksForMarket(mkt).then(stocks=>{
-    if(!box.style.display||box.style.display==='none') return;
-    if(document.getElementById('stock-input')?.value?.trim()) return;
-    renderAllStocksDropdown(stocks, mkt);
-  }).catch(()=>{
-    // Fallback to hardcoded list
-    const fallback = (COUNTRY_STOCKS[mkt]||US_POPULAR).slice().sort((a,b)=>a.t.replace(/\.[A-Z]+$/,'').localeCompare(b.t.replace(/\.[A-Z]+$/,'')));
-    renderAllStocksDropdown(fallback.map(s=>({sym:s.t,name:s.n})), mkt);
-  });
-}
-
-async function fetchAllStocksForMarket(mkt){
-  // Return from cache if available
-  if(_stockCache[mkt]) return _stockCache[mkt];
-
-  const exchanges = SCREENER_EXCHANGES[mkt];
-  if(!exchanges) throw new Error('No screener config for '+mkt);
-
-  const sfx = EXCHANGE_SUFFIX[mkt]||[];
-  let allStocks = [];
-
-  for(const {exch, region} of exchanges){
-    let offset = 0;
-    const size = 100;
-    while(true){
-      try{
-        // Use Yahoo Finance screener via fnFetch
-        const params = {
-          type: 'screener',
-          exch,
-          region,
-          offset: String(offset),
-          size: String(size),
-        };
-        const data = await fnFetch(params, 8000);
-        const quotes = data?.finance?.result?.[0]?.quotes || data?.quotes || [];
-        if(!quotes.length) break;
-
-        quotes.forEach(q=>{
-          if(!q.symbol) return;
-          const disp = q.symbol.replace(/\.[A-Z]+$/,'');
-          allStocks.push({
-            sym:  q.symbol,
-            disp,
-            name: q.shortName || q.longName || disp,
-            exch: exch,
-          });
-        });
-
-        if(quotes.length < size) break; // no more pages
-        offset += size;
-        if(offset > 2000) break; // safety cap at 2000 per exchange
-      }catch(e){
-        break;
-      }
-    }
-  }
-
-  // Dedupe by symbol
-  const seen = new Set();
-  allStocks = allStocks.filter(s=>{ if(seen.has(s.sym)) return false; seen.add(s.sym); return true; });
-
-  // Sort alphabetically by display ticker
-  allStocks.sort((a,b)=>a.disp.localeCompare(b.disp));
-
-  // Cache and return
-  _stockCache[mkt] = allStocks;
-  return allStocks;
-}
-
-function renderAllStocksDropdown(stocks, mkt){
-  const box = document.getElementById('stock-suggestions');
-  if(!box) return;
-  const info = MARKET_INDEX[mkt];
-  const sfx  = EXCHANGE_SUFFIX[mkt]||[];
-  const LABELS={US:'NYSE / NASDAQ',NSE:'NSE / BSE India',QA:'Qatar QSE',SR:'Saudi Tadawul',AE:'UAE DFM / ADX',L:'UK LSE',DE:'Germany XETRA',HK:'Hong Kong HKEX',T:'Japan TSE',AX:'Australia ASX',TO:'Canada TSX',SA:'Brazil B3',SN:'Singapore SGX',KS:'Korea KRX',TW:'Taiwan TWSE',NS:'Netherlands AEX',FR:'France Euronext',ES:'Spain IBEX',IT:'Italy Borsa',MX:'Mexico BMV',ZA:'South Africa JSE',EG:'Egypt EGX',MY:'Malaysia Bursa',TH:'Thailand SET',TR:'Turkey BIST',CH:'Switzerland SIX',SE:'Sweden Nasdaq',NO:'Norway Oslo',PK:'Pakistan PSX',BD:'Bangladesh DSE'};
-
-  let html = `<div class="sug-section">🏛 ${LABELS[mkt]||mkt} — ${stocks.length} Stocks (A–Z)</div>`;
-
-  html += stocks.map(s=>{
-    // s could be from screener {sym,disp,name} or fallback {t,n}
-    const sym  = s.sym  || (s.t.includes('.')?s.t:(sfx.length?s.t+sfx[0]:s.t));
-    const disp = s.disp || s.t.replace(/\.[A-Z]+$/,'');
-    const name = s.name || s.n;
-    const safe = sym.replace(/'/g,"\'");
-    const safeD= disp.replace(/'/g,"\'");
-    return `<div class="stock-sug-item" onclick="quickStockExact('${safe}','${safeD}')">
-      <span class="stock-sug-ticker">${disp}</span>
-      <span class="stock-sug-name">${name}</span>
-      <span class="sug-badge sug-badge-local">${mkt}</span>
-    </div>`;
-  }).join('');
-
-  if(info){
-    html += `<div class="sug-section">📊 Market Index</div>
-    <div class="stock-sug-item" onclick="quickStockExact('${info.sym}','${info.name}')">
-      <span class="stock-sug-ticker">INDEX</span>
-      <span class="stock-sug-name">${info.name}</span>
-      <span class="sug-badge sug-badge-live">IDX</span>
-    </div>`;
-  }
-
-  box.innerHTML = html;
-  box.style.display = 'block';
-}
-
-
 function stockInputHandler(val){
   const box = document.getElementById('stock-suggestions');
   if(!box) return;
   const q = (val||'').trim();
-  if(!q){
-    // Empty — show all stocks dropdown
-    showAllStocksDropdown();
-    clearTimeout(_sugTimer);
-    return;
-  }
-  const mkt    = activeStockMarket;
+  if(!q){ box.style.display='none'; clearTimeout(_sugTimer); return; }
+
+  // Show local matches instantly
   const localQ = q.toUpperCase();
-  const list   = COUNTRY_STOCKS[mkt] || US_POPULAR;
-  const sfx    = EXCHANGE_SUFFIX[mkt] || [];
+  const list = activeStockMarket==='NSE' ? NSE_POPULAR : US_POPULAR;
+  const local = list.filter(s=>s.t.startsWith(localQ)||s.n.toUpperCase().includes(localQ)).slice(0,6);
+  box.innerHTML = (local.length
+    ? local.map(s=>`<div class="stock-sug-item" onclick="quickStock('${s.t}')"><span class="stock-sug-ticker">${s.t}</span><span class="stock-sug-name">${s.n}</span></div>`).join('')
+    : '') + `<div class="stock-sug-item stock-sug-loading"><span class="stock-sug-ticker">🔍</span><span class="stock-sug-name">Searching "${q}"...</span></div>`;
+  box.style.display='block';
 
-  // Filter all stocks by name or symbol
-  const local = list.filter(s=>
-    s.t.replace(/\.[A-Z]+$/,'').startsWith(localQ) ||
-    s.t.toUpperCase().includes(localQ) ||
-    s.n.toUpperCase().includes(localQ)
-  ).sort((a,b)=>a.t.replace(/\.[A-Z]+$/,'').localeCompare(b.t.replace(/\.[A-Z]+$/,'')));
-
-  // Also filter from dynamic cache if available
-  const cached = _stockCache[mkt];
-  if(cached && cached.length > 0){
-    const cacheMatches = cached.filter(s=>
-      s.disp.startsWith(localQ) ||
-      s.disp.includes(localQ) ||
-      s.name.toUpperCase().includes(localQ)
-    ).slice(0,15);
-    // Merge cache matches with local, dedup
-    const localSyms = new Set(local.map(s=>s.t.replace(/\.[A-Z]+$/,'')));
-    cacheMatches.forEach(s=>{ if(!localSyms.has(s.disp)) local.push({t:s.sym,n:s.name}); });
-    local.sort((a,b)=>a.t.replace(/\.[A-Z]+$/,'').localeCompare(b.t.replace(/\.[A-Z]+$/,'')));
-  }
-
-  const NAMES={US:'NYSE/NASDAQ',NSE:'NSE/BSE',QA:'Qatar QSE',SR:'Tadawul',AE:'DFM/ADX',L:'LSE',DE:'XETRA',HK:'HKEX',T:'TSE',AX:'ASX',TO:'TSX',SA:'B3',SN:'SGX',KS:'KRX',TW:'TWSE',NS:'AEX',FR:'Euronext',ES:'IBEX',IT:'Borsa',MX:'BMV',ZA:'JSE',EG:'EGX',MY:'Bursa',TH:'SET',TR:'BIST',CH:'SIX',SE:'OMX',NO:'Oslo',PK:'PSX',BD:'DSE'};
-
-  let html = '';
-  if(local.length){
-    html += `<div class="sug-section">📌 ${NAMES[mkt]||mkt} Matches</div>`;
-    html += local.map(s=>{
-      const sym  = s.t.includes('.') ? s.t : (sfx.length ? s.t+sfx[0] : s.t);
-      const disp = s.t.replace(/\.[A-Z]+$/,'');
-      return `<div class="stock-sug-item" onclick="quickStockExact('${sym.replace(/'/g,"\'")}','${disp.replace(/'/g,"\'")}')">
-        <span class="stock-sug-ticker">${disp}</span>
-        <span class="stock-sug-name">${s.n}</span>
-        <span class="sug-badge sug-badge-local">${mkt}</span>
-      </div>`;
-    }).join('');
-  }
-  html += `<div class="sug-section">🔍 Live Search</div>
-    <div id="sug-live-results" class="stock-sug-item">
-      <span class="stock-sug-ticker" style="color:var(--muted)">⏳</span>
-      <span class="stock-sug-name" style="color:rgba(138,128,112,.45)">Live results in 0.35s...</span>
-    </div>`;
-  box.innerHTML = html;
-  box.style.display = 'block';
-
+  // Fire live search after 350ms debounce
   clearTimeout(_sugTimer);
   _sugTimer = setTimeout(()=>liveSearch(q), 350);
 }
@@ -3210,10 +2677,16 @@ function fmtMktCap(n){
 
 // ── Core: fetch Yahoo Finance through multiple CORS proxies ──
 // ── Stock Data via Netlify Function (server-side Yahoo Finance) ──
-const ON_NETLIFY=location.hostname.includes('netlify.app')||location.hostname.includes('netlify.com');
-const FN=ON_NETLIFY?'/.netlify/functions/stock':null;
-const YF_HOSTS=['query1.finance.yahoo.com','query2.finance.yahoo.com'];
-const CORS_PROXY='https://corsproxy.io/?';
+// ── Stock API routing ──────────────────────────────────────────
+// On Netlify: use serverless function (handles CORS + crumb auth)
+// On GitHub Pages / other: use allorigins CORS proxy → Yahoo Finance directly
+const ON_NETLIFY = location.hostname.includes('netlify.app') ||
+                   location.hostname.includes('netlify.com');
+const FN = ON_NETLIFY ? '/.netlify/functions/stock' : null; // null = use CORS proxy
+
+// Yahoo Finance base URLs (used when not on Netlify)
+const YF_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+const CORS_PROXY = 'https://corsproxy.io/?';
 
 if(!AbortSignal.timeout){
   AbortSignal.timeout = ms => {
@@ -3224,32 +2697,57 @@ if(!AbortSignal.timeout){
 }
 
 // ── Call Netlify function ──────────────────────────────────────
-async function fnFetch(params,ms=10000){
-  if(ON_NETLIFY){const qs=new URLSearchParams(params).toString();const resp=await fetch(`${FN}?${qs}`,{signal:AbortSignal.timeout(ms)});if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.json();}
-  const{sym,q,type,range,interval}=params;const iv=interval||'1d',rng=range||'5d';
-  if(type==='screener'){
-    // Yahoo Finance screener — returns all stocks for an exchange
-    const {exch='NMS', region='US', offset='0', size='100'} = params;
-    const url=`https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved?scrIds=day_gainers&start=${offset}&count=${size}&region=${region}&exchange=${exch}`;
-    // Try custom screener first, then predefined
-    const screenerUrl=`https://query2.finance.yahoo.com/v1/finance/screener?crumb=&lang=en-US&region=${region}&formatted=false&corsDomain=finance.yahoo.com`;
-    const screenerBody=JSON.stringify({size:parseInt(size),offset:parseInt(offset),sortField:'intradaymarketcap',sortType:'DESC',quoteType:'EQUITY',query:{operator:'and',operands:[{operator:'eq',operands:['exchange',exch]}]},userId:'',userIdType:'guid'});
-    try{
-      const r=await fetch(CORS_PROXY+encodeURIComponent(screenerUrl),{method:'POST',headers:{'Content-Type':'application/json'},body:screenerBody,signal:AbortSignal.timeout(ms)});
-      if(r.ok){const text=await r.text();try{const j=JSON.parse(text);const d=j.contents?JSON.parse(j.contents):j;if(d?.finance?.result?.[0]?.quotes)return d;}catch(e){}}
-    }catch(e){}
-    // Fallback: use search with exchange filter
-    const searchUrl=`https://query1.finance.yahoo.com/v1/finance/search?q=${exch}&quotesCount=100&newsCount=0&listsCount=0&enableFuzzyQuery=false&region=${region}`;
-    const r=await fetch(CORS_PROXY+encodeURIComponent(searchUrl),{signal:AbortSignal.timeout(ms)});
-    if(!r.ok) throw new Error('Screener failed');
-    const text=await r.text();
-    try{const j=JSON.parse(text);if(j.contents)return JSON.parse(j.contents);return j;}catch(e){return{quotes:[]};}
+async function fnFetch(params, ms=10000) {
+  // On Netlify: route through serverless function
+  if(ON_NETLIFY) {
+    const qs   = new URLSearchParams(params).toString();
+    const resp = await fetch(`${FN}?${qs}`, { signal: AbortSignal.timeout(ms) });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    return resp.json();
   }
-  if(type==='search'&&q){const url=`https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=15&newsCount=0&enableFuzzyQuery=true`;const r=await fetch(CORS_PROXY+encodeURIComponent(url),{signal:AbortSignal.timeout(ms)});if(!r.ok)throw new Error('Search failed');const text=await r.text();try{const j=JSON.parse(text);if(j.contents)return JSON.parse(j.contents);return j;}catch(e){return{quotes:[]};}}
-  if(!sym)throw new Error('Missing sym');
-  const symList=[sym];if(sym.endsWith('.NS'))symList.push(sym.replace('.NS','.BO'));else if(sym.endsWith('.BO'))symList.push(sym.replace('.BO','.NS'));
-  for(const s of symList){for(const host of YF_HOSTS){try{const yfUrl=`https://${host}/v8/finance/chart/${encodeURIComponent(s)}?interval=${iv}&range=${rng}`;const r=await fetch(CORS_PROXY+encodeURIComponent(yfUrl),{signal:AbortSignal.timeout(ms)});if(!r.ok)continue;const text=await r.text();let data;try{const j=JSON.parse(text);data=j.contents?JSON.parse(j.contents):j;}catch(e){continue;}if(data?.chart?.result?.[0]?.meta?.regularMarketPrice)return data;}catch(e){}}}
-  throw new Error('No data for: '+sym);
+
+  // On GitHub Pages: call Yahoo Finance directly via CORS proxy
+  const { sym, q, type, range, interval } = params;
+  const iv  = interval || '1d';
+  const rng = range    || '5d';
+
+  // ── SEARCH ──
+  if(type === 'search' && q) {
+    const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=15&newsCount=0&enableFuzzyQuery=true`;
+    const r = await fetch(CORS_PROXY + encodeURIComponent(url), { signal: AbortSignal.timeout(ms) });
+    if(!r.ok) throw new Error('Search failed');
+    const text = await r.text();
+    // corsproxy.io wraps in {contents:"..."} 
+    try { const j=JSON.parse(text); if(j.contents) return JSON.parse(j.contents); return j; } catch(e) { return {quotes:[]}; }
+  }
+
+  // ── QUOTE / CHART ──
+  if(!sym) throw new Error('Missing sym');
+
+  // Build symbol list with .NS/.BO fallback
+  const symList = [sym];
+  if(sym.endsWith('.NS')) symList.push(sym.replace('.NS','.BO'));
+  else if(sym.endsWith('.BO')) symList.push(sym.replace('.BO','.NS'));
+  else if(!sym.includes('.')) { symList.push(sym+'.NS'); symList.push(sym+'.BO'); }
+
+  for(const s of symList) {
+    for(const host of YF_HOSTS) {
+      try {
+        const yfUrl = `https://${host}/v8/finance/chart/${encodeURIComponent(s)}?interval=${iv}&range=${rng}`;
+        const r = await fetch(CORS_PROXY + encodeURIComponent(yfUrl), { signal: AbortSignal.timeout(ms) });
+        if(!r.ok) continue;
+        const text = await r.text();
+        // Unwrap corsproxy.io envelope if present
+        let data;
+        try {
+          const j = JSON.parse(text);
+          data = j.contents ? JSON.parse(j.contents) : j;
+        } catch(e) { continue; }
+        if(data?.chart?.result?.[0]?.meta?.regularMarketPrice) return data;
+      } catch(e) {}
+    }
+  }
+  throw new Error('No data for: ' + sym);
 }
 
 // ── Quote fetch ────────────────────────────────────────────────
@@ -3274,93 +2772,82 @@ async function fetchChart(sym, range, interval) {
 }
 
 // ── Main dispatcher ────────────────────────────────────────────
-async function yahooFetch(sym,range,interval,timeoutMs){
-  const mkt=activeStockMarket,rng=range||'5d',iv=interval||'1d';
-  if(sym.includes('.')||sym.startsWith('^')){
-    const d=await fnFetch({sym,range:rng,interval:iv});
-    if(!d?.chart?.result?.[0]?.meta?.regularMarketPrice) throw new Error('No data: '+sym);
+async function yahooFetch(sym, range, interval, timeoutMs) {
+  const mkt      = activeStockMarket;
+  const cleanSym = sym.replace(/\.(NS|BO|US)$/i, '');
+  const rng      = range    || '5d';
+  const iv       = interval || '1d';
+
+  if(mkt === 'NSE') {
+    // Try .NS first (NSE), then .BO (BSE)
+    for(const s of [cleanSym+'.NS', cleanSym+'.BO']) {
+      try {
+        const d = await fnFetch({sym:s, range:rng, interval:iv});
+        if(d?.chart?.result?.[0]?.meta?.regularMarketPrice) return d;
+      } catch(e) {}
+    }
+    throw new Error('Not found: ' + cleanSym);
+  } else {
+    const d = await fnFetch({sym:cleanSym, range:rng, interval:iv});
+    if(!d?.chart?.result?.[0]?.meta?.regularMarketPrice) throw new Error('No data: '+cleanSym);
     return d;
   }
-  const sfx=EXCHANGE_SUFFIX[mkt]||[];
-  const cands=sfx.length?sfx.map(s=>sym+s):[sym];
-  for(const s of cands){try{const d=await fnFetch({sym:s,range:rng,interval:iv});if(d?.chart?.result?.[0]?.meta?.regularMarketPrice)return d;}catch(e){}}
-  throw new Error('Not found: '+sym);
 }
 
 // ── Live search ────────────────────────────────────────────────
 async function liveSearch(q) {
   const box = document.getElementById('stock-suggestions');
-  if(!box || !document.getElementById('stock-input')?.value?.trim()) return;
-  const mkt    = activeStockMarket;
+  if(!box) return;
   const localQ = q.toUpperCase();
-  const list   = COUNTRY_STOCKS[mkt] || US_POPULAR;
-  const sfx    = EXCHANGE_SUFFIX[mkt] || [];
-  const NAMES={US:'NYSE/NASDAQ',NSE:'NSE/BSE',QA:'Qatar QSE',SR:'Tadawul',AE:'DFM/ADX',L:'LSE',DE:'XETRA',HK:'HKEX',T:'TSE',AX:'ASX',TO:'TSX',SA:'B3',SN:'SGX',KS:'KRX',TW:'TWSE',NS:'AEX',FR:'Euronext',ES:'IBEX',IT:'Borsa',MX:'BMV',ZA:'JSE',EG:'EGX',MY:'Bursa',TH:'SET',TR:'BIST',CH:'SIX',SE:'OMX',NO:'Oslo',PK:'PSX',BD:'DSE'};
+  const list   = activeStockMarket==='NSE' ? NSE_POPULAR : US_POPULAR;
+  const local  = list.filter(s=>s.t.startsWith(localQ)||s.n.toUpperCase().includes(localQ)).slice(0,5);
 
-  // Local matches
-  const local = list.filter(s=>
-    s.t.replace(/\.[A-Z]+$/,'').startsWith(localQ)||
-    s.t.toUpperCase().includes(localQ)||
-    s.n.toUpperCase().includes(localQ)
-  ).sort((a,b)=>a.t.replace(/\.[A-Z]+$/,'').localeCompare(b.t.replace(/\.[A-Z]+$/,'')));
-
-  // Rebuild with local section first
-  let html = '';
-  if(local.length){
-    html += `<div class="sug-section">📌 ${NAMES[mkt]||mkt} Matches</div>`;
-    html += local.map(s=>{
-      const sym  = s.t.includes('.')?s.t:(sfx.length?s.t+sfx[0]:s.t);
-      const disp = s.t.replace(/\.[A-Z]+$/,'');
-      return `<div class="stock-sug-item" onclick="quickStockExact('${sym.replace(/'/g,"\'")}','${disp.replace(/'/g,"\'")}')">
-        <span class="stock-sug-ticker">${disp}</span>
-        <span class="stock-sug-name">${s.n}</span>
-        <span class="sug-badge sug-badge-local">${mkt}</span>
-      </div>`;
-    }).join('');
-  }
-  html += `<div class="sug-section">🔍 Live Results</div>
-    <div id="sug-live-results" class="stock-sug-item">
-      <span class="stock-sug-ticker" style="color:var(--muted)">⏳</span>
-      <span class="stock-sug-name" style="color:rgba(138,128,112,.45)">Searching...</span>
-    </div>`;
-  box.innerHTML = html;
-  box.style.display = 'block';
-
-  // Fire live API search
-  try{
+  let results = [];
+  try {
     const d = await fnFetch({q, type:'search'}, 5000);
-    const quotes = (d.quotes||[]).filter(r=>r.symbol&&(r.shortname||r.longname));
-    const live = quotes
-      .filter(r=> sfx.length ? sfx.some(s=>r.symbol.endsWith(s)) : ['NMS','NYQ','NGM','PCX','ASE'].includes(r.exchange))
-      .slice(0,10)
-      .map(r=>({sym:r.symbol, disp:r.symbol.replace(/\.[A-Z]+$/,''), name:r.shortname||r.longname, exch:r.exchange||mkt, type:r.quoteType||''}));
-
-    if(!document.getElementById('stock-input')?.value?.trim()) return;
-    const seen = new Set(local.map(s=>s.t.replace(/\.[A-Z]+$/,'')));
-    const fresh = live.filter(r=>!seen.has(r.disp));
-
-    const liveEl = document.getElementById('sug-live-results');
-    if(liveEl){
-      if(fresh.length){
-        liveEl.outerHTML = fresh.map(r=>{
-          const icon = r.type==='ETF'?'📦':r.type==='INDEX'?'📊':'📈';
-          return `<div class="stock-sug-item" onclick="quickStockExact('${r.sym.replace(/'/g,"\'")}','${r.disp.replace(/'/g,"\'")}')">
-            <span class="stock-sug-ticker">${r.disp}</span>
-            <span class="stock-sug-name">${r.name} ${icon}</span>
-            <span class="sug-badge sug-badge-live">${r.exch}</span>
-          </div>`;
-        }).join('');
-      } else {
-        liveEl.outerHTML = local.length
-          ? ''
-          : `<div class="sug-no-results">No results for "${q}"</div>`;
-      }
+    const quotes = d.quotes||[];
+    if(activeStockMarket==='NSE'){
+      results = quotes
+        .filter(r=>r.exchange==='NSI'||r.exchange==='BSE'||r.symbol?.endsWith('.NS')||r.symbol?.endsWith('.BO'))
+        .slice(0,12)
+        .map(r=>({
+          sym:  r.symbol,
+          disp: r.symbol.replace(/\.(NS|BO)$/,''),
+          name: r.shortname||r.longname||r.symbol,
+          exch: r.exchange==='NSI'?'NSE':'BSE',
+        }));
+    } else {
+      results = quotes
+        .filter(r=>r.exchange==='NMS'||r.exchange==='NYQ'||r.exchange==='NGM'||r.exchange==='PCX')
+        .slice(0,12)
+        .map(r=>({sym:r.symbol,disp:r.symbol,name:r.shortname||r.longname||r.symbol,exch:r.exchange}));
     }
-  }catch(e){
-    const liveEl=document.getElementById('sug-live-results');
-    if(liveEl) liveEl.outerHTML='';
-  }
+  } catch(e){}
+
+  if(!box||!document.getElementById('stock-input')?.value?.trim()) return;
+
+  const localHTML = local.map(s=>{
+    const full = activeStockMarket==='NSE' ? s.t+'.NS' : s.t;
+    return `<div class="stock-sug-item" onclick="quickStockExact('${full}','${s.t}')">
+      <span class="stock-sug-ticker">${s.t}</span><span class="stock-sug-name">${s.n}</span>
+    </div>`;
+  }).join('');
+
+  const seen = new Set(local.map(s=>s.t));
+  const liveHTML = results
+    .filter(r=>!seen.has(r.disp))
+    .map(r=>`<div class="stock-sug-item" onclick="quickStockExact('${r.sym.replace(/'/g,"\'")}','${r.disp.replace(/'/g,"\'")}')">
+      <span class="stock-sug-ticker">${r.disp}</span>
+      <span class="stock-sug-name">${r.name} <small style="color:var(--muted)">${r.exch}</small></span>
+    </div>`).join('');
+
+  box.innerHTML = (localHTML+liveHTML) ||
+    `<div class="stock-sug-item" onclick="quickStockExact('${localQ.replace(/[^A-Z0-9.-]/g,'')}${activeStockMarket==='NSE'?'.NS':''}','${localQ.replace(/[^A-Z0-9.-]/g,'')}')">
+      <span class="stock-sug-ticker">🔍</span><span class="stock-sug-name">Search "${localQ}" directly</span>
+    </div>`;
+  box.style.display='block';
 }
+
 
 // ── Stock Quote Search ──
 async function searchStock(overrideSym){
@@ -3448,7 +2935,7 @@ async function loadStockChart(range) {
   if(!currentStockSymbol) return;
   currentChartRange = range;
   document.querySelectorAll('.crng-btn').forEach(b=>{
-    const map={'1d':'1D','5d':'5D','1wk':'1W','1mo':'1M','6mo':'6M','1y':'1Y','5y':'5Y','max':'ALL'};
+    const map={'1d':'1D','5d':'5D','1mo':'1M','6mo':'6M','1y':'1Y'};
     b.classList.toggle('active', b.textContent.trim()===map[range]);
   });
   const msg    = document.getElementById('stock-chart-msg');
@@ -3456,13 +2943,13 @@ async function loadStockChart(range) {
   if(msg)  { msg.style.display='block'; msg.textContent='Loading chart...'; }
   if(canvas) canvas.style.display='none';
 
-  const iv={'1d':'5m','5d':'60m','1wk':'60m','1mo':'1d','6mo':'1wk','1y':'1mo','5y':'3mo','max':'3mo'}[range]||'1d';
-  const cleanSym=currentStockSymbol.replace(/\.([A-Z]{1,5})$/i,'');
+  const iv       = {'1d':'5m','5d':'60m','1mo':'1d','6mo':'1wk','1y':'1mo'}[range]||'1d';
+  const cleanSym = currentStockSymbol.replace(/\.(NS|BO|US)$/i,'');
   const mkt      = activeStockMarket;
 
   try {
     // Try symbols via Netlify function
-    const _s=EXCHANGE_SUFFIX[mkt]||[];const syms=_s.length?_s.map(s=>cleanSym+s):[cleanSym];
+    const syms = mkt==='NSE' ? [cleanSym+'.NS', cleanSym+'.BO'] : [cleanSym];
     let data = null;
     for(const s of syms) {
       try {
@@ -3549,7 +3036,7 @@ async function loadMarketIndexes(){
     {id:'spx',sym:'^GSPC'},{id:'ndx',sym:'^IXIC'},
     {id:'nse',sym:'^NSEI'},{id:'bse',sym:'^BSESN'},
   ];
-  loadCountryIndex('1d').catch(()=>{});
+  for(const idx of indexes){ loadOneIndex(idx).catch(()=>{}); }
 }
 
 async function loadOneIndex(idx) {
@@ -3576,31 +3063,6 @@ async function loadOneIndex(idx) {
     if(closes.length>2) drawSparkline('idx-'+idx.id+'-chart', closes, isUp);
   } catch(e){ console.warn('Index',idx.id,':',e.message); }
 }
-let _idxCurrentRange='1d';
-async function loadCountryIndex(range){
-  range=range||_idxCurrentRange||'1d';_idxCurrentRange=range;window._idxRange=range;
-  const mkt=activeStockMarket,info=MARKET_INDEX[mkt];if(!info)return;
-  const nameEl=document.getElementById('country-idx-name'),priceEl=document.getElementById('country-idx-price'),chgEl=document.getElementById('country-idx-chg'),canvas=document.getElementById('country-idx-chart'),msgEl=document.getElementById('country-idx-msg');
-  if(nameEl)nameEl.textContent=info.name;window._idxSym=info.sym;window._idxName=info.name;
-  if(msgEl)msgEl.textContent='Loading...';if(canvas)canvas.style.opacity='0.3';
-  const IV={'1d':'5m','5d':'60m','1mo':'1d','6mo':'1wk','1y':'1mo','5y':'3mo','max':'3mo'};
-  try{
-    const data=await fnFetch({sym:info.sym,range,interval:IV[range]||'1d'},14000);
-    const result=data?.chart?.result?.[0];if(!result)throw new Error('no result');
-    const meta=result.meta,q0=result.indicators?.quote?.[0]||{};
-    const closes=(q0.close||[]).filter(v=>v!=null&&v>0);
-    const price=meta.regularMarketPrice||closes[closes.length-1];if(!price)throw new Error('no price');
-    const prev=meta.chartPreviousClose||closes[0]||price,chgPct=prev?((price-prev)/prev)*100:0,isUp=chgPct>=0;
-    if(priceEl)priceEl.textContent=(+price).toLocaleString(undefined,{maximumFractionDigits:2});
-    if(chgEl){chgEl.textContent=(isUp?'▲ ':'▼ ')+Math.abs(chgPct).toFixed(2)+'%';chgEl.style.color=isUp?'var(--up)':'var(--down)';}
-    const card=document.getElementById('country-idx-card');if(card)card.style.borderColor=isUp?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)';
-    if(msgEl)msgEl.textContent='';
-    if(canvas&&closes.length>2){canvas.style.opacity='1';drawSparkline('country-idx-chart',closes,isUp);}
-    document.querySelectorAll('.idx-rng').forEach(b=>b.classList.toggle('active',b.dataset.r===range));
-  }catch(e){if(msgEl)msgEl.textContent='Unavailable';if(canvas)canvas.style.opacity='0.15';console.warn('idx:',e.message);}
-}
-function loadIdxChart(range){loadCountryIndex(range).catch(e=>console.warn(e));}
-
 
 
 // ── Init ──
@@ -3609,20 +3071,8 @@ function initStocks(){
   loadMarketIndexes();
 }
 
-// ── Boot sequence ──────────────────────────────────────────
-buildDropdown();
-buildConvDropdowns();
-setStockMarket('QA');   // default market (overridden by detectLocation)
-selectCur('QAR');       // default currency (overridden by detectLocation)
-loadWithFallback();     // hide loader, start fetching prices
-fetchLiveFX();          // start FX rates fetch
-detectLocation();       // auto-detect country → currency + stock market
-initStocks();           // init stock tab
-setInterval(fetchAll, 60000);
-setInterval(fetchLiveFX, 60000);
-
-// Safety net — force hide loader after 5s
-setTimeout(()=>{ const l=$('load'); if(l) l.classList.add('hidden'); }, 5000);
+// Safety net — force hide loader after 3s
+setTimeout(()=>{ const l=$('load'); if(l) l.classList.add('hidden'); }, 3000);
 </script>
 <!-- ══ MOBILE BOTTOM NAV ══ -->
 <nav class="mob-nav" id="mob-nav">
