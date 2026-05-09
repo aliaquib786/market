@@ -736,7 +736,10 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   .qc-cur{font-size:1rem;}
 }
 
-.sug-hdr{padding:.3rem 1rem .2rem;font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;background:var(--bg3);}
+.idx-rng{background:transparent;border:.5px solid var(--border);color:var(--muted);border-radius:5px;padding:2px 9px;font-size:.67rem;cursor:pointer;transition:all .15s;}
+.idx-rng:hover{border-color:var(--gold);color:var(--gold);}
+.idx-rng.active{background:rgba(139,98,0,.12);border-color:var(--gold);color:var(--gold);font-weight:600;}
+.sug-hdr{padding:.3rem 1rem .2rem;font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;background:var(--bg3);border-bottom:.5px solid var(--border);}
 </style>
 <script>
 // ── Inline PWA Manifest (no external file needed) ──
@@ -1239,44 +1242,35 @@ document.head.appendChild(_link);
         <h1 style="color:var(--text);font-size:1.35rem;font-weight:600;margin:0 0 1px;white-space:nowrap;">Stock Search</h1>
         <p style="color:var(--muted);font-size:.72rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">NSE India &amp; US markets — live prices &amp; chart</p>
       </div>
-      <div style="flex-shrink:0;">
-        <select id="smkt-select" onchange="setStockMarket(this.value)"
-          style="background:#0D0C09;border:1px solid rgba(201,168,76,.35);color:#C9A84C;border-radius:8px;padding:.45rem .8rem;font-size:.8rem;cursor:pointer;outline:none;min-width:185px;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%23C9A84C%22/></svg>');background-repeat:no-repeat;background-position:right .7rem center;padding-right:2rem;">
-          <optgroup label="🌍 Middle East"><option value="QA">🇶🇦 Qatar (QSE)</option><option value="SR">🇸🇦 Saudi Arabia</option><option value="AE">🇦🇪 UAE (DFM/ADX)</option><option value="EG">🇪🇬 Egypt</option></optgroup>
-          <optgroup label="🌎 Americas"><option value="US">🇺🇸 USA (NYSE/NASDAQ)</option><option value="TO">🇨🇦 Canada (TSX)</option><option value="MX">🇲🇽 Mexico</option><option value="SA">🇧🇷 Brazil (B3)</option></optgroup>
-          <optgroup label="🌏 Asia Pacific"><option value="NSE">🇮🇳 India (NSE/BSE)</option><option value="HK">🇭🇰 Hong Kong</option><option value="T">🇯🇵 Japan (TSE)</option><option value="KS">🇰🇷 South Korea</option><option value="TW">🇹🇼 Taiwan</option><option value="SN">🇸🇬 Singapore</option><option value="AX">🇦🇺 Australia</option><option value="MY">🇲🇾 Malaysia</option><option value="TH">🇹🇭 Thailand</option><option value="PK">🇵🇰 Pakistan</option><option value="BD">🇧🇩 Bangladesh</option></optgroup>
-          <optgroup label="🌍 Europe"><option value="L">🇬🇧 UK (LSE)</option><option value="DE">🇩🇪 Germany (XETRA)</option><option value="FR">🇫🇷 France (Euronext)</option><option value="CH">🇨🇭 Switzerland</option><option value="NS">🇳🇱 Netherlands</option><option value="SE">🇸🇪 Sweden</option><option value="NO">🇳🇴 Norway</option><option value="ES">🇪🇸 Spain (IBEX)</option><option value="IT">🇮🇹 Italy (Borsa)</option><option value="TR">🇹🇷 Turkey</option></optgroup>
-          <optgroup label="🌍 Africa"><option value="ZA">🇿🇦 South Africa (JSE)</option></optgroup>
-        </select>
-      </div>
+      <div style="flex-shrink:0;"><select id="smkt-select" onchange="setStockMarket(this.value)" style="background:var(--bg2);border:.5px solid var(--border);color:var(--text);border-radius:8px;padding:.42rem .8rem;font-size:.8rem;cursor:pointer;outline:none;min-width:185px;appearance:none;-webkit-appearance:none;"><optgroup label="Middle East"><option value="QA">Qatar (QSE)</option><option value="SR">Saudi Arabia</option><option value="AE">UAE (DFM/ADX)</option><option value="EG">Egypt</option></optgroup><optgroup label="Americas"><option value="US">USA (NYSE/NASDAQ)</option><option value="TO">Canada (TSX)</option><option value="MX">Mexico</option><option value="SA">Brazil (B3)</option></optgroup><optgroup label="Asia Pacific"><option value="NSE">India (NSE/BSE)</option><option value="HK">Hong Kong</option><option value="T">Japan (TSE)</option><option value="KS">South Korea</option><option value="TW">Taiwan</option><option value="SN">Singapore</option><option value="AX">Australia</option><option value="MY">Malaysia</option><option value="TH">Thailand</option><option value="PK">Pakistan</option><option value="BD">Bangladesh</option></optgroup><optgroup label="Europe"><option value="L">UK (LSE)</option><option value="DE">Germany</option><option value="FR">France</option><option value="CH">Switzerland</option><option value="NS">Netherlands</option><option value="SE">Sweden</option><option value="NO">Norway</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="TR">Turkey</option></optgroup><optgroup label="Africa"><option value="ZA">South Africa</option></optgroup></select></div>
     </div>
   </div>
 
   <!-- Market Index Strip: S&P500, NASDAQ, NIFTY, SENSEX -->
-  <div class="qatar-grid" id="index-card-grid" style="padding:10px 1rem;background:var(--bg);border-bottom:.5px solid var(--border);">
-    <div class="qatar-card" style="border-color:#1a56a0;padding:.8rem .7rem .7rem;">
-      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">S&amp;P 500</span></div>
-      <div class="qc-price" id="idx-spx-price" style="font-size:1.1rem;">—</div>
-      <div class="qc-chg" id="idx-spx-chg" style="font-size:.7rem;font-weight:600;">—</div>
-      <canvas id="idx-spx-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
-    </div>
-    <div class="qatar-card" style="border-color:#1a56a0;padding:.8rem .7rem .7rem;">
-      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">NASDAQ</span></div>
-      <div class="qc-price" id="idx-ndx-price" style="font-size:1.1rem;">—</div>
-      <div class="qc-chg" id="idx-ndx-chg" style="font-size:.7rem;font-weight:600;">—</div>
-      <canvas id="idx-ndx-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
-    </div>
-    <div class="qatar-card" style="border-color:#f5a623;padding:.8rem .7rem .7rem;">
-      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">NIFTY 50</span></div>
-      <div class="qc-price" id="idx-nse-price" style="font-size:1.1rem;">—</div>
-      <div class="qc-chg" id="idx-nse-chg" style="font-size:.7rem;font-weight:600;">—</div>
-      <canvas id="idx-nse-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
-    </div>
-    <div class="qatar-card" style="border-color:#f5a623;padding:.8rem .7rem .7rem;">
-      <div class="qc-top"><span class="qc-en" style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">SENSEX</span></div>
-      <div class="qc-price" id="idx-bse-price" style="font-size:1.1rem;">—</div>
-      <div class="qc-chg" id="idx-bse-chg" style="font-size:.7rem;font-weight:600;">—</div>
-      <canvas id="idx-bse-chart" style="width:100%;height:28px;margin-top:6px;display:block;"></canvas>
+  <div id="country-idx-wrap" style="background:var(--bg);border-bottom:.5px solid var(--border);padding:.75rem 1rem;">
+    <div style="display:flex;align-items:flex-start;gap:.75rem;flex-wrap:wrap;">
+      <div class="qatar-card" id="country-idx-card" style="flex:0 0 auto;min-width:150px;padding:.85rem 1rem .75rem;cursor:pointer;border-color:rgba(139,98,0,.3);" onclick="loadIdxChart(window._idxRange||'1d')">
+        <div class="qc-top"><span class="qc-en" id="country-idx-name">Index</span></div>
+        <div class="qc-price" id="country-idx-price" style="font-size:1.4rem;">--</div>
+        <div class="qc-cur" id="country-idx-cur">--</div>
+        <div class="qc-chg" id="country-idx-chg">--</div>
+        <div style="font-size:.58rem;color:var(--muted);margin-top:.3rem;">tap for chart</div>
+      </div>
+      <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:.4rem;">
+        <div style="display:flex;gap:3px;flex-wrap:wrap;">
+          <button class="idx-rng active" data-r="1d"  onclick="loadIdxChart('1d')">1D</button>
+          <button class="idx-rng"        data-r="5d"  onclick="loadIdxChart('5d')">5D</button>
+          <button class="idx-rng"        data-r="1mo" onclick="loadIdxChart('1mo')">1M</button>
+          <button class="idx-rng"        data-r="6mo" onclick="loadIdxChart('6mo')">6M</button>
+          <button class="idx-rng"        data-r="1y"  onclick="loadIdxChart('1y')">1Y</button>
+          <button class="idx-rng"        data-r="5y"  onclick="loadIdxChart('5y')">5Y</button>
+          <button class="idx-rng"        data-r="max" onclick="loadIdxChart('max')">ALL</button>
+        </div>
+        <div style="position:relative;min-height:68px;">
+          <canvas id="country-idx-chart" style="width:100%;height:68px;display:block;border-radius:8px;"></canvas>
+          <div id="country-idx-msg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);pointer-events:none;"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1754,8 +1748,10 @@ async function detectLocation(){
     activeCountryCode=d.country_code||'QA';
     activeShopPremium=COUNTRY_GOLD_PREMIUM[activeCountryCode]||COUNTRY_GOLD_PREMIUM['DEFAULT'];
     updateShopBadge(d.city, d.country_name);
-    const mkt=COUNTRY_TO_MARKET[d.country_code]||'US';
-    setStockMarket(mkt);
+    if(typeof COUNTRY_TO_MARKET!=='undefined'){
+      var mkt=COUNTRY_TO_MARKET[d.country_code]||'US';
+      setStockMarket(mkt);
+    }
     if(ready) render();
   }catch(e){console.log('Location detect failed');}
 }
@@ -2493,10 +2489,8 @@ const NSE_POPULAR = [
 ];
 
 const COUNTRY_TO_MARKET={QA:'QA',SA:'SR',AE:'AE',KW:'SR',BH:'SR',OM:'SR',EG:'EG',IN:'NSE',PK:'PK',BD:'BD',US:'US',CA:'TO',MX:'MX',BR:'SA',GB:'L',DE:'DE',FR:'FR',CH:'CH',NL:'NS',SE:'SE',NO:'NO',ES:'ES',IT:'IT',TR:'TR',HK:'HK',JP:'T',KR:'KS',TW:'TW',SG:'SN',AU:'AX',MY:'MY',TH:'TH',CN:'HK',ID:'MY',ZA:'ZA',NG:'ZA'};
-const MARKET_INDEX={QA:{sym:'^DSMDX',name:'QSE Index'},SR:{sym:'^TASI',name:'Tadawul TASI'},AE:{sym:'^DFMGI',name:'DFM Index'},NSE:{sym:'^NSEI',name:'NIFTY 50'},PK:{sym:'^KSE100',name:'KSE-100'},US:{sym:'^GSPC',name:'S&P 500'},TO:{sym:'^GSPTSE',name:'TSX Comp'},MX:{sym:'^MXX',name:'IPC Mexico'},SA:{sym:'^BVSP',name:'Bovespa'},L:{sym:'^FTSE',name:'FTSE 100'},DE:{sym:'^GDAXI',name:'DAX 40'},FR:{sym:'^FCHI',name:'CAC 40'},CH:{sym:'^SSMI',name:'SMI'},NS:{sym:'^AEX',name:'AEX'},SE:{sym:'^OMX',name:'OMX Stockholm'},NO:{sym:'^OSEAX',name:'Oslo Bors'},ES:{sym:'^IBEX',name:'IBEX 35'},IT:{sym:'^FTSEMIB',name:'FTSE MIB'},TR:{sym:'^XU100',name:'BIST 100'},HK:{sym:'^HSI',name:'Hang Seng'},T:{sym:'^N225',name:'Nikkei 225'},KS:{sym:'^KS11',name:'KOSPI'},TW:{sym:'^TWII',name:'TAIEX'},SN:{sym:'^STI',name:'Straits Times'},AX:{sym:'^AXJO',name:'ASX 200'},MY:{sym:'^KLSE',name:'KLCI'},TH:{sym:'^SET',name:'SET Thailand'},ZA:{sym:'^J203',name:'JSE All Share'},EG:{sym:'^EGX30',name:'EGX 30'},BD:{sym:'^DSEX',name:'DSEX'}};
+const MARKET_INDEX={QA:{sym:'^DSMDX',name:'QSE Index'},SR:{sym:'^TASI',name:'Tadawul TASI'},AE:{sym:'^DFMGI',name:'DFM Index'},NSE:{sym:'^NSEI',name:'NIFTY 50'},PK:{sym:'^KSE100',name:'KSE-100'},US:{sym:'^GSPC',name:'S&P 500'},TO:{sym:'^GSPTSE',name:'TSX Composite'},MX:{sym:'^MXX',name:'IPC Mexico'},SA:{sym:'^BVSP',name:'Bovespa'},L:{sym:'^FTSE',name:'FTSE 100'},DE:{sym:'^GDAXI',name:'DAX 40'},FR:{sym:'^FCHI',name:'CAC 40'},CH:{sym:'^SSMI',name:'SMI'},NS:{sym:'^AEX',name:'AEX'},SE:{sym:'^OMX',name:'OMX Stockholm'},NO:{sym:'^OSEAX',name:'Oslo Bors'},ES:{sym:'^IBEX',name:'IBEX 35'},IT:{sym:'^FTSEMIB',name:'FTSE MIB'},TR:{sym:'^XU100',name:'BIST 100'},HK:{sym:'^HSI',name:'Hang Seng'},T:{sym:'^N225',name:'Nikkei 225'},KS:{sym:'^KS11',name:'KOSPI'},TW:{sym:'^TWII',name:'TAIEX'},SN:{sym:'^STI',name:'Straits Times'},AX:{sym:'^AXJO',name:'ASX 200'},MY:{sym:'^KLSE',name:'KLCI'},TH:{sym:'^SET',name:'SET Thailand'},ZA:{sym:'^J203',name:'JSE All Share'},EG:{sym:'^EGX30',name:'EGX 30'},BD:{sym:'^DSEX',name:'DSEX'}};
 const EXCHANGE_SUFFIX={US:[],NSE:['.NS','.BO'],QA:['.QA'],SR:['.SR'],AE:['.AD','.DU'],L:['.L'],DE:['.DE'],HK:['.HK'],T:['.T'],AX:['.AX'],TO:['.TO'],SA:['.SA'],SN:['.SI'],KS:['.KS'],TW:['.TW'],NS:['.AS'],FR:['.PA'],ES:['.MC'],IT:['.MI'],MX:['.MX'],ZA:['.JO'],EG:['.CA'],MY:['.KL'],TH:['.BK'],TR:['.IS'],CH:['.SW'],SE:['.ST'],NO:['.OL'],PK:['.KA'],BD:['.DSE']};
-const _stockCache={};
-const COUNTRY_STOCKS={US:[{t:'AAPL',n:'Apple'},{t:'AMD',n:'AMD'},{t:'AMZN',n:'Amazon'},{t:'BA',n:'Boeing'},{t:'GS',n:'Goldman Sachs'},{t:'GOOGL',n:'Alphabet'},{t:'INTC',n:'Intel'},{t:'JPM',n:'JPMorgan'},{t:'MA',n:'Mastercard'},{t:'META',n:'Meta'},{t:'MSFT',n:'Microsoft'},{t:'NFLX',n:'Netflix'},{t:'NVDA',n:'NVIDIA'},{t:'PG',n:'Procter & Gamble'},{t:'PLTR',n:'Palantir'},{t:'TSLA',n:'Tesla'},{t:'UBER',n:'Uber'},{t:'V',n:'Visa'},{t:'WMT',n:'Walmart'},{t:'XOM',n:'ExxonMobil'}],NSE:[{t:'ADANIENT',n:'Adani Enterprises'},{t:'AXISBANK',n:'Axis Bank'},{t:'BAJFINANCE',n:'Bajaj Finance'},{t:'BHARTIARTL',n:'Airtel'},{t:'HDFCBANK',n:'HDFC Bank'},{t:'HINDUNILVR',n:'HUL'},{t:'ICICIBANK',n:'ICICI Bank'},{t:'INFY',n:'Infosys'},{t:'ITC',n:'ITC'},{t:'KOTAKBANK',n:'Kotak Bank'},{t:'LT',n:'Larsen & Toubro'},{t:'MARUTI',n:'Maruti Suzuki'},{t:'RELIANCE',n:'Reliance'},{t:'SBIN',n:'SBI'},{t:'SUNPHARMA',n:'Sun Pharma'},{t:'TATAMOTORS',n:'Tata Motors'},{t:'TCS',n:'TCS'},{t:'TITAN',n:'Titan'},{t:'WIPRO',n:'Wipro'},{t:'ZOMATO',n:'Zomato'}],QA:[{t:'ABQK.QA',n:'Ahlibank'},{t:'AKHI.QA',n:'Al Khalij'},{t:'BRES.QA',n:'Barwa'},{t:'CBQK.QA',n:'Commercial Bank'},{t:'DHBK.QA',n:'Doha Bank'},{t:'GWCS.QA',n:'Gulf Warehousing'},{t:'IQCD.QA',n:'Industries Qatar'},{t:'MARK.QA',n:'Masraf Al Rayan'},{t:'ORDS.QA',n:'Ooredoo'},{t:'QATI.QA',n:'Qatar Insurance'},{t:'QEWS.QA',n:'Qatar Electricity'},{t:'QFLS.QA',n:'Woqod'},{t:'QIIK.QA',n:'QIIB'},{t:'QNBK.QA',n:'QNB Group'}],SR:[{t:'1010.SR',n:'Riyad Bank'},{t:'1020.SR',n:'Saudi Fransi'},{t:'1050.SR',n:'SABB'},{t:'1120.SR',n:'Al Rajhi'},{t:'1180.SR',n:'Al Jazira'},{t:'1211.SR',n:'Maaden'},{t:'2010.SR',n:'SABIC'},{t:'2222.SR',n:'Aramco'},{t:'2380.SR',n:'Petro Rabigh'},{t:'4008.SR',n:'Nahdi'},{t:'4261.SR',n:'Jarir'},{t:'7010.SR',n:'STC'}],AE:[{t:'ADIB.AD',n:'ADIB'},{t:'ADNOCDIST.AD',n:'ADNOC Dist'},{t:'ALDAR.AD',n:'Aldar'},{t:'ETISALAT.AD',n:'e& Etisalat'},{t:'FAB.AD',n:'First Abu Dhabi'},{t:'IHC.AD',n:'IHC'},{t:'DAMAC.DU',n:'Damac'},{t:'DEWA.DU',n:'DEWA'},{t:'DIB.DU',n:'Dubai Islamic'},{t:'DU.DU',n:'du Telecom'},{t:'EMAAR.DU',n:'Emaar'},{t:'ENBD.DU',n:'Emirates NBD'},{t:'SALIK.DU',n:'Salik'}],L:[{t:'AAL.L',n:'Anglo American'},{t:'AZN.L',n:'AstraZeneca'},{t:'BARC.L',n:'Barclays'},{t:'BP.L',n:'BP'},{t:'DGE.L',n:'Diageo'},{t:'GLEN.L',n:'Glencore'},{t:'GSK.L',n:'GSK'},{t:'HSBA.L',n:'HSBC'},{t:'LLOY.L',n:'Lloyds'},{t:'RIO.L',n:'Rio Tinto'},{t:'SHEL.L',n:'Shell'},{t:'ULVR.L',n:'Unilever'},{t:'VOD.L',n:'Vodafone'}],DE:[{t:'ADS.DE',n:'Adidas'},{t:'ALV.DE',n:'Allianz'},{t:'BAS.DE',n:'BASF'},{t:'BAYN.DE',n:'Bayer'},{t:'BMW.DE',n:'BMW'},{t:'DBK.DE',n:'Deutsche Bank'},{t:'DTE.DE',n:'Deutsche Telekom'},{t:'IFX.DE',n:'Infineon'},{t:'MBG.DE',n:'Mercedes'},{t:'SAP.DE',n:'SAP'},{t:'SIE.DE',n:'Siemens'},{t:'VOW3.DE',n:'Volkswagen'}],HK:[{t:'0005.HK',n:'HSBC Asia'},{t:'0016.HK',n:'Sun Hung Kai'},{t:'0388.HK',n:'HKEX'},{t:'0700.HK',n:'Tencent'},{t:'0941.HK',n:'China Mobile'},{t:'1299.HK',n:'AIA'},{t:'1810.HK',n:'Xiaomi'},{t:'2020.HK',n:'ANTA Sports'},{t:'3690.HK',n:'Meituan'},{t:'9988.HK',n:'Alibaba'}],T:[{t:'4063.T',n:'Shin-Etsu'},{t:'4661.T',n:'Oriental Land'},{t:'6501.T',n:'Hitachi'},{t:'6758.T',n:'Sony'},{t:'6861.T',n:'Keyence'},{t:'7203.T',n:'Toyota'},{t:'7267.T',n:'Honda'},{t:'7974.T',n:'Nintendo'},{t:'8035.T',n:'Tokyo Electron'},{t:'8306.T',n:'Mitsubishi UFJ'},{t:'9432.T',n:'NTT'},{t:'9984.T',n:'SoftBank'}],KS:[{t:'000270.KS',n:'Kia'},{t:'000660.KS',n:'SK Hynix'},{t:'005380.KS',n:'Hyundai'},{t:'005930.KS',n:'Samsung'},{t:'035420.KS',n:'NAVER'},{t:'051910.KS',n:'LG Chem'}],TW:[{t:'1301.TW',n:'Formosa Plastics'},{t:'2317.TW',n:'Foxconn'},{t:'2330.TW',n:'TSMC'},{t:'2412.TW',n:'Chunghwa Telecom'},{t:'2454.TW',n:'MediaTek'}],SN:[{t:'C6L.SI',n:'Singapore Airlines'},{t:'D05.SI',n:'DBS'},{t:'O39.SI',n:'OCBC'},{t:'S68.SI',n:'SGX'},{t:'U11.SI',n:'UOB'},{t:'Z74.SI',n:'SingTel'}],AX:[{t:'ANZ.AX',n:'ANZ'},{t:'BHP.AX',n:'BHP'},{t:'CBA.AX',n:'Commonwealth Bank'},{t:'CSL.AX',n:'CSL'},{t:'MQG.AX',n:'Macquarie'},{t:'NAB.AX',n:'NAB'},{t:'RIO.AX',n:'Rio Tinto'},{t:'WBC.AX',n:'Westpac'},{t:'WES.AX',n:'Wesfarmers'},{t:'WOW.AX',n:'Woolworths'}],TO:[{t:'BCE.TO',n:'BCE Bell'},{t:'BMO.TO',n:'BMO'},{t:'BNS.TO',n:'Scotiabank'},{t:'ENB.TO',n:'Enbridge'},{t:'RY.TO',n:'Royal Bank'},{t:'SHOP.TO',n:'Shopify'},{t:'TD.TO',n:'TD Bank'}],SA:[{t:'ABEV3.SA',n:'Ambev'},{t:'BBDC4.SA',n:'Bradesco'},{t:'ITUB4.SA',n:'Itau'},{t:'PETR4.SA',n:'Petrobras'},{t:'VALE3.SA',n:'Vale'},{t:'WEGE3.SA',n:'WEG'}],FR:[{t:'AIR.PA',n:'Airbus'},{t:'BNP.PA',n:'BNP Paribas'},{t:'HER.PA',n:'Hermes'},{t:'KER.PA',n:'Kering'},{t:'MC.PA',n:'LVMH'},{t:'OR.PA',n:"L'Oreal"},{t:'SAN.PA',n:'Sanofi'},{t:'TTE.PA',n:'TotalEnergies'}],CH:[{t:'ABBN.SW',n:'ABB'},{t:'CFR.SW',n:'Richemont'},{t:'NESN.SW',n:'Nestle'},{t:'NOVN.SW',n:'Novartis'},{t:'ROG.SW',n:'Roche'},{t:'UBSG.SW',n:'UBS'}],NS:[{t:'AD.AS',n:'Ahold Delhaize'},{t:'ASML.AS',n:'ASML'},{t:'HEIA.AS',n:'Heineken'},{t:'INGA.AS',n:'ING'},{t:'PHIA.AS',n:'Philips'}],ZA:[{t:'AGL.JO',n:'Anglo American'},{t:'FSR.JO',n:'FirstRand'},{t:'MTN.JO',n:'MTN'},{t:'NPN.JO',n:'Naspers'},{t:'SBK.JO',n:'Standard Bank'},{t:'SHP.JO',n:'Shoprite'}],EG:[{t:'COMI.CA',n:'CIB Egypt'},{t:'ETEL.CA',n:'Telecom Egypt'},{t:'HRHO.CA',n:'EFG Hermes'}],MY:[{t:'1155.KL',n:'Maybank'},{t:'1295.KL',n:'Public Bank'},{t:'4863.KL',n:'Tenaga'},{t:'5099.KL',n:'CIMB'},{t:'6888.KL',n:'Axiata'}],TH:[{t:'ADVANC.BK',n:'AIS'},{t:'AOT.BK',n:'Airports Thailand'},{t:'CPALL.BK',n:'CP All'},{t:'KBANK.BK',n:'Kasikorn'},{t:'PTT.BK',n:'PTT'}],TR:[{t:'AKBNK.IS',n:'Akbank'},{t:'BIMAS.IS',n:'BIM'},{t:'EREGL.IS',n:'Eregli Steel'},{t:'GARAN.IS',n:'Garanti'},{t:'THYAO.IS',n:'Turkish Airlines'}],SE:[{t:'ATCO-A.ST',n:'Atlas Copco'},{t:'ERIC-B.ST',n:'Ericsson'},{t:'HM-B.ST',n:'H&M'},{t:'SEB-A.ST',n:'SEB Bank'},{t:'VOLV-B.ST',n:'Volvo'}],NO:[{t:'DNB.OL',n:'DNB'},{t:'EQNR.OL',n:'Equinor'},{t:'MOWI.OL',n:'Mowi'},{t:'NHY.OL',n:'Norsk Hydro'},{t:'TEL.OL',n:'Telenor'}],ES:[{t:'AENA.MC',n:'AENA'},{t:'BBVA.MC',n:'BBVA'},{t:'IBE.MC',n:'Iberdrola'},{t:'ITX.MC',n:'Inditex'},{t:'SAN.MC',n:'Santander'},{t:'TEF.MC',n:'Telefonica'}],IT:[{t:'ENEL.MI',n:'Enel'},{t:'ENI.MI',n:'ENI'},{t:'ISP.MI',n:'Intesa Sanpaolo'},{t:'RACE.MI',n:'Ferrari'},{t:'UCG.MI',n:'UniCredit'}],MX:[{t:'AMXL.MX',n:'America Movil'},{t:'CEMEXCPO.MX',n:'CEMEX'},{t:'FEMSA.MX',n:'Femsa'},{t:'WALMEX.MX',n:'Walmart MX'}],PK:[{t:'HBL.KA',n:'Habib Bank'},{t:'MCB.KA',n:'MCB Bank'},{t:'OGDC.KA',n:'OGDC'},{t:'PSO.KA',n:'Pakistan State Oil'}],BD:[{t:'BRAC.DSE',n:'BRAC Bank'},{t:'GRAMEEN.DSE',n:'Grameen Phone'},{t:'SQPHARMA.DSE',n:'Square Pharma'}]};
 let activeStockMarket = 'NSE';
 let currentStockSymbol = '';
 let currentChartRange = '1d';
@@ -2528,22 +2522,23 @@ setInterval(fetchLiveFX, 60000);
 
 function setStockMarket(mkt){
   activeStockMarket=mkt;
-  const sel=document.getElementById('smkt-select');
+  var sel=document.getElementById('smkt-select');
   if(sel&&sel.value!==mkt) sel.value=mkt;
-  const NAMES={US:'NYSE/NASDAQ',NSE:'NSE/BSE India',QA:'Qatar QSE',SR:'Saudi Tadawul',AE:'UAE DFM/ADX',L:'UK LSE',DE:'Germany XETRA',HK:'HK HKEX',T:'Japan TSE',AX:'Australia ASX',TO:'Canada TSX',SA:'Brazil B3',SN:'Singapore SGX',KS:'Korea KRX',TW:'Taiwan TWSE',NS:'Netherlands AEX',FR:'France Euronext',ES:'Spain IBEX',IT:'Italy Borsa',MX:'Mexico BMV',ZA:'South Africa JSE',EG:'Egypt EGX',MY:'Malaysia Bursa',TH:'Thailand SET',TR:'Turkey BIST',CH:'Switzerland SIX',SE:'Sweden Nasdaq',NO:'Norway Oslo',PK:'Pakistan PSX',BD:'Bangladesh DSE'};
-  const inp=document.getElementById('stock-input');
-  if(inp){inp.value='';inp.placeholder=`Click to browse ${NAMES[mkt]||mkt} stocks or type to search...`;}
-  renderPopularChips();
-  const box=document.getElementById('stock-suggestions');
+  var NAMES={US:'NYSE/NASDAQ',NSE:'NSE/BSE India',QA:'Qatar QSE',SR:'Saudi Tadawul',AE:'UAE DFM/ADX',L:'UK LSE',DE:'Germany',HK:'HK HKEX',T:'Japan TSE',AX:'Australia ASX',TO:'Canada TSX',SA:'Brazil B3',SN:'Singapore',KS:'Korea',TW:'Taiwan',NS:'Netherlands',FR:'France',ES:'Spain',IT:'Italy',MX:'Mexico',ZA:'South Africa',EG:'Egypt',MY:'Malaysia',TH:'Thailand',TR:'Turkey',CH:'Switzerland',SE:'Sweden',NO:'Norway',PK:'Pakistan',BD:'Bangladesh'};
+  var inp=document.getElementById('stock-input');
+  if(inp){inp.value='';inp.placeholder='Click to browse '+(NAMES[mkt]||mkt)+' stocks or type to search...';}
+  var box=document.getElementById('stock-suggestions');
   if(box) box.style.display='none';
-  const r=document.getElementById('stock-result');
-  const e=document.getElementById('stock-empty');
+  renderPopularChips();
+  loadCountryIndex('1d');
+  var r=document.getElementById('stock-result');
+  var e=document.getElementById('stock-empty');
   if(r) r.style.display='none';
   if(e) e.style.display='block';
 }
 
 function renderPopularChips(){
-  const list=(COUNTRY_STOCKS[activeStockMarket]||US_POPULAR);
+  var list=(typeof COUNTRY_STOCKS!=='undefined'&&COUNTRY_STOCKS[activeStockMarket])||US_POPULAR;
   const el = document.getElementById('pop-chips');
   if(!el) return;
   el.innerHTML = list.slice(0,15).map(s=>
@@ -2640,16 +2635,6 @@ async function _doSearch(exactSym){
 }
 
 let _sugTimer = null;
-function showAllStocksDropdown(){
-  const box=document.getElementById('stock-suggestions'),inp=document.getElementById('stock-input');
-  if(!box||!inp||inp.value.trim()) return;
-  const mkt=activeStockMarket,list=COUNTRY_STOCKS[mkt]||US_POPULAR,sfx=EXCHANGE_SUFFIX[mkt]||[];
-  const LABELS={US:'NYSE/NASDAQ',NSE:'NSE/BSE India',QA:'Qatar QSE',SR:'Saudi Tadawul',AE:'UAE DFM/ADX',L:'UK LSE',DE:'Germany XETRA',HK:'HK HKEX',T:'Japan TSE',AX:'Australia ASX',TO:'Canada TSX',SA:'Brazil B3',SN:'Singapore SGX',KS:'Korea KRX',TW:'Taiwan TWSE',NS:'Netherlands AEX',FR:'France Euronext',ES:'Spain IBEX',IT:'Italy Borsa',MX:'Mexico BMV',ZA:'South Africa JSE',EG:'Egypt EGX',MY:'Malaysia Bursa',TH:'Thailand SET',TR:'Turkey BIST',CH:'Switzerland SIX',SE:'Sweden Nasdaq',NO:'Norway Oslo',PK:'Pakistan PSX',BD:'Bangladesh DSE'};
-  const sorted=[...list].sort((a,b)=>a.t.replace(/\.[A-Z]+$/,'').localeCompare(b.t.replace(/\.[A-Z]+$/,'')));
-  let h=`<div class="sug-hdr">🏛 ${LABELS[mkt]||mkt} — ${sorted.length} stocks (A–Z)</div>`;
-  h+=sorted.map(s=>{const sym=s.t.includes('.')?s.t:(sfx.length?s.t+sfx[0]:s.t);const disp=s.t.replace(/\.[A-Z]+$/,'');return `<div class="stock-sug-item" onclick="quickStockExact('${sym.replace(/'/g,"\'")}','${disp.replace(/'/g,"\'")}')"><span class="stock-sug-ticker">${disp}</span><span class="stock-sug-name">${s.n}</span></div>`;}).join('');
-  box.innerHTML=h;box.style.display='block';
-}
 function stockInputHandler(val){
   const box = document.getElementById('stock-suggestions');
   if(!box) return;
@@ -2658,7 +2643,7 @@ function stockInputHandler(val){
 
   // Show local matches instantly
   const localQ = q.toUpperCase();
-  const list=(COUNTRY_STOCKS[activeStockMarket]||US_POPULAR);
+  var list=(typeof COUNTRY_STOCKS!=='undefined'&&COUNTRY_STOCKS[activeStockMarket])||US_POPULAR;
   const local = list.filter(s=>s.t.startsWith(localQ)||s.n.toUpperCase().includes(localQ)).slice(0,6);
   box.innerHTML = (local.length
     ? local.map(s=>`<div class="stock-sug-item" onclick="quickStock('${s.t}')"><span class="stock-sug-ticker">${s.t}</span><span class="stock-sug-name">${s.n}</span></div>`).join('')
@@ -2688,10 +2673,7 @@ function fmtMktCap(n){
 
 // ── Core: fetch Yahoo Finance through multiple CORS proxies ──
 // ── Stock Data via Netlify Function (server-side Yahoo Finance) ──
-const ON_NETLIFY=location.hostname.includes('netlify.app')||location.hostname.includes('netlify.com');
-const FN=ON_NETLIFY?'/.netlify/functions/stock':null;
-const YF_HOSTS=['query1.finance.yahoo.com','query2.finance.yahoo.com'];
-const CORS_PROXY='https://corsproxy.io/?';
+const FN = '/.netlify/functions/stock';
 
 if(!AbortSignal.timeout){
   AbortSignal.timeout = ms => {
@@ -2703,34 +2685,39 @@ if(!AbortSignal.timeout){
 
 // ── Call Netlify function ──────────────────────────────────────
 async function fnFetch(params, ms=10000) {
+  var ON_NETLIFY=location.hostname.indexOf('netlify.app')>=0||location.hostname.indexOf('netlify.com')>=0;
   if(ON_NETLIFY){
-    const qs=new URLSearchParams(params).toString();
-    const resp=await fetch(`${FN}?${qs}`,{signal:AbortSignal.timeout(ms)});
+    var qs=new URLSearchParams(params).toString();
+    var resp=await fetch(FN+'?'+qs,{signal:AbortSignal.timeout(ms)});
     if(!resp.ok) throw new Error('HTTP '+resp.status);
     return resp.json();
   }
-  const{sym,q,type,range,interval}=params;const iv=interval||'1d',rng=range||'5d';
+  var YF=['query1.finance.yahoo.com','query2.finance.yahoo.com'];
+  var CP='https://corsproxy.io/?';
+  var sym=params.sym,q=params.q,type=params.type,range=params.range,interval=params.interval;
+  var iv=interval||'1d',rng=range||'5d';
   if(type==='search'&&q){
-    const url=`https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=15&newsCount=0&enableFuzzyQuery=true`;
-    const r=await fetch(CORS_PROXY+encodeURIComponent(url),{signal:AbortSignal.timeout(ms)});
-    if(!r.ok) throw new Error('Search failed');
-    const text=await r.text();
-    try{const j=JSON.parse(text);if(j.contents)return JSON.parse(j.contents);return j;}catch(e){return{quotes:[]};}
+    var url='https://query1.finance.yahoo.com/v1/finance/search?q='+encodeURIComponent(q)+'&quotesCount=25&newsCount=0&enableFuzzyQuery=true';
+    var r=await fetch(CP+encodeURIComponent(url),{signal:AbortSignal.timeout(ms)});
+    if(!r.ok) throw new Error('search failed');
+    var t=await r.text();
+    try{var j=JSON.parse(t);return j.contents?JSON.parse(j.contents):j;}catch(e){return{quotes:[]};}
   }
   if(!sym) throw new Error('Missing sym');
-  const symList=[sym];
+  var symList=[sym];
   if(sym.endsWith('.NS'))symList.push(sym.replace('.NS','.BO'));
   else if(sym.endsWith('.BO'))symList.push(sym.replace('.BO','.NS'));
-  for(const s of symList){for(const host of YF_HOSTS){
+  for(var si=0;si<symList.length;si++){for(var hi=0;hi<YF.length;hi++){
     try{
-      const yfUrl=`https://${host}/v8/finance/chart/${encodeURIComponent(s)}?interval=${iv}&range=${rng}`;
-      const r=await fetch(CORS_PROXY+encodeURIComponent(yfUrl),{signal:AbortSignal.timeout(ms)});
-      if(!r.ok)continue;const text=await r.text();
-      let data;try{const j=JSON.parse(text);data=j.contents?JSON.parse(j.contents):j;}catch(e){continue;}
-      if(data?.chart?.result?.[0]?.meta?.regularMarketPrice)return data;
+      var u='https://'+YF[hi]+'/v8/finance/chart/'+encodeURIComponent(symList[si])+'?interval='+iv+'&range='+rng;
+      var r2=await fetch(CP+encodeURIComponent(u),{signal:AbortSignal.timeout(ms)});
+      if(!r2.ok) continue;
+      var t2=await r2.text();
+      var d;try{var j2=JSON.parse(t2);d=j2.contents?JSON.parse(j2.contents):j2;}catch(e){continue;}
+      if(d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketPrice)return d;
     }catch(e){}
   }}
-  throw new Error('No data for: '+sym);
+  throw new Error('No data: '+sym);
 }
 
 // ── Quote fetch ────────────────────────────────────────────────
@@ -2756,16 +2743,16 @@ async function fetchChart(sym, range, interval) {
 
 // ── Main dispatcher ────────────────────────────────────────────
 async function yahooFetch(sym,range,interval,timeoutMs){
-  const mkt=activeStockMarket,rng=range||'5d',iv=interval||'1d';
-  if(sym.includes('.')||sym.startsWith('^')){
-    const d=await fnFetch({sym,range:rng,interval:iv});
-    if(!d?.chart?.result?.[0]?.meta?.regularMarketPrice) throw new Error('No data: '+sym);
+  var mkt=activeStockMarket,rng=range||'5d',iv=interval||'1d';
+  if(sym.indexOf('.')>=0||sym.charAt(0)==='^'){
+    var d=await fnFetch({sym:sym,range:rng,interval:iv});
+    if(!d||!d.chart||!d.chart.result||!d.chart.result[0]||!d.chart.result[0].meta||!d.chart.result[0].meta.regularMarketPrice) throw new Error('No data: '+sym);
     return d;
   }
-  const sfx=EXCHANGE_SUFFIX[mkt]||[];
-  const cands=sfx.length?sfx.map(s=>sym+s):[sym];
-  for(const s of cands){
-    try{const d=await fnFetch({sym:s,range:rng,interval:iv});if(d?.chart?.result?.[0]?.meta?.regularMarketPrice)return d;}catch(e){}
+  var sfx=(typeof EXCHANGE_SUFFIX!=='undefined'&&EXCHANGE_SUFFIX[mkt])||[];
+  var cands=sfx.length?sfx.map(function(s){return sym+s;}):[sym];
+  for(var i=0;i<cands.length;i++){
+    try{var d2=await fnFetch({sym:cands[i],range:rng,interval:iv});if(d2&&d2.chart&&d2.chart.result&&d2.chart.result[0]&&d2.chart.result[0].meta&&d2.chart.result[0].meta.regularMarketPrice)return d2;}catch(e){}
   }
   throw new Error('Not found: '+sym);
 }
@@ -2782,13 +2769,15 @@ async function liveSearch(q) {
   try {
     const d = await fnFetch({q, type:'search'}, 5000);
     const quotes = d.quotes||[];
-    const sfxList=EXCHANGE_SUFFIX[activeStockMarket]||[];
-    const US_EXCHS=['NMS','NYQ','NGM','PCX','ASE'];
-    results=quotes.filter(r=>{
+    var sfxL=(typeof EXCHANGE_SUFFIX!=='undefined'&&EXCHANGE_SUFFIX[activeStockMarket])||[];
+    var US_EX=['NMS','NYQ','NGM','PCX','ASE'];
+    results=quotes.filter(function(r){
       if(!r.symbol) return false;
-      if(sfxList.length) return sfxList.some(s=>r.symbol.endsWith(s));
-      return US_EXCHS.includes(r.exchange);
-    }).slice(0,12).map(r=>({sym:r.symbol,disp:r.symbol.replace(/\.[A-Z]{1,5}$/,''),name:r.shortname||r.longname||r.symbol,exch:r.exchange||activeStockMarket}));
+      if(sfxL.length) return sfxL.some(function(s){return r.symbol.endsWith(s);});
+      return US_EX.indexOf(r.exchange)>=0;
+    }).slice(0,12).map(function(r){
+      return {sym:r.symbol,disp:r.symbol.replace(/\.[A-Z]{1,5}$/,''),name:r.shortname||r.longname||r.symbol,exch:r.exchange||activeStockMarket};
+    });
   } catch(e){}
 
   if(!box||!document.getElementById('stock-input')?.value?.trim()) return;
@@ -3031,11 +3020,98 @@ async function loadOneIndex(idx) {
   } catch(e){ console.warn('Index',idx.id,':',e.message); }
 }
 
+var _idxRange='1d';
+async function loadCountryIndex(range){
+  range=range||_idxRange||'1d';_idxRange=range;window._idxRange=range;
+  var mkt=activeStockMarket;
+  var info=(typeof MARKET_INDEX!=='undefined')&&MARKET_INDEX[mkt];
+  if(!info)return;
+  var nameEl=document.getElementById('country-idx-name');
+  var priceEl=document.getElementById('country-idx-price');
+  var curEl=document.getElementById('country-idx-cur');
+  var chgEl=document.getElementById('country-idx-chg');
+  var canvas=document.getElementById('country-idx-chart');
+  var msgEl=document.getElementById('country-idx-msg');
+  if(nameEl)nameEl.textContent=info.name;
+  window._idxSym=info.sym;window._idxName=info.name;
+  if(msgEl)msgEl.textContent='Loading...';
+  if(canvas)canvas.style.opacity='0.3';
+  var IV={'1d':'5m','5d':'60m','1mo':'1d','6mo':'1wk','1y':'1mo','5y':'3mo','max':'3mo'};
+  try{
+    var data=await fnFetch({sym:info.sym,range:range,interval:IV[range]||'1d'},14000);
+    var result=data&&data.chart&&data.chart.result&&data.chart.result[0];
+    if(!result)throw new Error('no result');
+    var meta=result.meta;
+    var q0=(result.indicators&&result.indicators.quote&&result.indicators.quote[0])||{};
+    var closes=(q0.close||[]).filter(function(v){return v!=null&&v>0;});
+    var price=meta.regularMarketPrice||closes[closes.length-1];
+    if(!price)throw new Error('no price');
+    var prev=meta.chartPreviousClose||closes[0]||price;
+    var chgPct=prev?((price-prev)/prev)*100:0;
+    var isUp=chgPct>=0;
+    if(priceEl)priceEl.textContent=(+price).toLocaleString(undefined,{maximumFractionDigits:2});
+    if(curEl)curEl.textContent=meta.currency||'';
+    if(chgEl){chgEl.textContent=(isUp?'+ ':'-')+Math.abs(chgPct).toFixed(2)+'%';chgEl.style.color=isUp?'var(--up)':'var(--down)';}
+    var card=document.getElementById('country-idx-card');
+    if(card)card.style.borderColor=isUp?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)';
+    if(msgEl)msgEl.textContent='';
+    if(canvas&&closes.length>2){canvas.style.opacity='1';drawSparkline('country-idx-chart',closes,isUp);}
+    document.querySelectorAll('.idx-rng').forEach(function(b){b.classList.toggle('active',b.dataset.r===range);});
+  }catch(e){
+    if(msgEl)msgEl.textContent='Data unavailable';
+    if(canvas)canvas.style.opacity='0.15';
+    console.warn('Country index:',e.message);
+  }
+}
+function loadIdxChart(range){loadCountryIndex(range).catch(function(e){console.warn(e);});}
+
+function showAllStocksDropdown(){
+  var box=document.getElementById('stock-suggestions');
+  var inp=document.getElementById('stock-input');
+  if(!box||!inp||inp.value.trim())return;
+  var mkt=activeStockMarket;
+  var sfx=(typeof EXCHANGE_SUFFIX!=='undefined'&&EXCHANGE_SUFFIX[mkt])||[];
+  var LABELS={US:'NYSE/NASDAQ',NSE:'NSE/BSE India',QA:'Qatar QSE',SR:'Saudi Tadawul',AE:'UAE DFM/ADX',L:'UK LSE',DE:'Germany XETRA',HK:'HK HKEX',T:'Japan TSE',AX:'Australia ASX',TO:'Canada TSX',SA:'Brazil B3',SN:'Singapore SGX',KS:'Korea KRX',TW:'Taiwan TWSE',NS:'Netherlands AEX',FR:'France Euronext',ES:'Spain IBEX',IT:'Italy Borsa',MX:'Mexico BMV',ZA:'South Africa JSE',EG:'Egypt EGX',MY:'Malaysia Bursa',TH:'Thailand SET',TR:'Turkey BIST',CH:'Switzerland SIX',SE:'Sweden Nasdaq',NO:'Norway Oslo',PK:'Pakistan PSX',BD:'Bangladesh DSE'};
+  box.innerHTML='<div class="sug-hdr">'+(LABELS[mkt]||mkt)+' - loading all stocks...</div><div class="stock-sug-item"><span class="stock-sug-ticker" style="color:var(--muted)">...</span><span class="stock-sug-name" style="color:var(--muted)">Fetching from Yahoo Finance</span></div>';
+  box.style.display='block';
+  var sfxChar={NSE:'.NS',QA:'.QA',SR:'.SR',AE:'.AD',L:'.L',DE:'.DE',HK:'.HK',T:'.T',AX:'.AX',TO:'.TO',SA:'.SA',SN:'.SI',KS:'.KS',TW:'.TW',NS:'.AS',FR:'.PA',ES:'.MC',IT:'.MI',MX:'.MX',ZA:'.JO',EG:'.CA',MY:'.KL',TH:'.BK',TR:'.IS',CH:'.SW',SE:'.ST',NO:'.OL',PK:'.KA',BD:'.DSE'}[mkt]||'';
+  var US_EX=['NMS','NYQ','NGM','PCX'];
+  function renderList(stocks){
+    if(inp.value.trim()||box.style.display==='none')return;
+    var sorted=stocks.slice().sort(function(a,b){return a.disp.localeCompare(b.disp);});
+    var h='<div class="sug-hdr">'+(LABELS[mkt]||mkt)+' - '+sorted.length+' stocks (A-Z)</div>';
+    h+=sorted.map(function(s){
+      var ss=s.sym.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var sd=s.disp.replace(/'/g,"\\'");
+      return '<div class="stock-sug-item" onclick="quickStockExact(\''+ss+'\',\''+sd+'\')"><span class="stock-sug-ticker">'+s.disp+'</span><span class="stock-sug-name">'+s.name+'</span></div>';
+    }).join('');
+    box.innerHTML=h;box.style.display='block';
+  }
+  var q=mkt==='US'?'stock':mkt;
+  fnFetch({q:q,type:'search'},8000).then(function(d){
+    var quotes=(d.quotes||[]).filter(function(r){
+      if(!r.symbol)return false;
+      if(sfxChar)return r.symbol.endsWith(sfxChar);
+      return US_EX.indexOf(r.exchange)>=0;
+    });
+    if(quotes.length>0){
+      renderList(quotes.map(function(r){return{sym:r.symbol,disp:r.symbol.replace(/\.[A-Z]{1,5}$/,''),name:r.shortname||r.longname||r.symbol};}));
+    }else{
+      var fb=activeStockMarket==='NSE'?NSE_POPULAR:US_POPULAR;
+      renderList(fb.map(function(s){var sym=s.t.indexOf('.')>=0?s.t:(sfx.length?s.t+sfx[0]:s.t);return{sym:sym,disp:s.t.replace(/\.[A-Z]+$/,''),name:s.n};}));
+    }
+  }).catch(function(){
+    var fb=activeStockMarket==='NSE'?NSE_POPULAR:US_POPULAR;
+    renderList(fb.map(function(s){var sym=s.t.indexOf('.')>=0?s.t:(sfx.length?s.t+sfx[0]:s.t);return{sym:sym,disp:s.t.replace(/\.[A-Z]+$/,''),name:s.n};}));
+  });
+}
+
+
 
 // ── Init ──
 function initStocks(){
   renderPopularChips();
-  loadMarketIndexes();
+  loadCountryIndex('1d').catch(function(){});
 }
 
 // Safety net — force hide loader after 3s
