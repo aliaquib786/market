@@ -1247,30 +1247,27 @@ document.head.appendChild(_link);
   </div>
 
   <!-- Market Index Strip: S&P500, NASDAQ, NIFTY, SENSEX -->
-  <div id="country-idx-wrap" style="background:var(--bg);border-bottom:.5px solid var(--border);padding:.75rem 1rem;">
-    <div style="display:flex;align-items:flex-start;gap:.75rem;flex-wrap:wrap;">
-      <div class="qatar-card" id="country-idx-card" style="flex:0 0 auto;min-width:150px;padding:.85rem 1rem .75rem;cursor:pointer;border-color:rgba(139,98,0,.3);" onclick="loadIdxChart(window._idxRange||'1d')">
-        <div class="qc-top"><span class="qc-en" id="country-idx-name">Index</span></div>
-        <div class="qc-price" id="country-idx-price" style="font-size:1.4rem;">--</div>
-        <div class="qc-cur" id="country-idx-cur">--</div>
-        <div class="qc-chg" id="country-idx-chg">--</div>
-        <div style="font-size:.58rem;color:var(--muted);margin-top:.3rem;">tap for chart</div>
+  <div id="country-idx-wrap" style="background:var(--bg);border-bottom:.5px solid var(--border);padding:.75rem 1rem 1rem;">
+    <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem;">
+      <div class="qatar-card" id="country-idx-card" style="flex:0 0 auto;min-width:145px;padding:.75rem .9rem .6rem;cursor:pointer;border-color:rgba(139,98,0,.3);" onclick="loadIdxChart(window._idxRange||'1d')">
+        <div class="qc-top"><span class="qc-en" id="country-idx-name" style="font-size:.68rem;">Index</span></div>
+        <div class="qc-price" id="country-idx-price" style="font-size:1.35rem;line-height:1.2;">--</div>
+        <div class="qc-cur" id="country-idx-cur" style="font-size:.75rem;letter-spacing:.05em;margin-top:.1rem;">--</div>
+        <div class="qc-chg" id="country-idx-chg" style="font-size:.75rem;font-weight:600;margin-top:.15rem;">--</div>
       </div>
-      <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:.4rem;">
-        <div style="display:flex;gap:3px;flex-wrap:wrap;">
-          <button class="idx-rng active" data-r="1d"  onclick="loadIdxChart('1d')">1D</button>
-          <button class="idx-rng"        data-r="5d"  onclick="loadIdxChart('5d')">5D</button>
-          <button class="idx-rng"        data-r="1mo" onclick="loadIdxChart('1mo')">1M</button>
-          <button class="idx-rng"        data-r="6mo" onclick="loadIdxChart('6mo')">6M</button>
-          <button class="idx-rng"        data-r="1y"  onclick="loadIdxChart('1y')">1Y</button>
-          <button class="idx-rng"        data-r="5y"  onclick="loadIdxChart('5y')">5Y</button>
-          <button class="idx-rng"        data-r="max" onclick="loadIdxChart('max')">ALL</button>
-        </div>
-        <div style="position:relative;min-height:68px;">
-          <canvas id="country-idx-chart" style="width:100%;height:68px;display:block;border-radius:8px;"></canvas>
-          <div id="country-idx-msg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);pointer-events:none;"></div>
-        </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+        <button class="idx-rng active" data-r="1d"  onclick="loadIdxChart('1d')">1D</button>
+        <button class="idx-rng"        data-r="5d"  onclick="loadIdxChart('5d')">5D</button>
+        <button class="idx-rng"        data-r="1mo" onclick="loadIdxChart('1mo')">1M</button>
+        <button class="idx-rng"        data-r="6mo" onclick="loadIdxChart('6mo')">6M</button>
+        <button class="idx-rng"        data-r="1y"  onclick="loadIdxChart('1y')">1Y</button>
+        <button class="idx-rng"        data-r="5y"  onclick="loadIdxChart('5y')">5Y</button>
+        <button class="idx-rng"        data-r="max" onclick="loadIdxChart('max')">ALL</button>
       </div>
+    </div>
+    <div style="position:relative;width:100%;height:200px;">
+      <canvas id="country-idx-chart" style="width:100%;height:200px;display:block;border-radius:8px;"></canvas>
+      <div id="country-idx-msg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--muted);pointer-events:none;letter-spacing:.04em;"></div>
     </div>
   </div>
 
@@ -2971,39 +2968,77 @@ async function loadStockChart(range) {
 
 
 function drawLineChart(canvas, prices, msgEl){
-  if(!canvas) return;
+  if(!canvas||!prices||prices.length<2) return;
   if(msgEl) msgEl.style.display='none';
-  canvas.style.display='block';
-  canvas.width=(canvas.parentElement||document.body).clientWidth-40;
-  canvas.height=220;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height, PAD={top:20,right:16,bottom:28,left:62};
-  const closes=prices.map(p=>+p.close);
-  const minV=Math.min(...closes)*0.998, maxV=Math.max(...closes)*1.002, rng=maxV-minV||1;
-  const isUp=closes[closes.length-1]>=closes[0], lineClr=isUp?'#2e7d32':'#c62828';
+  var parent=canvas.parentElement||document.body;
+  var W=parent.clientWidth||parent.offsetWidth||600;
+  var H=200;
+  canvas.width=W; canvas.height=H;
+  var ctx=canvas.getContext('2d');
+  var PAD={top:18,right:12,bottom:32,left:68};
+  var isDarkBg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+  var isDark=isDarkBg.startsWith('#0')||isDarkBg.startsWith('#1')||isDarkBg.startsWith('rgb(1')||isDarkBg.startsWith('rgb(0');
+  var txtColor=isDark?'rgba(190,170,140,0.75)':'rgba(80,65,45,0.7)';
+  var gridColor=isDark?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.08)';
+  var closes=prices.map(function(p){return +p.close;});
+  var minV=Math.min.apply(null,closes), maxV=Math.max.apply(null,closes);
+  var margin=(maxV-minV)*0.08||maxV*0.01||1;
+  minV-=margin; maxV+=margin;
+  var rng=maxV-minV||1;
+  var isUp=closes[closes.length-1]>=closes[0];
+  var lineClr=isUp?'#27a854':'#e03535';
   ctx.clearRect(0,0,W,H);
-  const xOf=i=>PAD.left+(i/(prices.length-1||1))*(W-PAD.left-PAD.right);
-  const yOf=v=>PAD.top+(1-(v-minV)/rng)*(H-PAD.top-PAD.bottom);
-  ctx.strokeStyle='rgba(0,0,0,0.06)'; ctx.lineWidth=1;
-  for(let g=0;g<=4;g++){const y=PAD.top+g*(H-PAD.top-PAD.bottom)/4; ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(W-PAD.right,y); ctx.stroke();}
-  const grad=ctx.createLinearGradient(0,PAD.top,0,H-PAD.bottom);
-  grad.addColorStop(0,isUp?'rgba(46,125,50,0.2)':'rgba(198,40,40,0.2)');
-  grad.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.beginPath(); prices.forEach((p,i)=>{i===0?ctx.moveTo(xOf(i),yOf(p.close)):ctx.lineTo(xOf(i),yOf(p.close));});
-  ctx.lineTo(xOf(prices.length-1),H-PAD.bottom); ctx.lineTo(xOf(0),H-PAD.bottom);
-  ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
-  ctx.beginPath(); ctx.strokeStyle=lineClr; ctx.lineWidth=2; ctx.lineJoin='round';
-  prices.forEach((p,i)=>{i===0?ctx.moveTo(xOf(i),yOf(p.close)):ctx.lineTo(xOf(i),yOf(p.close));});
-  ctx.stroke();
-  ctx.fillStyle='rgba(0,0,0,0.42)'; ctx.font='10px DM Sans,sans-serif'; ctx.textAlign='right';
-  for(let g=0;g<=4;g++){const v=maxV-g*(rng/4); ctx.fillText(v>=1000?v.toFixed(0):v.toFixed(2),PAD.left-4,PAD.top+g*(H-PAD.top-PAD.bottom)/4+4);}
-  ctx.textAlign='center';
-  const step=Math.max(1,Math.floor(prices.length/5));
-  for(let i=0;i<prices.length;i+=step){
-    const p=prices[i];
-    const lbl=prices.length<=50?p.time:(()=>{const d=new Date(p.date); return d.toLocaleDateString('en',{month:'short',day:'numeric'});})();
-    ctx.fillText(lbl,xOf(i),H-PAD.bottom+14);
+  // Y-axis grid + labels
+  ctx.font='11px "DM Sans",system-ui,sans-serif';
+  ctx.fillStyle=txtColor;
+  ctx.strokeStyle=gridColor;
+  ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PAD.top+g*(H-PAD.top-PAD.bottom)/4;
+    var gv=maxV-g*(rng/4);
+    ctx.beginPath(); ctx.moveTo(PAD.left,gy); ctx.lineTo(W-PAD.right,gy); ctx.stroke();
+    var lbl;
+    if(gv>=1000000) lbl=(gv/1000000).toFixed(2)+'M';
+    else if(gv>=10000) lbl=Math.round(gv).toLocaleString();
+    else if(gv>=1000) lbl=gv.toFixed(1);
+    else lbl=gv.toFixed(2);
+    ctx.textAlign='right';
+    ctx.fillText(lbl,PAD.left-6,gy+4);
   }
+  var xOf=function(i){return PAD.left+(i/(prices.length-1||1))*(W-PAD.left-PAD.right);};
+  var yOf=function(v){return PAD.top+(1-(v-minV)/rng)*(H-PAD.top-PAD.bottom);};
+  // Fill area
+  var grad=ctx.createLinearGradient(0,PAD.top,0,H-PAD.bottom);
+  grad.addColorStop(0,isUp?'rgba(39,168,84,0.18)':'rgba(224,53,53,0.15)');
+  grad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();
+  prices.forEach(function(p,i){i===0?ctx.moveTo(xOf(i),yOf(p.close)):ctx.lineTo(xOf(i),yOf(p.close));});
+  ctx.lineTo(xOf(prices.length-1),H-PAD.bottom); ctx.lineTo(PAD.left,H-PAD.bottom);
+  ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+  // Price line
+  ctx.beginPath(); ctx.strokeStyle=lineClr; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.lineCap='round';
+  prices.forEach(function(p,i){i===0?ctx.moveTo(xOf(i),yOf(p.close)):ctx.lineTo(xOf(i),yOf(p.close));});
+  ctx.stroke();
+  // End dot
+  ctx.beginPath(); ctx.arc(xOf(prices.length-1),yOf(closes[closes.length-1]),3.5,0,Math.PI*2);
+  ctx.fillStyle=lineClr; ctx.fill();
+  // X-axis date labels — 5 evenly spaced, no overlap, no invalid
+  ctx.fillStyle=txtColor; ctx.textAlign='center';
+  ctx.font='10.5px "DM Sans",system-ui,sans-serif';
+  var numLabels=5;
+  var drawnX=[];
+  var indices=[];
+  for(var ni=0;ni<numLabels;ni++) indices.push(Math.round(ni*(prices.length-1)/(numLabels-1||1)));
+  indices.forEach(function(li){
+    if(li<0||li>=prices.length) return;
+    var lx=xOf(li);
+    if(lx<PAD.left+8||lx>W-PAD.right-8) return;
+    for(var di=0;di<drawnX.length;di++){if(Math.abs(drawnX[di]-lx)<55) return;}
+    var lbl=prices[li].time||prices[li].date||'';
+    if(!lbl) return;
+    ctx.fillText(lbl,lx,H-PAD.bottom+14);
+    drawnX.push(lx);
+  });
 }
 
 // ── Sparkline for index cards ──
@@ -3116,14 +3151,19 @@ async function loadCountryIndex(range){
     if(canvas&&pricePts.length>2){
       canvas.style.opacity='1';
       var prices=pricePts.map(function(p){
-        var dt=new Date(p.ts*1000);
-        var label;
-        if(range==='1d'||range==='5d'){
-          label=dt.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-        } else if(range==='1mo'||range==='6mo'){
-          label=dt.toLocaleDateString([],{month:'short',day:'numeric'});
-        } else {
-          label=dt.toLocaleDateString([],{month:'short',year:'2-digit'});
+        var label='';
+        if(p.ts>0){
+          var dt=new Date(p.ts*1000);
+          var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          if(range==='1d'||range==='5d'){
+            var hh=dt.getHours(),mm=dt.getMinutes(),ap=hh>=12?'PM':'AM';
+            hh=hh%12||12;
+            label=hh+':'+(mm<10?'0':'')+mm+' '+ap;
+          } else if(range==='1mo'||range==='6mo'){
+            label=mo[dt.getMonth()]+' '+dt.getDate();
+          } else {
+            label=mo[dt.getMonth()]+' \''+String(dt.getFullYear()).slice(2);
+          }
         }
         return {close:p.close,date:label,time:label};
       });
