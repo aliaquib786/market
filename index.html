@@ -759,23 +759,15 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
 
 
 
-/* ── Stock result: desktop layout ── */
-.sqc-desktop-layout{display:flex;gap:1.25rem;align-items:flex-start;}
-.sqc-info-col{
-  flex:0 0 280px;min-width:260px;display:flex;flex-direction:column;gap:.65rem;
-}
-.sqc-info-col .stock-ohlc-strip{
-  display:grid;grid-template-columns:repeat(2,1fr);margin-bottom:0;
-}
-.sqc-chart-col{flex:1;min-width:0;}
-@media(max-width:768px){
-  .sqc-desktop-layout{flex-direction:column;gap:.75rem;}
-  .sqc-info-col{flex:none;width:100%;}
-  .sqc-info-col .stock-ohlc-strip{grid-template-columns:repeat(2,1fr);}
+/* ── Stock result: vertical stacked layout ── */
+.stock-result{display:flex;flex-direction:column;gap:.75rem;}
+.stock-ohlc-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:0;}
+#stock-chart{display:block;width:100%!important;border-radius:10px;}
+@media(max-width:600px){
+  .stock-ohlc-strip{grid-template-columns:repeat(2,1fr);}
   #stock-chart{height:220px!important;}
 }
-@media(max-width:480px){#stock-chart{height:180px!important;}}
-#stock-chart{display:block;width:100%!important;border-radius:10px;}
+@media(max-width:400px){#stock-chart{height:180px!important;}}
 </style>
 <script>
 // ── Inline PWA Manifest (no external file needed) ──
@@ -1343,54 +1335,48 @@ document.head.appendChild(_link);
   <!-- Quote result -->
   <div id="stock-result" class="stock-result" style="display:none;">
 
-    <!-- Desktop: left=quote info, right=chart. Mobile: stacked -->
-    <div class="sqc-desktop-layout">
-
-      <!-- LEFT: quote info + OHLC -->
-      <div class="sqc-info-col">
-        <div class="stock-quote-card">
-          <div class="sqc-left">
-            <div class="sqc-symbol" id="sq-symbol">—</div>
-            <div class="sqc-name"   id="sq-name">—</div>
-            <div class="sqc-mkt"    id="sq-mkt">—</div>
-          </div>
-          <div class="sqc-right">
-            <div class="sqc-price"    id="sq-price">—</div>
-            <div class="sqc-change"   id="sq-change">—</div>
-            <div class="sqc-currency" id="sq-currency">—</div>
-          </div>
-        </div>
-        <div class="stock-ohlc-strip">
-          <div class="sohlc-cell"><div class="sohlc-lbl">Open</div><div class="sohlc-val" id="sq-open">—</div></div>
-          <div class="sohlc-cell"><div class="sohlc-lbl">Prev Close</div><div class="sohlc-val" id="sq-prev">—</div></div>
-          <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#2e7d32">High</div><div class="sohlc-val" id="sq-high" style="color:#2e7d32">—</div></div>
-          <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#c62828">Low</div><div class="sohlc-val" id="sq-low" style="color:#c62828">—</div></div>
-          <div class="sohlc-cell"><div class="sohlc-lbl">Volume</div><div class="sohlc-val" id="sq-vol">—</div></div>
-          <div class="sohlc-cell"><div class="sohlc-lbl">Mkt Cap</div><div class="sohlc-val" id="sq-mktcap">—</div></div>
-        </div>
+    <!-- Row 1: Quote card full width -->
+    <div class="stock-quote-card">
+      <div class="sqc-left">
+        <div class="sqc-symbol" id="sq-symbol">—</div>
+        <div class="sqc-name"   id="sq-name">—</div>
+        <div class="sqc-mkt"    id="sq-mkt">—</div>
       </div>
-
-      <!-- RIGHT: chart full width -->
-      <div class="sqc-chart-col">
-        <div class="stock-chart-wrap">
-          <div class="stock-chart-header">
-            <span id="sq-chart-title">Price Chart</span>
-            <div class="chart-range-btns">
-              <button class="crng-btn active" onclick="loadStockChart('1d')">1D</button>
-              <button class="crng-btn" onclick="loadStockChart('5d')">5D</button>
-              <button class="crng-btn" onclick="loadStockChart('1mo')">1M</button>
-              <button class="crng-btn" onclick="loadStockChart('6mo')">6M</button>
-              <button class="crng-btn" onclick="loadStockChart('1y')">1Y</button>
-              <button class="crng-btn" onclick="loadStockChart('5y')">5Y</button>
-              <button class="crng-btn" onclick="loadStockChart('max')">ALL</button>
-            </div>
-          </div>
-          <canvas id="stock-chart" style="display:none;width:100%;height:320px;"></canvas>
-          <div id="stock-chart-msg" style="display:none;text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;"></div>
-        </div>
+      <div class="sqc-right">
+        <div class="sqc-price"    id="sq-price">—</div>
+        <div class="sqc-change"   id="sq-change">—</div>
+        <div class="sqc-currency" id="sq-currency">—</div>
       </div>
-
     </div>
+
+    <!-- Row 2: OHLC boxes grid -->
+    <div class="stock-ohlc-strip">
+      <div class="sohlc-cell"><div class="sohlc-lbl">Open</div><div class="sohlc-val" id="sq-open">—</div></div>
+      <div class="sohlc-cell"><div class="sohlc-lbl">Prev Close</div><div class="sohlc-val" id="sq-prev">—</div></div>
+      <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#2e7d32">High</div><div class="sohlc-val" id="sq-high" style="color:#2e7d32">—</div></div>
+      <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#c62828">Low</div><div class="sohlc-val" id="sq-low" style="color:#c62828">—</div></div>
+      <div class="sohlc-cell"><div class="sohlc-lbl">Volume</div><div class="sohlc-val" id="sq-vol">—</div></div>
+      <div class="sohlc-cell"><div class="sohlc-lbl">Mkt Cap</div><div class="sohlc-val" id="sq-mktcap">—</div></div>
+    </div>
+
+    <!-- Row 3: Chart full width -->
+    <div class="stock-chart-wrap">
+      <div class="stock-chart-header">
+        <span id="sq-chart-title">Price Chart</span>
+        <div class="chart-range-btns">
+          <button class="crng-btn active" onclick="loadStockChart('1d')">1D</button>
+          <button class="crng-btn" onclick="loadStockChart('5d')">5D</button>
+          <button class="crng-btn" onclick="loadStockChart('1mo')">1M</button>
+          <button class="crng-btn" onclick="loadStockChart('6mo')">6M</button>
+          <button class="crng-btn" onclick="loadStockChart('1y')">1Y</button>
+          <button class="crng-btn" onclick="loadStockChart('5y')">5Y</button>
+          <button class="crng-btn" onclick="loadStockChart('max')">ALL</button>
+        </div>
+      </div>
+      <canvas id="stock-chart" style="display:none;width:100%;height:340px;"></canvas>
+      <div id="stock-chart-msg" style="display:none;text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;"></div>
+    </div>
+
   </div>
 
 </div>
