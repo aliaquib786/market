@@ -2794,7 +2794,7 @@ async function fnFetch(params, ms=10000) {
   const symList = [sym];
   if(sym.endsWith('.NS')) symList.push(sym.replace('.NS','.BO'));
   else if(sym.endsWith('.BO')) symList.push(sym.replace('.BO','.NS'));
-  else if(!sym.includes('.')) { symList.push(sym+'.NS'); symList.push(sym+'.BO'); }
+
 
   for(const s of symList) {
     for(const host of YF_HOSTS) {
@@ -3168,7 +3168,14 @@ async function loadCountryIndex(range){
   if(msgEl)msgEl.textContent='Loading...';
   if(canvas)canvas.style.opacity='0.3';
   var IV={'1d':'5m','5d':'60m','1mo':'1d','6mo':'1wk','1y':'1mo','5y':'3mo','max':'3mo'};
-  var FB={};FB['^DSMDX']=['^DSMDX','^QSI'];FB['^DFMGI']=['^DFMGI','^ADX'];
+  var FB={};FB['^DSMDX']=['^DSMDX','^QSI'];
+  FB['^TASI']=['^TASI','2222.SR'];
+  FB['^DFMGI']=['^DFMGI','^ADX','EMAAR.DU'];
+  FB['^EGX30']=['^EGX30','COMI.CA'];
+  FB['^FTSEMIB']=['^FTSEMIB','ENI.MI'];
+  FB['^OSEAX']=['^OSEAX','^OBX','EQNR.OL'];
+  FB['^XU100']=['^XU100','GARAN.IS'];
+  FB['^J203']=['^J203','NPN.JO'];
   var symsToTry=FB[info.sym]||[info.sym];
   var data=null;
   for(var si=0;si<symsToTry.length;si++){
