@@ -756,6 +756,46 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
 .idx-rng.active{background:rgba(139,98,0,.12);border-color:var(--gold);color:var(--gold);font-weight:600;}
 .sug-hdr{padding:.3rem 1rem .2rem;font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;background:var(--bg3,var(--bg2));border-bottom:.5px solid var(--border);position:sticky;top:0;}
 @media(max-width:600px){.idx-rng{padding:3px 7px;font-size:.63rem;}}
+
+/* ── Stock result: desktop side-by-side, mobile stacked ── */
+.sqc-desktop-layout{
+  display:flex;
+  gap:1.25rem;
+  align-items:flex-start;
+}
+.sqc-info-col{
+  flex:0 0 260px;
+  min-width:220px;
+}
+.sqc-chart-col{
+  flex:1;
+  min-width:0;
+}
+/* Mobile: stack vertically */
+@media(max-width:768px){
+  .sqc-desktop-layout{
+    flex-direction:column;
+    gap:.75rem;
+  }
+  .sqc-info-col{
+    flex:none;
+    width:100%;
+  }
+  #stock-chart{
+    height:220px !important;
+  }
+}
+@media(max-width:480px){
+  #stock-chart{
+    height:180px !important;
+  }
+}
+/* Chart canvas proper sizing */
+#stock-chart{
+  display:block;
+  width:100% !important;
+  border-radius:10px;
+}
 </style>
 <script>
 // ── Inline PWA Manifest (no external file needed) ──
@@ -1322,41 +1362,54 @@ document.head.appendChild(_link);
 
   <!-- Quote result -->
   <div id="stock-result" class="stock-result" style="display:none;">
-    <div class="stock-quote-card">
-      <div class="sqc-left">
-        <div class="sqc-symbol" id="sq-symbol">—</div>
-        <div class="sqc-name"   id="sq-name">—</div>
-        <div class="sqc-mkt"    id="sq-mkt">—</div>
-      </div>
-      <div class="sqc-right">
-        <div class="sqc-price"    id="sq-price">—</div>
-        <div class="sqc-change"   id="sq-change">—</div>
-        <div class="sqc-currency" id="sq-currency">—</div>
-      </div>
-    </div>
-    <div class="stock-ohlc-strip">
-      <div class="sohlc-cell"><div class="sohlc-lbl">Open</div><div class="sohlc-val" id="sq-open">—</div></div>
-      <div class="sohlc-cell"><div class="sohlc-lbl">Prev Close</div><div class="sohlc-val" id="sq-prev">—</div></div>
-      <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#2e7d32">High</div><div class="sohlc-val" id="sq-high" style="color:#2e7d32">—</div></div>
-      <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#c62828">Low</div><div class="sohlc-val" id="sq-low" style="color:#c62828">—</div></div>
-      <div class="sohlc-cell"><div class="sohlc-lbl">Volume</div><div class="sohlc-val" id="sq-vol">—</div></div>
-      <div class="sohlc-cell"><div class="sohlc-lbl">Mkt Cap</div><div class="sohlc-val" id="sq-mktcap">—</div></div>
-    </div>
-    <div class="stock-chart-wrap">
-      <div class="stock-chart-header">
-        <span id="sq-chart-title">Price Chart</span>
-        <div class="chart-range-btns">
-          <button class="crng-btn active" onclick="loadStockChart('1d')">1D</button>
-          <button class="crng-btn" onclick="loadStockChart('5d')">5D</button>
-          <button class="crng-btn" onclick="loadStockChart('1mo')">1M</button>
-          <button class="crng-btn" onclick="loadStockChart('6mo')">6M</button>
-          <button class="crng-btn" onclick="loadStockChart('1y')">1Y</button>
-          <button class="crng-btn" onclick="loadStockChart('5y')">5Y</button>
-          <button class="crng-btn" onclick="loadStockChart('max')">ALL</button>
+
+    <!-- Desktop: left=quote info, right=chart. Mobile: stacked -->
+    <div class="sqc-desktop-layout">
+
+      <!-- LEFT: quote info + OHLC -->
+      <div class="sqc-info-col">
+        <div class="stock-quote-card">
+          <div class="sqc-left">
+            <div class="sqc-symbol" id="sq-symbol">—</div>
+            <div class="sqc-name"   id="sq-name">—</div>
+            <div class="sqc-mkt"    id="sq-mkt">—</div>
+          </div>
+          <div class="sqc-right">
+            <div class="sqc-price"    id="sq-price">—</div>
+            <div class="sqc-change"   id="sq-change">—</div>
+            <div class="sqc-currency" id="sq-currency">—</div>
+          </div>
+        </div>
+        <div class="stock-ohlc-strip">
+          <div class="sohlc-cell"><div class="sohlc-lbl">Open</div><div class="sohlc-val" id="sq-open">—</div></div>
+          <div class="sohlc-cell"><div class="sohlc-lbl">Prev Close</div><div class="sohlc-val" id="sq-prev">—</div></div>
+          <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#2e7d32">High</div><div class="sohlc-val" id="sq-high" style="color:#2e7d32">—</div></div>
+          <div class="sohlc-cell"><div class="sohlc-lbl" style="color:#c62828">Low</div><div class="sohlc-val" id="sq-low" style="color:#c62828">—</div></div>
+          <div class="sohlc-cell"><div class="sohlc-lbl">Volume</div><div class="sohlc-val" id="sq-vol">—</div></div>
+          <div class="sohlc-cell"><div class="sohlc-lbl">Mkt Cap</div><div class="sohlc-val" id="sq-mktcap">—</div></div>
         </div>
       </div>
-      <canvas id="stock-chart" style="display:none;width:100%;"></canvas>
-      <div id="stock-chart-msg" style="display:none;text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;"></div>
+
+      <!-- RIGHT: chart full width -->
+      <div class="sqc-chart-col">
+        <div class="stock-chart-wrap">
+          <div class="stock-chart-header">
+            <span id="sq-chart-title">Price Chart</span>
+            <div class="chart-range-btns">
+              <button class="crng-btn active" onclick="loadStockChart('1d')">1D</button>
+              <button class="crng-btn" onclick="loadStockChart('5d')">5D</button>
+              <button class="crng-btn" onclick="loadStockChart('1mo')">1M</button>
+              <button class="crng-btn" onclick="loadStockChart('6mo')">6M</button>
+              <button class="crng-btn" onclick="loadStockChart('1y')">1Y</button>
+              <button class="crng-btn" onclick="loadStockChart('5y')">5Y</button>
+              <button class="crng-btn" onclick="loadStockChart('max')">ALL</button>
+            </div>
+          </div>
+          <canvas id="stock-chart" style="display:none;width:100%;height:320px;"></canvas>
+          <div id="stock-chart-msg" style="display:none;text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2974,7 +3027,8 @@ async function loadStockChart(range){
     }).filter(function(p){return p.close>0;});
     if(!prices.length) throw new Error('empty prices');
     if(canvas) canvas.style.display='block';
-    drawLineChart(canvas,prices,msg);
+    // Use rAF so canvas has correct layout dimensions before drawing
+    requestAnimationFrame(function(){drawLineChart(canvas,prices,msg);});
   }catch(e){
     if(msg){msg.style.display='block';msg.textContent='Chart unavailable';}
     console.warn('Stock chart:',e.message);
@@ -2986,55 +3040,68 @@ function drawLineChart(canvas,prices,msgEl){
   if(!canvas||!prices||prices.length<2)return;
   if(msgEl){msgEl.style.display='none';msgEl.textContent='';}
   canvas.style.display='block';
+  // Size to parent width, respect CSS height
   var parent=canvas.parentElement||document.body;
-  var W=parent.clientWidth||parent.offsetWidth||600;
-  var H=canvas.offsetHeight||200;
-  canvas.width=W;canvas.height=H;
+  var W=parent.clientWidth||parent.offsetWidth||800;
+  var H=canvas.offsetHeight||canvas.clientHeight||320;
+  if(H<80) H=320; // fallback if not yet laid out
+  canvas.width=W; canvas.height=H;
   var ctx=canvas.getContext('2d');
-  var PAD={top:18,right:12,bottom:32,left:70};
+  var PAD={top:22,right:16,bottom:36,left:74};
   var closes=prices.map(function(p){return +p.close;});
   var minV=Math.min.apply(null,closes),maxV=Math.max.apply(null,closes);
   var pad=(maxV-minV)*0.08||maxV*0.02||1;
-  minV-=pad;maxV+=pad;var rng=maxV-minV||1;
+  minV-=pad; maxV+=pad; var rng=maxV-minV||1;
   var isUp=closes[closes.length-1]>=closes[0];
   var lineClr=isUp?'#27a854':'#e03535';
   ctx.clearRect(0,0,W,H);
-  ctx.font='11px "DM Sans",system-ui,sans-serif';
-  ctx.fillStyle='rgba(120,100,70,0.65)';
-  ctx.strokeStyle='rgba(0,0,0,0.07)';
+  // Y-axis grid + labels
+  ctx.font='11.5px "DM Sans",system-ui,sans-serif';
+  ctx.fillStyle='rgba(100,80,50,0.6)';
+  ctx.strokeStyle='rgba(0,0,0,0.06)';
   ctx.lineWidth=1;
-  for(var g=0;g<=4;g++){
-    var gy=PAD.top+g*(H-PAD.top-PAD.bottom)/4;
-    var gv=maxV-g*(rng/4);
+  var numGridLines=5;
+  for(var g=0;g<=numGridLines;g++){
+    var gy=PAD.top+g*(H-PAD.top-PAD.bottom)/numGridLines;
+    var gv=maxV-g*(rng/numGridLines);
     ctx.beginPath();ctx.moveTo(PAD.left,gy);ctx.lineTo(W-PAD.right,gy);ctx.stroke();
-    var lbl=gv>=1000000?(gv/1000000).toFixed(2)+'M':gv>=10000?Math.round(gv).toLocaleString():gv>=1000?gv.toFixed(1):gv.toFixed(2);
-    ctx.textAlign='right';ctx.fillText(lbl,PAD.left-5,gy+4);
+    var lbl;
+    if(gv>=1000000) lbl=(gv/1000000).toFixed(2)+'M';
+    else if(gv>=10000) lbl=Math.round(gv).toLocaleString();
+    else if(gv>=1000) lbl=gv.toFixed(1);
+    else lbl=gv.toFixed(2);
+    ctx.textAlign='right'; ctx.fillText(lbl,PAD.left-7,gy+4);
   }
   var xOf=function(i){return PAD.left+(i/(prices.length-1||1))*(W-PAD.left-PAD.right);};
   var yOf=function(v){return PAD.top+(1-(v-minV)/rng)*(H-PAD.top-PAD.bottom);};
+  // Gradient fill
   var grad=ctx.createLinearGradient(0,PAD.top,0,H-PAD.bottom);
   grad.addColorStop(0,isUp?'rgba(39,168,84,0.18)':'rgba(224,53,53,0.14)');
   grad.addColorStop(1,'rgba(0,0,0,0)');
   ctx.beginPath();
   prices.forEach(function(p,i){i===0?ctx.moveTo(xOf(i),yOf(p.close)):ctx.lineTo(xOf(i),yOf(p.close));});
   ctx.lineTo(xOf(prices.length-1),H-PAD.bottom);ctx.lineTo(PAD.left,H-PAD.bottom);
-  ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+  ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+  // Price line
   ctx.beginPath();ctx.strokeStyle=lineClr;ctx.lineWidth=2;ctx.lineJoin='round';ctx.lineCap='round';
   prices.forEach(function(p,i){i===0?ctx.moveTo(xOf(i),yOf(p.close)):ctx.lineTo(xOf(i),yOf(p.close));});
   ctx.stroke();
-  ctx.beginPath();ctx.arc(xOf(prices.length-1),yOf(closes[closes.length-1]),3.5,0,Math.PI*2);
-  ctx.fillStyle=lineClr;ctx.fill();
-  ctx.fillStyle='rgba(120,100,70,0.65)';ctx.textAlign='center';
-  ctx.font='10.5px "DM Sans",system-ui,sans-serif';
+  // End dot
+  ctx.beginPath();ctx.arc(xOf(prices.length-1),yOf(closes[closes.length-1]),4,0,Math.PI*2);
+  ctx.fillStyle=lineClr; ctx.fill();
+  // X-axis date labels — 5 evenly spaced
+  ctx.fillStyle='rgba(100,80,50,0.6)'; ctx.textAlign='center';
+  ctx.font='11px "DM Sans",system-ui,sans-serif';
   var drawnX=[];
-  var picks=[];for(var ni=0;ni<5;ni++) picks.push(Math.round(ni*(prices.length-1)/4));
+  var picks=[];
+  for(var ni=0;ni<5;ni++) picks.push(Math.round(ni*(prices.length-1)/4));
   picks.forEach(function(li){
     if(li<0||li>=prices.length)return;
-    var lbl=prices[li].time||prices[li].date||'';if(!lbl)return;
+    var lbl=prices[li].time||prices[li].date||''; if(!lbl)return;
     var lx=xOf(li);
-    if(lx<PAD.left+8||lx>W-PAD.right-8)return;
-    for(var di=0;di<drawnX.length;di++){if(Math.abs(drawnX[di]-lx)<55)return;}
-    ctx.fillText(lbl,lx,H-PAD.bottom+14);drawnX.push(lx);
+    if(lx<PAD.left+10||lx>W-PAD.right-10)return;
+    for(var di=0;di<drawnX.length;di++){if(Math.abs(drawnX[di]-lx)<58)return;}
+    ctx.fillText(lbl,lx,H-PAD.bottom+16); drawnX.push(lx);
   });
 }
 
@@ -3136,7 +3203,7 @@ async function loadCountryIndex(range){
         }
         return {close:p.close,date:lbl,time:lbl};
       });
-      drawLineChart(canvas,prices,msgEl);
+      requestAnimationFrame(function(){drawLineChart(canvas,prices,msgEl);});
     }
     document.querySelectorAll('.idx-rng').forEach(function(b){b.classList.toggle('active',b.dataset.r===range);});
   }catch(e){
