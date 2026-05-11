@@ -3135,17 +3135,22 @@ async function loadCountryIndex(range){
   if(canvas)canvas.style.opacity='0.3';
   var IV={'1d':'5m','5d':'60m','1mo':'1d','6mo':'1wk','1y':'1mo','5y':'3mo','max':'3mo'};
   var FB={};FB['^DSMDX']=['^DSMDX','^QSI'];
-  FB['^TASI']=['^TASI','2222.SR'];
-  FB['^DFMGI']=['^DFMGI','^ADX','EMAAR.DU'];
-  FB['^EGX30']=['^EGX30','COMI.CA'];
-  FB['^FTSEMIB']=['^FTSEMIB','ENI.MI'];
-  FB['^OSEAX']=['^OSEAX','^OBX','EQNR.OL'];
-  FB['^XU100']=['^XU100','GARAN.IS'];
-  FB['^J203']=['^J203','NPN.JO'];
+  // ^ index symbols — try index first, then liquid equity fallback (equity works via corsproxy)
+  FB['^DSMDX']=['^DSMDX','QNBK.QA','CBQK.QA'];
+  FB['^TASI']=['^TASI','2222.SR','1120.SR'];
+  FB['^DFMGI']=['^DFMGI','EMAAR.DU','DIB.DU'];
+  FB['^EGX30']=['^EGX30','COMI.CA','HRHO.CA'];
+  FB['^FTSEMIB']=['^FTSEMIB','ENI.MI','RACE.MI'];
+  FB['^OSEAX']=['^OSEAX','EQNR.OL','DNB.OL'];
+  FB['^XU100']=['^XU100','GARAN.IS','THYAO.IS'];
+  FB['^J203']=['^J203','NPN.JO','MTN.JO'];
+  FB['^DSEX']=['^DSEX','GRAMEEN.DSE'];
+  FB['^KSE100']=['^KSE100','OGDC.KA','HBL.KA'];
   var symsToTry=FB[info.sym]||[info.sym];
   var data=null;
+  var usedSym=symsToTry[0];
   for(var si=0;si<symsToTry.length;si++){
-    try{var d=await fnFetch({sym:symsToTry[si],range:range,interval:IV[range]||'1d'},14000);if(d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketPrice){data=d;break;}}catch(e){console.warn('idx',symsToTry[si],e.message);}
+    try{var d=await fnFetch({sym:symsToTry[si],range:range,interval:IV[range]||'1d'},14000);if(d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketPrice){data=d;usedSym=symsToTry[si];break;}}catch(e){console.warn('idx',symsToTry[si],e.message);}
   }
   try{
     if(!data)throw new Error('no data');
@@ -3159,6 +3164,7 @@ async function loadCountryIndex(range){
     if(!price)throw new Error('no price');
     var prev=meta.chartPreviousClose||closes[0]||price,chgPct=prev?((price-prev)/prev)*100:0,isUp=chgPct>=0;
     if(priceEl)priceEl.textContent=(+price).toLocaleString(undefined,{maximumFractionDigits:2});
+    if(nameEl&&usedSym&&usedSym.charAt(0)!=='^'){var nm2=meta.shortName||meta.longName||usedSym.replace(/\.[A-Z]+$/,'');nameEl.textContent=nm2;}
     if(curEl)curEl.textContent=meta.currency||'';
     if(chgEl){chgEl.textContent=(isUp?'+ ':'-')+Math.abs(chgPct).toFixed(2)+'%';chgEl.style.color=isUp?'var(--up)':'var(--down)';}
     var card=document.getElementById('country-idx-card');
