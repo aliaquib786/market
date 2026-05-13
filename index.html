@@ -1981,6 +1981,36 @@ async function fetchGoldPrice(symbol){
   }
 }
 
+async function fetchCrudeOilPrice(symbol){
+  // Primary: gold-api.com supports XTI (WTI) and XBR (Brent)
+  const goldApiPromise = fetchWithTimeout('https://api.gold-api.com/price/'+symbol,5000)
+    .then(function(d){
+      if(!d||!d.price||d.price<=0) throw new Error('bad data');
+      if(d.price<20||d.price>200) throw new Error('out of range:'+d.price);
+      return d;
+    });
+  // Fallback: Yahoo Finance futures via corsproxy
+  var yfSym = symbol==='XTI'?'CL%3DF':'BZ%3DF';
+  var yfUrl = 'https://query1.finance.yahoo.com/v8/finance/chart/'+yfSym+'?interval=1d&range=5d';
+  var CP = 'https://corsproxy.io/?';
+  var yfPromise = fetch(CP+encodeURIComponent(yfUrl))
+    .then(function(r){return r.text();})
+    .then(function(t){
+      var d; try{var j=JSON.parse(t);d=j.contents?JSON.parse(j.contents):j;}catch(e){throw new Error('parse');}
+      var price=d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketPrice;
+      var chp=d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketChangePercent||0;
+      if(!price||price<20||price>200) throw new Error('YF bad price:'+price);
+      return {price:+price,ch:0,chp:+chp};
+    });
+  try{
+    return await Promise.any([goldApiPromise,yfPromise]);
+  }catch(e){
+    console.warn(symbol,'crude fetch failed:',e.message);
+    return FALLBACK_PRICES[symbol]||{price:symbol==='XTI'?62.50:65.80,ch:0,chp:0};
+  }
+}
+
+
 async function fetchAll(){
   const dot=$('dot'), lbl=$('live-lbl'), err=$('errbar');
   dot.className='dot';
@@ -1989,10 +2019,18 @@ async function fetchAll(){
     const symMap = {gold:'XAU',silver:'XAG',copper:'HG',platinum:'XPT',wti:'XTI',brent:'XBR'};
 
     // ── Step 1: Fetch live prices + prev closes IN PARALLEL ──
-    const [priceResults, prevCloses] = await Promise.all([
+    const metalMap = {gold:'XAU',silver:'XAG',copper:'HG',platinum:'XPT'};
+    const crudeMap = {wti:'XTI',brent:'XBR'};
+    const [priceResults, crudeResults, prevCloses] = await Promise.all([
       Promise.all(
-        Object.entries(symMap).map(async ([key,sym]) => {
+        Object.entries(metalMap).map(async ([key,sym]) => {
           try{ return [key, await fetchGoldPrice(sym)]; }
+          catch(e){ return [key, FALLBACK_PRICES[sym]||{price:0,ch:0,chp:0}]; }
+        })
+      ),
+      Promise.all(
+        Object.entries(crudeMap).map(async ([key,sym]) => {
+          try{ return [key, await fetchCrudeOilPrice(sym)]; }
           catch(e){ return [key, FALLBACK_PRICES[sym]||{price:0,ch:0,chp:0}]; }
         })
       ),
@@ -2000,6 +2038,7 @@ async function fetchAll(){
     ]);
 
     priceResults.forEach(([key,val]) => { P[key] = val; });
+    crudeResults.forEach(([key,val]) => { P[key] = val; });
 
     // ── Step 2: Apply prev close and calculate day change ──
     Object.entries(symMap).forEach(([key])=>{
