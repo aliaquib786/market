@@ -322,6 +322,8 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
   background:var(--bg);border-top:.5px solid var(--border);
   z-index:50;safe-area-inset-bottom:env(safe-area-inset-bottom);
   padding-bottom:env(safe-area-inset-bottom);
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .mob-nav-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
@@ -544,7 +546,7 @@ footer{border-top:.5px solid var(--border);padding:.9rem 2rem;display:flex;justi
 
   /* Tab bar + mobile nav */
   .tabs{display:flex!important;}
-  .mob-nav{display:none!important;}
+  .mob-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   body{padding-bottom:0!important;}
 
   /* ── Strip: full width with gutter, always fills ── */
@@ -874,7 +876,7 @@ document.head.appendChild(_link);
   <div class="tab"        data-m="silver"    onclick="switchTab('silver')">Silver</div>
   <div class="tab"        data-m="copper"    onclick="switchTab('copper')">Copper</div>
   <div class="tab"        data-m="platinum"  onclick="switchTab('platinum')">Platinum</div>
-  <div class="tab"        data-m="oil"        onclick="switchTab('oil')">&#x1F6E2; Crude Oil</div>
+  <div class="tab"        data-m="oil"        onclick="switchTab('oil')">🛢️ Oil</div>
   <div class="tab"        data-m="stocks"    onclick="switchTab('stocks')"><span style="font-size:.9em">📈</span> Stocks</div>
   <div class="tab"        data-m="currency"  onclick="switchTab('currency')">💱 Currency</div>
 </div>
@@ -1982,32 +1984,51 @@ async function fetchGoldPrice(symbol){
 }
 
 async function fetchCrudeOilPrice(symbol){
-  // Primary: gold-api.com supports XTI (WTI) and XBR (Brent)
+  var yfSym = symbol==='XTI'?'CL%3DF':'BZ%3DF';
+  var CP = 'https://corsproxy.io/?';
+  // Fetch 5-day daily data to get current price + prev close for % change
+  var yfUrl5d = 'https://query1.finance.yahoo.com/v8/finance/chart/'+yfSym+'?interval=1d&range=5d';
+  var yfPromise = fetch(CP+encodeURIComponent(yfUrl5d))
+    .then(function(r){return r.text();})
+    .then(function(t){
+      var d; try{var j=JSON.parse(t);d=j.contents?JSON.parse(j.contents):j;}catch(e){throw new Error('parse');}
+      var meta=d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta;
+      var closes=d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].indicators&&d.chart.result[0].indicators.quote&&d.chart.result[0].indicators.quote[0]&&d.chart.result[0].indicators.quote[0].close||[];
+      var price=meta&&meta.regularMarketPrice;
+      if(!price||price<20||price>200) throw new Error('YF bad price:'+price);
+      // Calculate change from previous close
+      var prev=meta.chartPreviousClose||meta.previousClose||closes.filter(function(v){return v&&v>0;}).slice(-2)[0]||price;
+      var ch=price-prev;
+      var chp=prev?((ch/prev)*100):0;
+      return {price:+price,ch:+ch,chp:+chp,prevClose:+prev};
+    });
+  // Primary: gold-api.com (gets live price, chp may be 0)
   const goldApiPromise = fetchWithTimeout('https://api.gold-api.com/price/'+symbol,5000)
     .then(function(d){
       if(!d||!d.price||d.price<=0) throw new Error('bad data');
       if(d.price<20||d.price>200) throw new Error('out of range:'+d.price);
-      return d;
+      // gold-api returns ch/chp but they may be 0 — keep them
+      return {price:+d.price,ch:+(d.ch||0),chp:+(d.chp||0)};
     });
-  // Fallback: Yahoo Finance futures via corsproxy
-  var yfSym = symbol==='XTI'?'CL%3DF':'BZ%3DF';
-  var yfUrl = 'https://query1.finance.yahoo.com/v8/finance/chart/'+yfSym+'?interval=1d&range=5d';
-  var CP = 'https://corsproxy.io/?';
-  var yfPromise = fetch(CP+encodeURIComponent(yfUrl))
-    .then(function(r){return r.text();})
-    .then(function(t){
-      var d; try{var j=JSON.parse(t);d=j.contents?JSON.parse(j.contents):j;}catch(e){throw new Error('parse');}
-      var price=d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketPrice;
-      var chp=d&&d.chart&&d.chart.result&&d.chart.result[0]&&d.chart.result[0].meta&&d.chart.result[0].meta.regularMarketChangePercent||0;
-      if(!price||price<20||price>200) throw new Error('YF bad price:'+price);
-      return {price:+price,ch:0,chp:+chp};
-    });
-  try{
-    return await Promise.any([goldApiPromise,yfPromise]);
-  }catch(e){
+  var result;
+  try {
+    // Race both — first valid wins
+    result = await Promise.any([goldApiPromise, yfPromise]);
+  } catch(e) {
     console.warn(symbol,'crude fetch failed:',e.message);
-    return FALLBACK_PRICES[symbol]||{price:symbol==='XTI'?62.50:65.80,ch:0,chp:0};
+    result = FALLBACK_PRICES[symbol]||{price:symbol==='XTI'?62.50:65.80,ch:0,chp:0};
   }
+  // If we got a result but chp is still 0, try to get chp from YF separately
+  if(result && (!result.chp || result.chp===0)) {
+    try {
+      var yfResult = await yfPromise;
+      if(yfResult && yfResult.chp) {
+        result.ch  = yfResult.ch;
+        result.chp = yfResult.chp;
+      }
+    } catch(e) {}
+  }
+  return result;
 }
 
 
@@ -2048,11 +2069,16 @@ async function fetchAll(){
         metal.prevClose = prev;
         metal.ch  = metal.price - prev;
         metal.chp = (metal.ch / prev) * 100;
-        // Weekend/holiday: price same as prev close → show as market closed
         if(Math.abs(metal.chp) < 0.01){
           metal.ch = 0; metal.chp = 0; metal.marketClosed = true;
         }
       }
+    });
+    // Crude oil: chp already calculated in fetchCrudeOilPrice
+    // but apply marketClosed if change is near zero
+    ['wti','brent'].forEach(function(key){
+      var c=P[key]; if(!c||!c.price) return;
+      if(Math.abs(c.chp||0) < 0.001){ c.marketClosed=true; }
     });
 
     // Check if we got real data (price > 0)
@@ -3422,6 +3448,9 @@ setTimeout(()=>{ const l=$('load'); if(l) l.classList.add('hidden'); }, 3000);
   </button>
   <button class="mob-nav-item" data-m="platinum"  onclick="switchTab('platinum')">
     <span class="mob-nav-icon">💎</span>Plat
+  </button>
+  <button class="mob-nav-item" data-m="oil" onclick="switchTab('oil')">
+    <span class="mob-nav-icon">🛢️</span>Oil
   </button>
   <button class="mob-nav-item" data-m="stocks" onclick="switchTab('stocks')">
     <span class="mob-nav-icon">📈</span>Stocks
