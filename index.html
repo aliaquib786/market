@@ -1320,7 +1320,7 @@ document.head.appendChild(_link);
         <div class="ohc-sub">Brent North Sea &bull; Global benchmark</div>
       </div>
     </div>
-    <div class="oil-note">Pump prices are estimates based on live crude oil cost + local taxes &amp; retail margins. Actual prices vary by station and grade.</div>
+    <div class="oil-note">Pump prices from <strong>GlobalPetrolPrices.com</strong> (May 2026). Octane 95 or nearest equivalent. Converted to your selected currency using live FX rates.</div>
     <div class="oil-section-title">&#x26FD; Petrol pump price &mdash; per litre <span id="oil-cur-lbl" style="color:var(--gold);margin-left:.3rem"></span></div>
     <div id="oil-country-list"><div style="color:var(--muted);font-size:.8rem;padding:1rem;grid-column:1/-1;text-align:center">Loading&#x2026;</div></div>
   </div></div>
@@ -2173,12 +2173,12 @@ function render(){
     var curLbl=$('oil-cur-lbl'); if(curLbl) curLbl.textContent='('+activeCur+')';
     var cplEl=$('oil-country-list');
     if(cplEl&&typeof PETROL_COUNTRIES!=='undefined'){
-      var wtiPerLitre=wtiUsd/LITRES_PER_BARREL;
+      // Real pump prices from GlobalPetrolPrices.com (May 2026)
+      // Convert USD price to user's selected currency via FX rates
       var rows='';
       for(var oi=0;oi<PETROL_COUNTRIES.length;oi++){
         var oc=PETROL_COUNTRIES[oi];
-        var pumpUsd=wtiPerLitre*oc.margin+oc.tax;
-        var pumpLocal=pumpUsd*fx;
+        var pumpLocal=oc.usd*fx;
         var pumpFmt=oilSym+(+pumpLocal).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
         rows+='<div class="oil-country-card">'
           +'<div class="occ-flag"><img src="https://flagcdn.com/24x18/'+oc.flag+'.png" alt="'+oc.cc+'" loading="lazy" onerror="this.style.display=\'none\'"></div>'
@@ -2692,50 +2692,78 @@ const COUNTRY_TO_MARKET={QA:'QA',SA:'SR',AE:'AE',KW:'SR',BH:'SR',OM:'SR',EG:'EG'
 const MARKET_INDEX={QA:{sym:'^DSMDX',name:'QSE Index'},SR:{sym:'^TASI',name:'Tadawul TASI'},AE:{sym:'^DFMGI',name:'DFM Index'},NSE:{sym:'^NSEI',name:'NIFTY 50'},PK:{sym:'^KSE100',name:'KSE-100'},US:{sym:'^GSPC',name:'S&P 500'},TO:{sym:'^GSPTSE',name:'TSX Composite'},MX:{sym:'^MXX',name:'IPC Mexico'},SA:{sym:'^BVSP',name:'Bovespa'},L:{sym:'^FTSE',name:'FTSE 100'},DE:{sym:'^GDAXI',name:'DAX 40'},FR:{sym:'^FCHI',name:'CAC 40'},CH:{sym:'^SSMI',name:'SMI'},NS:{sym:'^AEX',name:'AEX'},SE:{sym:'^OMX',name:'OMX Stockholm'},NO:{sym:'^OSEAX',name:'Oslo Bors'},ES:{sym:'^IBEX',name:'IBEX 35'},IT:{sym:'^FTSEMIB',name:'FTSE MIB'},TR:{sym:'^XU100',name:'BIST 100'},HK:{sym:'^HSI',name:'Hang Seng'},T:{sym:'^N225',name:'Nikkei 225'},KS:{sym:'^KS11',name:'KOSPI'},TW:{sym:'^TWII',name:'TAIEX'},SN:{sym:'^STI',name:'Straits Times'},AX:{sym:'^AXJO',name:'ASX 200'},MY:{sym:'^KLSE',name:'KLCI'},TH:{sym:'^SET',name:'SET Thailand'},ZA:{sym:'^J203',name:'JSE All Share'},EG:{sym:'^EGX30',name:'EGX 30'},BD:{sym:'^DSEX',name:'DSEX'}};
 
 const LITRES_PER_BARREL=158.987;
+// Pump prices: GlobalPetrolPrices.com, May 2026. USD/litre, Octane 95 equivalent.
 const PETROL_COUNTRIES=[
-  {cc:'QA',name:'Qatar',flag:'qa',tax:0.03,margin:1.05,label:'Super 95'},
-  {cc:'AE',name:'UAE',flag:'ae',tax:0.05,margin:1.08,label:'Special 95'},
-  {cc:'SA',name:'Saudi Arabia',flag:'sa',tax:0.04,margin:1.04,label:'Gasoline 91'},
-  {cc:'KW',name:'Kuwait',flag:'kw',tax:0.03,margin:1.03,label:'Gasoline 95'},
-  {cc:'BH',name:'Bahrain',flag:'bh',tax:0.04,margin:1.06,label:'Unleaded 95'},
-  {cc:'OM',name:'Oman',flag:'om',tax:0.05,margin:1.07,label:'Premium 95'},
-  {cc:'IQ',name:'Iraq',flag:'iq',tax:0.02,margin:1.03,label:'Regular'},
-  {cc:'EG',name:'Egypt',flag:'eg',tax:0.12,margin:1.15,label:'Octane 92'},
-  {cc:'JO',name:'Jordan',flag:'jo',tax:0.18,margin:1.20,label:'Unleaded 95'},
-  {cc:'IN',name:'India',flag:'in',tax:0.38,margin:1.45,label:'Petrol'},
-  {cc:'PK',name:'Pakistan',flag:'pk',tax:0.22,margin:1.25,label:'Petrol'},
-  {cc:'BD',name:'Bangladesh',flag:'bd',tax:0.20,margin:1.22,label:'Octane'},
-  {cc:'LK',name:'Sri Lanka',flag:'lk',tax:0.25,margin:1.30,label:'Petrol'},
-  {cc:'CN',name:'China',flag:'cn',tax:0.35,margin:1.40,label:'No.92'},
-  {cc:'JP',name:'Japan',flag:'jp',tax:0.52,margin:1.55,label:'Regular'},
-  {cc:'KR',name:'South Korea',flag:'kr',tax:0.58,margin:1.60,label:'Gasoline'},
-  {cc:'SG',name:'Singapore',flag:'sg',tax:0.55,margin:1.58,label:'RON 95'},
-  {cc:'MY',name:'Malaysia',flag:'my',tax:0.08,margin:1.10,label:'RON 95'},
-  {cc:'TH',name:'Thailand',flag:'th',tax:0.30,margin:1.35,label:'Gasohol 91'},
-  {cc:'ID',name:'Indonesia',flag:'id',tax:0.15,margin:1.18,label:'Pertalite'},
-  {cc:'PH',name:'Philippines',flag:'ph',tax:0.28,margin:1.32,label:'Unleaded'},
-  {cc:'US',name:'USA',flag:'us',tax:0.14,margin:1.18,label:'Regular'},
-  {cc:'CA',name:'Canada',flag:'ca',tax:0.28,margin:1.30,label:'Regular'},
-  {cc:'MX',name:'Mexico',flag:'mx',tax:0.15,margin:1.20,label:'Magna'},
-  {cc:'BR',name:'Brazil',flag:'br',tax:0.32,margin:1.38,label:'Gasolina'},
-  {cc:'AR',name:'Argentina',flag:'ar',tax:0.18,margin:1.22,label:'Regular'},
-  {cc:'GB',name:'UK',flag:'gb',tax:0.82,margin:1.80,label:'Unleaded'},
-  {cc:'DE',name:'Germany',flag:'de',tax:0.75,margin:1.75,label:'Super E5'},
-  {cc:'FR',name:'France',flag:'fr',tax:0.78,margin:1.78,label:'SP95'},
-  {cc:'IT',name:'Italy',flag:'it',tax:0.77,margin:1.77,label:'Benzina'},
-  {cc:'ES',name:'Spain',flag:'es',tax:0.62,margin:1.65,label:'Gasolina 95'},
-  {cc:'NL',name:'Netherlands',flag:'nl',tax:0.88,margin:1.85,label:'Euro 95'},
-  {cc:'TR',name:'Turkey',flag:'tr',tax:0.70,margin:1.72,label:'Benzin 95'},
-  {cc:'NO',name:'Norway',flag:'no',tax:0.95,margin:1.90,label:'Blyfri 95'},
-  {cc:'SE',name:'Sweden',flag:'se',tax:0.85,margin:1.82,label:'Bensin 95'},
-  {cc:'CH',name:'Switzerland',flag:'ch',tax:0.60,margin:1.62,label:'Bleifrei 95'},
-  {cc:'PL',name:'Poland',flag:'pl',tax:0.60,margin:1.63,label:'Pb 95'},
-  {cc:'ZA',name:'South Africa',flag:'za',tax:0.38,margin:1.42,label:'Unleaded 95'},
-  {cc:'NG',name:'Nigeria',flag:'ng',tax:0.05,margin:1.06,label:'PMS'},
-  {cc:'KE',name:'Kenya',flag:'ke',tax:0.35,margin:1.40,label:'Super'},
-  {cc:'AU',name:'Australia',flag:'au',tax:0.42,margin:1.45,label:'Unleaded 91'},
-  {cc:'NZ',name:'New Zealand',flag:'nz',tax:0.48,margin:1.50,label:'91'},
+  // ── Middle East ──
+  {cc:'QA',name:'Qatar',flag:'qa',usd:0.562,label:'Super 95'},
+  {cc:'SA',name:'Saudi Arabia',flag:'sa',usd:0.621,label:'Gasoline 91'},
+  {cc:'AE',name:'UAE',flag:'ae',usd:0.893,label:'Special 95'},
+  {cc:'KW',name:'Kuwait',flag:'kw',usd:0.34,label:'Gasoline 95'},
+  {cc:'BH',name:'Bahrain',flag:'bh',usd:0.531,label:'Unleaded 95'},
+  {cc:'OM',name:'Oman',flag:'om',usd:0.621,label:'Premium 95'},
+  {cc:'IQ',name:'Iraq',flag:'iq',usd:0.649,label:'Regular'},
+  {cc:'EG',name:'Egypt',flag:'eg',usd:0.458,label:'Octane 92'},
+  {cc:'JO',name:'Jordan',flag:'jo',usd:1.551,label:'Unleaded 95'},
+  {cc:'LB',name:'Lebanon',flag:'lb',usd:1.015,label:'Unleaded'},
+  // ── Asia Pacific ──
+  {cc:'IN',name:'India',flag:'in',usd:1.12,label:'Petrol'},
+  {cc:'PK',name:'Pakistan',flag:'pk',usd:0.902,label:'Petrol'},
+  {cc:'BD',name:'Bangladesh',flag:'bd',usd:1.026,label:'Octane'},
+  {cc:'LK',name:'Sri Lanka',flag:'lk',usd:1.255,label:'Petrol'},
+  {cc:'CN',name:'China',flag:'cn',usd:1.06,label:'No.92'},
+  {cc:'JP',name:'Japan',flag:'jp',usd:1.142,label:'Regular'},
+  {cc:'KR',name:'South Korea',flag:'kr',usd:1.27,label:'Gasoline'},
+  {cc:'SG',name:'Singapore',flag:'sg',usd:2.03,label:'RON 95'},
+  {cc:'MY',name:'Malaysia',flag:'my',usd:0.44,label:'RON 95'},
+  {cc:'TH',name:'Thailand',flag:'th',usd:1.09,label:'Gasohol 95'},
+  {cc:'ID',name:'Indonesia',flag:'id',usd:0.791,label:'Pertalite'},
+  {cc:'PH',name:'Philippines',flag:'ph',usd:1.095,label:'Unleaded'},
+  {cc:'VN',name:'Vietnam',flag:'vn',usd:0.95,label:'RON 95'},
+  {cc:'TW',name:'Taiwan',flag:'tw',usd:0.98,label:'Unleaded 92'},
+  {cc:'HK',name:'Hong Kong',flag:'hk',usd:4.134,label:'Unleaded'},
+  {cc:'AU',name:'Australia',flag:'au',usd:1.028,label:'Unleaded 91'},
+  {cc:'NZ',name:'New Zealand',flag:'nz',usd:1.56,label:'Unleaded 91'},
+  // ── Americas ──
+  {cc:'US',name:'USA',flag:'us',usd:1.175,label:'Regular'},
+  {cc:'CA',name:'Canada',flag:'ca',usd:1.28,label:'Regular'},
+  {cc:'MX',name:'Mexico',flag:'mx',usd:1.04,label:'Magna'},
+  {cc:'BR',name:'Brazil',flag:'br',usd:1.15,label:'Gasolina'},
+  {cc:'AR',name:'Argentina',flag:'ar',usd:1.168,label:'Regular'},
+  {cc:'CL',name:'Chile',flag:'cl',usd:1.21,label:'Regular 93'},
+  {cc:'CO',name:'Colombia',flag:'co',usd:0.93,label:'Corriente'},
+  {cc:'EC',name:'Ecuador',flag:'ec',usd:0.55,label:'Extra'},
+  // ── Europe ──
+  {cc:'GB',name:'UK',flag:'gb',usd:1.82,label:'Unleaded'},
+  {cc:'DE',name:'Germany',flag:'de',usd:1.75,label:'Super E5'},
+  {cc:'FR',name:'France',flag:'fr',usd:1.79,label:'SP95'},
+  {cc:'IT',name:'Italy',flag:'it',usd:1.848,label:'Benzina'},
+  {cc:'ES',name:'Spain',flag:'es',usd:1.589,label:'Gasolina 95'},
+  {cc:'NL',name:'Netherlands',flag:'nl',usd:1.89,label:'Euro 95'},
+  {cc:'BE',name:'Belgium',flag:'be',usd:1.72,label:'Euro 95'},
+  {cc:'PT',name:'Portugal',flag:'pt',usd:1.805,label:'Gasolina 95'},
+  {cc:'CH',name:'Switzerland',flag:'ch',usd:1.68,label:'Bleifrei 95'},
+  {cc:'AT',name:'Austria',flag:'at',usd:1.569,label:'Super 95'},
+  {cc:'SE',name:'Sweden',flag:'se',usd:1.524,label:'Bensin 95'},
+  {cc:'NO',name:'Norway',flag:'no',usd:1.903,label:'Blyfri 95'},
+  {cc:'DK',name:'Denmark',flag:'dk',usd:1.9,label:'Blyfri 95'},
+  {cc:'PL',name:'Poland',flag:'pl',usd:1.48,label:'Pb 95'},
+  {cc:'CZ',name:'Czech Rep',flag:'cz',usd:1.48,label:'Natural 95'},
+  {cc:'TR',name:'Turkey',flag:'tr',usd:1.26,label:'Benzin 95'},
+  {cc:'GR',name:'Greece',flag:'gr',usd:1.84,label:'Amolivdh 95'},
+  {cc:'RU',name:'Russia',flag:'ru',usd:0.58,label:'AI-95'},
+  {cc:'IE',name:'Ireland',flag:'ie',usd:1.812,label:'Unleaded'},
+  // ── Africa ──
+  {cc:'ZA',name:'South Africa',flag:'za',usd:1.13,label:'Unleaded 95'},
+  {cc:'NG',name:'Nigeria',flag:'ng',usd:0.769,label:'PMS'},
+  {cc:'KE',name:'Kenya',flag:'ke',usd:1.351,label:'Super'},
+  {cc:'GH',name:'Ghana',flag:'gh',usd:1.02,label:'Super'},
+  {cc:'MA',name:'Morocco',flag:'ma',usd:1.38,label:'Sans Plomb 95'},
+  {cc:'DZ',name:'Algeria',flag:'dz',usd:0.356,label:'Sans Plomb'},
+  {cc:'TN',name:'Tunisia',flag:'tn',usd:0.876,label:'Sans Plomb 95'},
+  {cc:'TZ',name:'Tanzania',flag:'tz',usd:1.21,label:'Super'},
+  {cc:'ET',name:'Ethiopia',flag:'et',usd:1.12,label:'Petrol'},
 ];
+
 const EXCHANGE_SUFFIX={US:[],NSE:['.NS','.BO'],QA:['.QA'],SR:['.SR'],AE:['.AD','.DU'],L:['.L'],DE:['.DE'],HK:['.HK'],T:['.T'],AX:['.AX'],TO:['.TO'],SA:['.SA'],SN:['.SI'],KS:['.KS'],TW:['.TW'],NS:['.AS'],FR:['.PA'],ES:['.MC'],IT:['.MI'],MX:['.MX'],ZA:['.JO'],EG:['.CA'],MY:['.KL'],TH:['.BK'],TR:['.IS'],CH:['.SW'],SE:['.ST'],NO:['.OL'],PK:['.KA'],BD:['.DSE']};
 const COUNTRY_STOCKS={US:[{t:'AAPL',n:'Apple'},{t:'AMD',n:'AMD'},{t:'AMZN',n:'Amazon'},{t:'BA',n:'Boeing'},{t:'GS',n:'Goldman'},{t:'GOOGL',n:'Alphabet'},{t:'INTC',n:'Intel'},{t:'JPM',n:'JPMorgan'},{t:'MA',n:'Mastercard'},{t:'META',n:'Meta'},{t:'MSFT',n:'Microsoft'},{t:'NFLX',n:'Netflix'},{t:'NVDA',n:'NVIDIA'},{t:'PG',n:'P&G'},{t:'PLTR',n:'Palantir'},{t:'TSLA',n:'Tesla'},{t:'UBER',n:'Uber'},{t:'V',n:'Visa'},{t:'WMT',n:'Walmart'},{t:'XOM',n:'ExxonMobil'}],NSE:[{t:'ADANIENT',n:'Adani'},{t:'AXISBANK',n:'Axis Bank'},{t:'BAJFINANCE',n:'Bajaj Finance'},{t:'BHARTIARTL',n:'Airtel'},{t:'HDFCBANK',n:'HDFC Bank'},{t:'HINDUNILVR',n:'HUL'},{t:'ICICIBANK',n:'ICICI Bank'},{t:'INFY',n:'Infosys'},{t:'ITC',n:'ITC'},{t:'KOTAKBANK',n:'Kotak Bank'},{t:'LT',n:'L&T'},{t:'MARUTI',n:'Maruti Suzuki'},{t:'RELIANCE',n:'Reliance'},{t:'SBIN',n:'SBI'},{t:'SUNPHARMA',n:'Sun Pharma'},{t:'TATAMOTORS',n:'Tata Motors'},{t:'TCS',n:'TCS'},{t:'TITAN',n:'Titan'},{t:'WIPRO',n:'Wipro'},{t:'ZOMATO',n:'Zomato'}],QA:[{t:'QNBK.QA',n:'QNB Group'},{t:'CBQK.QA',n:'Commercial Bank'},{t:'IQCD.QA',n:'Industries Qatar'},{t:'ORDS.QA',n:'Ooredoo'},{t:'MARK.QA',n:'Masraf Al Rayan'},{t:'BRES.QA',n:'Barwa'},{t:'QEWS.QA',n:'Qatar Electricity'},{t:'QFLS.QA',n:'Woqod'},{t:'QIIK.QA',n:'QIIB'},{t:'DHBK.QA',n:'Doha Bank'},{t:'AKHI.QA',n:'Al Khalij'},{t:'ABQK.QA',n:'Ahlibank'},{t:'QATI.QA',n:'Qatar Insurance'},{t:'GWCS.QA',n:'Gulf Warehousing'}],SR:[{t:'2222.SR',n:'Aramco'},{t:'1120.SR',n:'Al Rajhi'},{t:'7010.SR',n:'STC'},{t:'2010.SR',n:'SABIC'},{t:'1211.SR',n:'Maaden'},{t:'1010.SR',n:'Riyad Bank'},{t:'1050.SR',n:'SABB'},{t:'4261.SR',n:'Jarir'},{t:'4008.SR',n:'Nahdi'},{t:'2380.SR',n:'Petro Rabigh'},{t:'1180.SR',n:'Al Jazira'},{t:'1020.SR',n:'Saudi Fransi'}],AE:[{t:'FAB.AD',n:'First Abu Dhabi'},{t:'ADNOCDIST.AD',n:'ADNOC'},{t:'ALDAR.AD',n:'Aldar'},{t:'IHC.AD',n:'IHC'},{t:'ADIB.AD',n:'ADIB'},{t:'ETISALAT.AD',n:'e& Etisalat'},{t:'DIB.DU',n:'Dubai Islamic'},{t:'EMAAR.DU',n:'Emaar'},{t:'DU.DU',n:'du Telecom'},{t:'ENBD.DU',n:'Emirates NBD'},{t:'DEWA.DU',n:'DEWA'},{t:'SALIK.DU',n:'Salik'}],L:[{t:'HSBA.L',n:'HSBC'},{t:'BP.L',n:'BP'},{t:'SHEL.L',n:'Shell'},{t:'AZN.L',n:'AstraZeneca'},{t:'ULVR.L',n:'Unilever'},{t:'GSK.L',n:'GSK'},{t:'RIO.L',n:'Rio Tinto'},{t:'BARC.L',n:'Barclays'},{t:'LLOY.L',n:'Lloyds'},{t:'VOD.L',n:'Vodafone'}],DE:[{t:'SAP.DE',n:'SAP'},{t:'SIE.DE',n:'Siemens'},{t:'BAYN.DE',n:'Bayer'},{t:'BMW.DE',n:'BMW'},{t:'VOW3.DE',n:'Volkswagen'},{t:'DTE.DE',n:'Deutsche Telekom'},{t:'ALV.DE',n:'Allianz'},{t:'ADS.DE',n:'Adidas'},{t:'BAS.DE',n:'BASF'},{t:'DBK.DE',n:'Deutsche Bank'}],HK:[{t:'0700.HK',n:'Tencent'},{t:'0941.HK',n:'China Mobile'},{t:'1299.HK',n:'AIA'},{t:'1810.HK',n:'Xiaomi'},{t:'9988.HK',n:'Alibaba'},{t:'3690.HK',n:'Meituan'},{t:'0388.HK',n:'HKEX'}],T:[{t:'7203.T',n:'Toyota'},{t:'6758.T',n:'Sony'},{t:'9984.T',n:'SoftBank'},{t:'6861.T',n:'Keyence'},{t:'8306.T',n:'Mitsubishi UFJ'},{t:'7974.T',n:'Nintendo'}],KS:[{t:'005930.KS',n:'Samsung'},{t:'000660.KS',n:'SK Hynix'},{t:'005380.KS',n:'Hyundai'},{t:'035420.KS',n:'NAVER'}],TW:[{t:'2330.TW',n:'TSMC'},{t:'2317.TW',n:'Foxconn'},{t:'2454.TW',n:'MediaTek'}],SN:[{t:'D05.SI',n:'DBS'},{t:'O39.SI',n:'OCBC'},{t:'U11.SI',n:'UOB'},{t:'Z74.SI',n:'SingTel'}],AX:[{t:'CBA.AX',n:'Commonwealth Bank'},{t:'BHP.AX',n:'BHP'},{t:'CSL.AX',n:'CSL'},{t:'NAB.AX',n:'NAB'},{t:'WBC.AX',n:'Westpac'},{t:'MQG.AX',n:'Macquarie'}],TO:[{t:'RY.TO',n:'Royal Bank'},{t:'TD.TO',n:'TD Bank'},{t:'ENB.TO',n:'Enbridge'},{t:'SHOP.TO',n:'Shopify'}],SA:[{t:'PETR4.SA',n:'Petrobras'},{t:'VALE3.SA',n:'Vale'},{t:'ITUB4.SA',n:'Itau'},{t:'ABEV3.SA',n:'Ambev'}],FR:[{t:'MC.PA',n:'LVMH'},{t:'OR.PA',n:"L'Oreal"},{t:'TTE.PA',n:'TotalEnergies'},{t:'AIR.PA',n:'Airbus'}],CH:[{t:'NESN.SW',n:'Nestle'},{t:'ROG.SW',n:'Roche'},{t:'NOVN.SW',n:'Novartis'},{t:'CFR.SW',n:'Richemont'}],NS:[{t:'ASML.AS',n:'ASML'},{t:'HEIA.AS',n:'Heineken'},{t:'INGA.AS',n:'ING'}],ZA:[{t:'NPN.JO',n:'Naspers'},{t:'MTN.JO',n:'MTN'},{t:'SBK.JO',n:'Standard Bank'}],EG:[{t:'COMI.CA',n:'CIB Egypt'},{t:'HRHO.CA',n:'EFG Hermes'}],MY:[{t:'1155.KL',n:'Maybank'},{t:'1295.KL',n:'Public Bank'},{t:'5099.KL',n:'CIMB'}],TH:[{t:'PTT.BK',n:'PTT'},{t:'AOT.BK',n:'Airports Thailand'},{t:'KBANK.BK',n:'Kasikorn'}],TR:[{t:'GARAN.IS',n:'Garanti'},{t:'AKBNK.IS',n:'Akbank'},{t:'THYAO.IS',n:'Turkish Airlines'}],SE:[{t:'ERIC-B.ST',n:'Ericsson'},{t:'VOLV-B.ST',n:'Volvo'},{t:'HM-B.ST',n:'H&M'}],NO:[{t:'EQNR.OL',n:'Equinor'},{t:'DNB.OL',n:'DNB'},{t:'TEL.OL',n:'Telenor'}],ES:[{t:'ITX.MC',n:'Inditex'},{t:'IBE.MC',n:'Iberdrola'},{t:'SAN.MC',n:'Santander'}],IT:[{t:'ENI.MI',n:'ENI'},{t:'ENEL.MI',n:'Enel'},{t:'RACE.MI',n:'Ferrari'}],MX:[{t:'FEMSA.MX',n:'Femsa'},{t:'WALMEX.MX',n:'Walmart MX'},{t:'AMXL.MX',n:'America Movil'}],PK:[{t:'OGDC.KA',n:'OGDC'},{t:'MCB.KA',n:'MCB Bank'},{t:'HBL.KA',n:'Habib Bank'}],BD:[{t:'GRAMEEN.DSE',n:'Grameen Phone'},{t:'BRAC.DSE',n:'BRAC Bank'}]};
 let activeStockMarket = 'NSE';
